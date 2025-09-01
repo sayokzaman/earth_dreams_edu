@@ -39,12 +39,21 @@ const handleSystemThemeChange = () => {
 };
 
 export function initializeTheme() {
-    const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'system';
+    const hostname = window.location.hostname;
+    const isAdmin = hostname.startsWith('admin.');
 
-    applyTheme(savedAppearance);
+    if (isAdmin) {
+        // ✅ Admin: keep user-defined / system logic
+        const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'system';
+        applyTheme(savedAppearance);
 
-    // Add the event listener for system theme changes...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+        // Watch for system theme changes if set to 'system'
+        mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    } else {
+        // ✅ Public: always light
+        localStorage.setItem('appearance', 'light'); // optional, to enforce persistence
+        applyTheme('light');
+    }
 }
 
 export function useAppearance() {
