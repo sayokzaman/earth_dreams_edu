@@ -39,13 +39,17 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+        <link href="https://fonts.bunny.net/css?family=lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
         <style>
             * {
-                font-family: 'Inter', sans-serif;
+                font-family: 'Lato', sans-serif;
+                font-optical-sizing: auto;
+                font-style: normal;
             }
         </style>
 

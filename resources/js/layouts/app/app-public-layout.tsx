@@ -8,7 +8,7 @@ const AppPublicLayout = ({ children }: PropsWithChildren) => {
             <NavPublic />
 
             {/* Content */}
-            <main className="mt-20 tracking-wide">{children}</main>
+            <main className="mt-20">{children}</main>
         </>
     );
 };

@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -47,15 +48,15 @@ const NavMenuPC = () => {
     return (
         <NavigationMenu>
             <NavigationMenuList className="gap-2">
-                <NavigationMenuItem>
+                <NavigationMenuItem className="hidden 2xl:block">
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <Link href="/">Home</Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-md">Study in UK</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>Study in UK</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid gap-2 rounded-lg bg-muted p-4 shadow-lg md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                        <ul className="mt-2 grid gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                             <li className="row-span-3 border-r">
                                 <NavigationMenuLink asChild>
                                     <a
@@ -89,7 +90,7 @@ const NavMenuPC = () => {
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-4 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -106,7 +107,7 @@ const NavMenuPC = () => {
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-4 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -123,7 +124,7 @@ const NavMenuPC = () => {
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-4 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -140,7 +141,7 @@ const NavMenuPC = () => {
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-4 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -151,13 +152,12 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link
-                            href="/docs"
-                            className="group bg-theme-accent/90 text-foreground hover:bg-theme-accent hover:text-foreground focus:bg-theme-accent/80 focus:text-foreground"
-                        >
-                            <span>Apply Now</span>
-                            <ChevronRightIcon className="ml-0.5 size-4 transform transition-all duration-200 group-hover:translate-x-1" />
+                    <NavigationMenuLink asChild>
+                        <Link href="/docs">
+                            <Button className='font-bold rounded-3xl'>
+                                <span className="pl-1">Apply Now</span>
+                                <ChevronRightIcon className="size-4 transform transition-all duration-200 group-hover:translate-x-1" />
+                            </Button>
                         </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
@@ -168,7 +168,7 @@ const NavMenuPC = () => {
 
 function ListItem({ title, children, href, ...props }: React.ComponentPropsWithoutRef<'li'> & { href: string }) {
     return (
-        <li {...props} className="rounded-sm p-3 hover:bg-theme-foreground/10">
+        <li {...props} className="rounded-sm p-3 outline-black/5 hover:bg-theme-foreground/5 hover:outline">
             <NavigationMenuLink asChild>
                 <Link href={href} className="flex flex-col gap-2">
                     <div className="text-sm leading-none font-medium">{title}</div>
