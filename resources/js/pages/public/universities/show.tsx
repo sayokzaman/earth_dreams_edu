@@ -53,10 +53,14 @@ const UniversityShowPage = () => {
                     </div>
 
                     <div className="relative hidden h-full w-full overflow-hidden rounded-2xl sm:block sm:h-80 sm:w-80">
-                        <img src={university?.location_img} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                        <div className="group absolute inset-0 flex h-full w-full items-end justify-end transition-all duration-200 hover:bg-black/30">
-                            <Button className="m-1.5 rounded-3xl bg-primary">Open Map</Button>
-                        </div>
+                        <iframe
+                            src={university?.location_url}
+                            width="100%"
+                            height="100%"
+                            allowFullScreen={true}
+
+                            referrerPolicy="no-referrer-when-downgrade"
+                        />
                     </div>
                 </Wrapper>
             </div>
@@ -123,10 +127,13 @@ const UniversityShowPage = () => {
 
             <Wrapper className="mt-8 flex flex-col gap-2 sm:hidden">
                 <div className="relative h-52 w-full overflow-hidden rounded-2xl shadow-lg sm:h-80 sm:w-80">
-                    <img src={university?.location_img} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                    <div className="group absolute inset-0 flex h-full w-full items-end justify-end transition-all duration-200 sm:hover:bg-black/30">
-                        <Button className="m-1.5 border border-gray-300 bg-primary shadow sm:hidden sm:group-hover:block">Open Map</Button>
-                    </div>
+                    <iframe
+                        src={university?.location_url}
+                        width="100%"
+                        height="100%"
+                        allowFullScreen={true}
+                        referrerPolicy="no-referrer-when-downgrade"
+                    />
                 </div>
             </Wrapper>
 

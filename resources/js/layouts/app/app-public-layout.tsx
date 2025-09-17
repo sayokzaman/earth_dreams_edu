@@ -10,7 +10,8 @@ const AppPublicLayout = ({ children }: PropsWithChildren) => {
             <NavPublic />
 
             {/* Content */}
-            <main className="mt-20">{children}</main>
+            <div className="h-20 bg-theme" />
+            <main>{children}</main>
 
             <div>
                 <NewsLetter />

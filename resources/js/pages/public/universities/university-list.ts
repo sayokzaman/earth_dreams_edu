@@ -5,7 +5,8 @@ export const universityList = [
         cover: '/images/versity_covers/university-of-hertfordshire.jpg',
         logo: '/images/versity_logos/university-of-hertfordshire.png',
         location: 'Hertfordshire, North of London',
-        location_img: '/images/versity_locations/university-of-hertfordshire.png',
+        location_url:
+            'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4939.422224324!2d-0.24415769999999998!3d51.756605949999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48763c60e2757d05%3A0x9c86f7ea684901f1!2sUniversity%20of%20Hertfordshire!5e0!3m2!1sen!2sbd!4v1758124508475!5m2!1sen!2sbd',
         founded: '1952',
         guardian_ranking: '75',
         world_ranking: '801',
@@ -19,7 +20,9 @@ export const universityList = [
                 title: 'Overview for International Students',
                 paragraphs: [
                     'The University of Hertfordshire is a modern, career-focused institution located in Hatfield, just north of London. Offering a wide range of undergraduate and postgraduate programmes across disciplines such as Business, Engineering, Health, Arts, and Humanities, the university is known for its emphasis on employability and practical skills, ensuring students are well-prepared for their future careers.',
+
                     'Established in 1952, the University of Hertfordshire has grown into a thriving institution, serving over 30,000 students from more than 100 countries. With a strong focus on teaching quality and research, Hertfordshire provides a supportive and inclusive environment for students to excel.',
+
                     "The university's campuses are equipped with modern facilities, including advanced laboratories, libraries, and study areas, giving students access to all the resources they need to succeed academically.",
                 ],
             },
@@ -65,7 +68,8 @@ export const universityList = [
         cover: '/images/versity_covers/university-of-east-london.jpg',
         logo: '/images/versity_logos/university-of-east-london.avif',
         location: 'Borough of Newham, London',
-        location_img: '/images/versity_locations/university-of-hertfordshire.png',
+        location_url:
+            'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.304644918312!2d0.06248977699801847!3d51.50762671068645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a89bd79632e9%3A0xd2a1ee734c6226d0!2sUniversity%20of%20East%20London!5e0!3m2!1sen!2sbd!4v1758125091829!5m2!1sen!2sbd',
         founded: '1898',
         guardian_ranking: '33',
         world_ranking: '1001',
@@ -134,7 +138,8 @@ export const universityList = [
         cover: '/images/versity_covers/bpp-university.jpg',
         logo: '/images/versity_logos/bpp-university.png',
         location: 'London W12 8AA, United Kingdom',
-        location_img: '/images/versity_locations/university-of-hertfordshire.png',
+        location_url:
+            'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.447674666689!2d-0.2256875230020968!3d51.50500241087811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760fdaa63e3caf%3A0xc18e3101b2594116!2sBPP%20University!5e0!3m2!1sen!2sbd!4v1758124989285!5m2!1sen!2sbd',
         founded: '1992',
         guardian_ranking: '',
         world_ranking: '',
