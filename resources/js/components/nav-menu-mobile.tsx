@@ -63,7 +63,7 @@ const NavMenuMobile = () => {
                                     </div>
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col bg-accent-foreground/5 pr-4 pb-2 font-semibold text-muted-foreground">
-                                    <Link className="border-t py-3 pl-15">Find universities</Link>
+                                    <Link href={route('public.universities.index')} className="border-t py-3 pl-15">Find universities</Link>
                                     <Link className="ml-15 border-t border-gray-300 py-3">Ranking</Link>
                                 </AccordionContent>
                             </AccordionItem>
