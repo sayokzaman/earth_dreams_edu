@@ -13,12 +13,16 @@ class PasswordUpdateTest extends TestCase
 
     public function test_password_can_be_updated()
     {
-        $user = User::factory()->create();
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
+        ]);
 
         $response = $this
             ->actingAs($user)
-            ->from('/settings/password')
-            ->put('/settings/password', [
+            ->from(route('password.edit'))
+            ->put(route('password.update'), [
                 'current_password' => 'password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -26,19 +30,23 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/password');
+            ->assertRedirect(route('password.edit'));
 
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
 
     public function test_correct_password_must_be_provided_to_update_password()
     {
-        $user = User::factory()->create();
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
+        ]);
 
         $response = $this
             ->actingAs($user)
-            ->from('/settings/password')
-            ->put('/settings/password', [
+            ->from(route('password.edit'))
+            ->put(route('password.update'), [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -46,6 +54,6 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasErrors('current_password')
-            ->assertRedirect('/settings/password');
+            ->assertRedirect(route('password.edit'));
     }
 }

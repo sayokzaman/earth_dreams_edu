@@ -30,8 +30,7 @@ Route::domain($adminDomain)->group(function () {
     require __DIR__.'/auth.php'; // keep auth routes here
 
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
-        // Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
+        Route::get('/', [DashboardController::class, 'adminIndex'])->name('dashboard');
     });
 });
 
