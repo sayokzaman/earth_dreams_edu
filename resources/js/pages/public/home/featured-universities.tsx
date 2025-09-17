@@ -1,3 +1,4 @@
+import Wrapper from '@/components/wrapper'
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -53,7 +54,7 @@ function FeaturedUniversities({ className }: { className?: string }) {
     const pages = Array.from({ length: Math.ceil(universities.length / 6) }, (_, i) => universities.slice(i * 6, i * 6 + 6));
 
     return (
-        <div className={cn('flex flex-col gap-4', className)}>
+        <Wrapper className={cn('flex flex-col gap-4', className)}>
             <span className="text-center text-2xl font-medium text-gray-400">Featured Universities</span>
 
             <div className="relative">
@@ -96,7 +97,7 @@ function FeaturedUniversities({ className }: { className?: string }) {
                     </button>
                 </div>
             </div>
-        </div>
+        </Wrapper>
     );
 }
 

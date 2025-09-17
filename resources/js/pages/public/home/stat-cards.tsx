@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Link } from '@inertiajs/react'
-import { ChevronRight } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Link } from '@inertiajs/react';
+import { ChevronRight } from 'lucide-react';
 
 const StatCards = () => {
     return (
@@ -25,7 +25,7 @@ const StatCards = () => {
             </div>
 
             {/* Card Grid */}
-            <div className="grid gap-6 sm:w-1/2 sm:grid-cols-2">
+            <div className="grid gap-6 sm:w-1/2 lg:grid-cols-2">
                 <Card className="relative flex justify-end overflow-hidden rounded-2xl border-none bg-transparent p-0 shadow-lg transition-transform duration-300">
                     <img
                         src="/images/stat_card_1.jpg"

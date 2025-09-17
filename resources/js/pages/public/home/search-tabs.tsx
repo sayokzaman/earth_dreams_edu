@@ -13,25 +13,25 @@ export function SearchTabs({ className }: { className?: string }) {
                 <TabsList className="mb-4 grid h-auto w-full grid-cols-2 gap-3 rounded-lg bg-transparent sm:mb-6 sm:grid-cols-4 sm:gap-0">
                     <TabsTrigger
                         value="location"
-                        className="h-10 rounded-3xl border text-sm text-gray-200 sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent data-[state=active]:bg-muted sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none data-[state=active]:backdrop-blur sm:data-[state=active]:backdrop-blur-none"
+                        className="h-10 rounded-3xl border text-sm text-gray-200 data-[state=active]:bg-muted data-[state=active]:backdrop-blur sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none sm:data-[state=active]:backdrop-blur-none"
                     >
                         Location
                     </TabsTrigger>
                     <TabsTrigger
                         value="university"
-                        className="h-10 rounded-3xl border text-sm text-gray-200 sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent data-[state=active]:bg-muted sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none data-[state=active]:backdrop-blur sm:data-[state=active]:backdrop-blur-none"
+                        className="h-10 rounded-3xl border text-sm text-gray-200 data-[state=active]:bg-muted data-[state=active]:backdrop-blur sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none sm:data-[state=active]:backdrop-blur-none"
                     >
                         University
                     </TabsTrigger>
                     <TabsTrigger
                         value="courses"
-                        className="h-10 rounded-3xl border text-sm text-gray-200 sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent data-[state=active]:bg-muted sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none data-[state=active]:backdrop-blur sm:data-[state=active]:backdrop-blur-none"
+                        className="h-10 rounded-3xl border text-sm text-gray-200 data-[state=active]:bg-muted data-[state=active]:backdrop-blur sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none sm:data-[state=active]:backdrop-blur-none"
                     >
                         Courses
                     </TabsTrigger>
                     <TabsTrigger
                         value="events"
-                        className="h-10 rounded-3xl border text-sm text-gray-200 sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent data-[state=active]:bg-muted sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none data-[state=active]:backdrop-blur sm:data-[state=active]:backdrop-blur-none"
+                        className="h-10 rounded-3xl border text-sm text-gray-200 data-[state=active]:bg-muted data-[state=active]:backdrop-blur sm:rounded-none sm:border-0 sm:border-b-2 sm:border-transparent sm:text-base sm:data-[state=active]:rounded-t-xl sm:data-[state=active]:border-b-2 sm:data-[state=active]:border-white sm:data-[state=active]:bg-transparent sm:data-[state=active]:font-bold sm:data-[state=active]:text-gray-200 sm:data-[state=active]:shadow-none sm:data-[state=active]:backdrop-blur-none"
                     >
                         Events
                     </TabsTrigger>

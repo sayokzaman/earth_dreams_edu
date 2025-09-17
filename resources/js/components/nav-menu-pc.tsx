@@ -54,7 +54,9 @@ const NavMenuPC = () => {
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Study in UK</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                        <Link href="/docs">Study in UK</Link>
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                             <li className="row-span-3 border-r">
@@ -86,7 +88,7 @@ const NavMenuPC = () => {
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <NavigationMenuTrigger>
-                            <Link href="/docs">Universities</Link>
+                            <Link href="/universities">Universities</Link>
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>
@@ -154,7 +156,7 @@ const NavMenuPC = () => {
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild>
                         <Link href="/docs">
-                            <Button className='font-bold rounded-3xl'>
+                            <Button className="group rounded-3xl font-bold">
                                 <span className="pl-1">Apply Now</span>
                                 <ChevronRightIcon className="size-4 transform transition-all duration-200 group-hover:translate-x-1" />
                             </Button>

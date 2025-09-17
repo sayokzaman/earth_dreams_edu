@@ -145,12 +145,11 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-theme/5 text-foreground;
     }
 
     main {
         max-width: 100vw;
-        overflow-x: hidden;
         box-sizing: border-box;
     }
 
@@ -158,5 +157,13 @@
         overflow-y: auto !important;
         --removed-body-scroll-bar-size: 0 !important;
         margin-right: 0 !important;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .section-anchor {
+        scroll-margin-top: 200px;
     }
 }

@@ -1,3 +1,4 @@
+import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
 import FeaturedUniversities from '@/pages/public/home/featured-universities';
 import HeroSection from '@/pages/public/home/hero-section';
@@ -10,21 +11,19 @@ export default function PublicHome() {
         <AppPublicLayout>
             <Head title="Earth Dreams Edu" />
 
-            <div className="min-w-svw">
-                <HeroSection />
+            <HeroSection />
 
-                <div className="-mt-px bg-accent-foreground">
-                    <FeaturedUniversities className="px-5 py-12 sm:px-20 sm:pt-14 sm:pb-20 xl:px-52" />
+            <div className="-mt-px bg-accent-foreground">
+                <FeaturedUniversities className="py-12 sm:pt-14 sm:pb-20" />
 
-                    <div className="bg-gradient-to-b to-gray-800 px-6 pt-6 pb-20 text-gray-100 sm:px-20 sm:py-20 xl:px-52">
-                        <StatCards />
-                    </div>
-                </div>
-
-                <div className="px-5 pt-16 pb-12 sm:px-10 lg:px-52">
-                    <StudentReviews />
-                </div>
+                <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 sm:py-20 shadow-xl">
+                    <StatCards />
+                </Wrapper>
             </div>
+
+            <Wrapper className="pt-16 pb-12">
+                <StudentReviews />
+            </Wrapper>
         </AppPublicLayout>
     );
 }

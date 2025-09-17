@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
+import Wrapper from '@/components/wrapper';
 import { SearchTabs } from '@/pages/public/home/search-tabs';
 
 const HeroSection = () => {
     return (
         <div className="relative">
             <img src="/images/edec_hero_2.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="relative bg-gradient-to-b from-accent-foreground/10 from-40% to-accent-foreground px-5 sm:px-20 xl:px-52">
+            <Wrapper className="relative bg-gradient-to-b from-accent-foreground/10 from-40% to-accent-foreground">
                 <div className="flex w-full flex-col gap-8 pt-40 pb-24 text-gray-100 sm:gap-6 sm:pt-56 sm:pb-16">
                     <div className="flex flex-col">
                         <p className="bg-gradient-to-r from-gray-300 to-gray-700 bg-clip-text pb-1 text-xl font-semibold text-transparent sm:text-3xl">
@@ -27,8 +28,8 @@ const HeroSection = () => {
                     </div>
                 </div>
 
-                <SearchTabs />
-            </div>
+                <SearchTabs className="max-w-4xl" />
+            </Wrapper>
         </div>
     );
 };
