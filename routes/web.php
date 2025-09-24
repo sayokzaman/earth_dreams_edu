@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,10 @@ Route::domain($adminDomain)->group(function () {
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DashboardController::class, 'adminIndex'])->name('dashboard');
+
+        Route::get('/blogs', [BlogsController::class, 'adminIndex'])->name('admin.blogs.index');
+        Route::get('/blogs/create', [BlogsController::class, 'adminCreate'])->name('admin.blogs.create');
+        Route::get('/blogs/{blog}', [BlogsController::class, 'adminShow'])->name('admin.blogs.show');
     });
 });
 
