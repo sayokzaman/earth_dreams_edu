@@ -8,7 +8,6 @@ import { Blog } from '@/types/blog';
 import { TableData } from '@/types/table';
 import { Head, Link } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
-import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -24,14 +23,6 @@ interface Props {
 
 const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useBlogFilters(incomingFilters);
-    const [openBlogModal, setOpenBlogModal] = useState(false);
-    const [blogModal, setBlogModal] = useState<Blog | null>(null);
-    const [deleteModal, setDeleteModal] = useState<{ blog: Blog; action: 'delete' | 'restore' | 'force-delete' } | null>(null);
-
-    const handleCloseBlogModal = () => {
-        setBlogModal(null);
-        setOpenBlogModal(false);
-    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
