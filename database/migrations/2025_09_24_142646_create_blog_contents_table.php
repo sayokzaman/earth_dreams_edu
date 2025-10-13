@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('blog_id')->constrained('blogs')->cascadeOnDelete();
             $table->enum('type', ['text', 'video']);
             $table->string('section');
-            $table->string('title')->nullable();
-            $table->json('paragraph')->nullable();
+            $table->string('heading')->nullable();
+            $table->longText('paragraph')->nullable();
             $table->string('video_url')->nullable();
             $table->timestamps();
         });

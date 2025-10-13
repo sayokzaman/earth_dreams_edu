@@ -1,14 +1,15 @@
+import Editor from '@/components/editor';
 import CoverImageInput from '@/components/image-input';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
+import { Content } from '@/types/blog';
 import { Head, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -24,17 +25,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Content = {
-    type: 'text' | 'video';
-    section: string;
-    heading: string;
-    paragraph: string;
-    video_url: string;
-};
-
 const initialData = {
-    cover: null as File | null,
+    type: 'blog',
     title: '',
+    category: '',
+    cover_img: null as File | null,
     content: [] as Content[],
 };
 
@@ -50,7 +45,7 @@ const CreateBlog = () => {
             ...data.content,
             {
                 type: 'text',
-                section: '',
+                section: 'Section 1',
                 heading: '',
                 paragraph: '',
                 video_url: '',
@@ -68,7 +63,7 @@ const CreateBlog = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post(route('blogs.store'), {
+        post(route('admin.blogs.store'), {
             onSuccess: () => {
                 clearErrors();
                 reset();
@@ -83,7 +78,7 @@ const CreateBlog = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Blogs" />
 
-            <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-8 p-4">
+            <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
                 <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                     <h2 className="text-xl font-semibold">New Blog</h2>
                     <Button type="submit" disabled={processing}>
@@ -96,7 +91,7 @@ const CreateBlog = () => {
                         <Label htmlFor="type" className="mb-1 block text-lg font-medium">
                             Type
                         </Label>
-                        <Select defaultValue="blog">
+                        <Select value={data.type} onValueChange={(value) => setData('type', value)}>
                             <SelectTrigger className="bg-muted/60">
                                 <SelectValue placeholder="Select Type" />
                             </SelectTrigger>
@@ -128,7 +123,7 @@ const CreateBlog = () => {
                         <Label htmlFor="type" className="mb-1 block text-lg font-medium">
                             Category
                         </Label>
-                        <Select defaultValue="education">
+                        <Select value={data.category} onValueChange={(value) => setData('category', value)}>
                             <SelectTrigger className="bg-muted/60">
                                 <SelectValue placeholder="Select Category" />
                             </SelectTrigger>
@@ -149,7 +144,7 @@ const CreateBlog = () => {
                         initialImage={imagePreview} // show existing product image when editing
                         onChange={(file, previewUrl) => {
                             // file + preview from the component
-                            setData('cover', file); // ✅ Inertia will send this file
+                            setData('cover_img', file); // ✅ Inertia will send this file
                             setImagePreview(previewUrl ?? '');
                         }}
                         aspectClass={isMobile ? 'aspect-[5/2]' : 'aspect-[5/1]'}
@@ -175,7 +170,7 @@ const CreateBlog = () => {
                                             id="section"
                                             type="text"
                                             name="section"
-                                            value={content.section || 'Section ' + (index + 1)}
+                                            value={content.section}
                                             onChange={(e) => handleSectionChange(index, 'section', e.target.value)}
                                             placeholder="Section Name"
                                             className="w-full bg-muted/60"
@@ -193,7 +188,12 @@ const CreateBlog = () => {
                                     </div>
                                 ))}
                             </div>
-                            <Button onClick={handleAddNewSection} className="h-9 w-full bg-muted/60 hover:bg-muted/80" variant={'outline'}>
+                            <Button
+                                type="button"
+                                onClick={handleAddNewSection}
+                                className="h-9 w-full bg-muted/60 hover:bg-muted/80"
+                                variant={'outline'}
+                            >
                                 <PlusIcon className="mr-2 h-4 w-4" />
                                 Add New Section
                             </Button>
@@ -211,9 +211,24 @@ const CreateBlog = () => {
                                                     name="video_url"
                                                     value={content.video_url}
                                                     onChange={(e) => handleSectionChange(index, 'video_url', e.target.value)}
-                                                    placeholder="example: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                                                    className="h-16 w-full rounded-md border bg-muted/60 px-4 py-2 text-xl focus-visible:ring-0 focus-visible:outline-none"
+                                                    placeholder="Paste video URL: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                                    className={cn(
+                                                        'h-16 w-full border bg-muted/60 px-4 py-2 text-lg focus-visible:ring-0 focus-visible:outline-none',
+                                                        content.video_url ? 'rounded-t-md border-b-0' : 'rounded-md',
+                                                    )}
                                                 />
+
+                                                {content.video_url && (
+                                                    <iframe
+                                                        width="100%"
+                                                        className="aspect-video rounded-b-md"
+                                                        src={content.video_url}
+                                                        title="YouTube video player"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        referrerPolicy="strict-origin-when-cross-origin"
+                                                        allowFullScreen
+                                                    ></iframe>
+                                                )}
                                             </div>
                                         );
                                     }
@@ -224,19 +239,16 @@ const CreateBlog = () => {
                                                 type="text"
                                                 name="heading"
                                                 value={content.heading}
-                                                onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
+                                                onChange={(e) => {
+                                                    handleSectionChange(index, 'heading', e.target.value);
+                                                }}
                                                 placeholder="Section Title"
                                                 className="h-16 w-full rounded-t-md rounded-b-none border-x border-t bg-muted/60 px-4 py-2 text-xl focus-visible:ring-0 focus-visible:outline-none"
                                             />
 
-                                            <Textarea
-                                                id="paragraph"
-                                                name="paragraph"
-                                                placeholder="Section Paragraph"
-                                                value={content.paragraph}
-                                                onChange={(e) => handleSectionChange(index, 'paragraph', e.target.value)}
-                                                className="rounded-t-none bg-muted/60 focus-visible:ring-0"
-                                                rows={8}
+                                            <Editor
+                                                onChange={(e) => handleSectionChange(index, 'paragraph', e)}
+                                                className="rounded-t-none bg-muted/60"
                                             />
                                         </div>
                                     );

@@ -9,11 +9,7 @@ class BlogContent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'section', 'title', 'paragraph', 'video_url'];
-
-    protected $casts = [
-        'paragraph' => 'array',
-    ];
+    protected $fillable = ['blog_id', 'type', 'section', 'heading', 'paragraph', 'video_url'];
 
     public function blog()
     {

@@ -59,7 +59,7 @@ export default function CoverImageInput({ initialImage = null, onChange, aspectC
                 onClick={openFile}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
-                className={`group relative w-full bg-muted/50 cursor-pointer overflow-hidden rounded-2xl border border-dashed border-muted-foreground/25`}
+                className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-dashed border-muted-foreground/25 bg-muted/50`}
                 aria-label="Upload cover image"
             >
                 <div className={`w-full ${aspectClass} relative`}>
@@ -87,6 +87,7 @@ export default function CoverImageInput({ initialImage = null, onChange, aspectC
                     >
                         <div className="flex items-center gap-2">
                             <Button
+                                type="button"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     openFile();
@@ -107,6 +108,7 @@ export default function CoverImageInput({ initialImage = null, onChange, aspectC
 
                     {preview && (
                         <Button
+                            type="button"
                             onClick={removeImage}
                             variant="destructive"
                             size="sm"

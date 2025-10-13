@@ -19,8 +19,9 @@ class BlogFactory extends Factory
     {
         return [
             'author_id' => User::factory(),
+            'type' => $this->faker->randomElement(['blog', 'event', 'news']),
             'title' => $this->faker->sentence,
-            'cover_img' => $this->faker->imageUrl(800, 400, 'blog'),
+            'cover_img' => '',
             'category' => $this->faker->randomElement(['Tech', 'Travel', 'Education', 'Lifestyle']),
             'date' => $this->faker->date(),
         ];

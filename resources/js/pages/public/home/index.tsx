@@ -14,7 +14,7 @@ export default function PublicHome() {
             <HeroSection />
 
             <div className="-mt-px bg-accent-foreground">
-                <FeaturedUniversities className="py-12 sm:pt-14 sm:pb-20" />
+                <FeaturedUniversities className="py-12 sm:pt-10 sm:pb-20" />
 
                 <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 sm:py-20 shadow-xl">
                     <StatCards />
