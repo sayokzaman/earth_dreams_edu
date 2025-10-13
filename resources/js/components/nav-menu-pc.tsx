@@ -139,7 +139,7 @@ const NavMenuPC = () => {
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <NavigationMenuTrigger>
-                            <Link href="/docs">Blogs</Link>
+                            <Link href="/blogs">Blogs</Link>
                         </NavigationMenuTrigger>
                     </NavigationMenuLink>
                     <NavigationMenuContent>

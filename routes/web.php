@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,11 @@ Route::domain($publicDomain)->name('public.')->group(function () {
         Route::get('/', [UniversityController::class, 'index'])->name('index');
         Route::get('/{university}', [UniversityController::class, 'show'])->name('show');
     });
+
+    Route::prefix('/blogs')->name('blogs.')->group(function () {
+        Route::get('/', [BlogsController::class, 'index'])->name('index');
+        Route::get('/{blog}', [BlogsController::class, 'show'])->name('show');
+    });
 });
 
 /*
@@ -31,6 +37,14 @@ Route::domain($adminDomain)->group(function () {
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DashboardController::class, 'adminIndex'])->name('dashboard');
+
+        Route::prefix('/blogs')->name('admin.blogs.')->group(function () {
+            Route::get('/', [BlogsController::class, 'adminIndex'])->name('index');
+            Route::get('/create', [BlogsController::class, 'adminCreate'])->name('create');
+            Route::post('/', [BlogsController::class, 'store'])->name('store');
+            Route::get('/{blog}', [BlogsController::class, 'adminShow'])->name('show');
+            Route::post('/{blog}/update', [BlogsController::class, 'update'])->name('update');
+        });
     });
 });
 

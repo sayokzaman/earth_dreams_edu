@@ -23,9 +23,9 @@ const NavMenuMobile = () => {
                             <div className="flex flex-col border-l pl-3 text-white">
                                 <p className="text-xs text-white/70">Welcome!</p>
                                 <p className="text-xl font-bold tracking-wider">
-                                    <span className='text-theme-accent'>EARTH</span> <span className='text-theme-secondary'>DREAMS</span>
+                                    <span className="text-theme-accent">EARTH</span> <span className="text-theme-secondary">DREAMS</span>
                                 </p>
-                                <p className='text-xs text-muted'>Education & Consultancy</p>
+                                <p className="text-xs text-muted">Education & Consultancy</p>
                             </div>
                         </div>
                     </SheetHeader>
@@ -63,7 +63,9 @@ const NavMenuMobile = () => {
                                     </div>
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col bg-accent-foreground/5 pr-4 pb-2 font-semibold text-muted-foreground">
-                                    <Link href={route('public.universities.index')} className="border-t py-3 pl-15">Find universities</Link>
+                                    <Link href={route('public.universities.index')} className="border-t py-3 pl-15">
+                                        Find universities
+                                    </Link>
                                     <Link className="ml-15 border-t border-gray-300 py-3">Ranking</Link>
                                 </AccordionContent>
                             </AccordionItem>
@@ -102,7 +104,9 @@ const NavMenuMobile = () => {
                                     </div>
                                 </AccordionTrigger>
                                 <AccordionContent className="flex flex-col bg-accent-foreground/5 pr-4 pb-2">
-                                    <Link className="border-t py-3 pl-15">Link1</Link>
+                                    <Link href={route('public.blogs.index')} className="border-t py-3 pl-15">
+                                        Show Latest Blogs
+                                    </Link>
                                     <Link className="ml-15 border-t py-3">Link2</Link>
                                 </AccordionContent>
                             </AccordionItem>
