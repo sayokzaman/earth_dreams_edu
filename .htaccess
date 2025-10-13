@@ -1,0 +1,32 @@
+# --- Force HTTPS ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# --- Force everything into /public ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If the request already starts with /public, don't rewrite (prevents loops)
+  RewriteRule ^public/ - [L]
+
+  # Send everything else to /public
+  RewriteRule ^$ public/ [L]
+  RewriteRule (.*) public/$1 [L]
+</IfModule>
+
+# --- Never serve dotfiles like .env, .git, etc. ---
+<FilesMatch "^\.(env|env\..*|git|hg|svn|DS_Store)">
+  Require all denied
+</FilesMatch>
+
+# --- Block common sensitive files at root (if they exist here) ---
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|pnpm-lock\.yaml|yarn\.lock|artisan|phpunit\.xml(\.dist)?|vite\.config\.(js|ts)|webpack(\.mix)?\.js)$">
+  Require all denied
+</FilesMatch>
+
+# --- No directory listings; hide server signature ---
+Options -Indexes
+ServerSignature Off
