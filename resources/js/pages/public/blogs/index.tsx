@@ -14,7 +14,7 @@ const BlogsIndex = ({ blogs }: Props) => {
         <AppPublicLayout>
             <Head title="Blogs" />
 
-            <Wrapper className="grid grid-cols-1 gap-6 py-6 md:grid-cols-3 pt-26">
+            <Wrapper className="grid grid-cols-1 gap-6 py-6 md:grid-cols-3">
                 {blogs.map((blog) => {
                     console.log(blog.cover_img);
                     return (

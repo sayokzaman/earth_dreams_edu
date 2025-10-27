@@ -112,7 +112,7 @@ const CreateUniversity = () => {
                             placeholder="University Name"
                             className="bg-muted/60"
                         />
-                        <InputError message={errors.name} />
+                        <InputError className="text-xs" message={errors.name} />
                     </div>
 
                     <div className="w-1/2">
@@ -128,7 +128,7 @@ const CreateUniversity = () => {
                             placeholder="Location of the University"
                             className="bg-muted/60"
                         />
-                        <InputError message={errors.location} />
+                        <InputError className="text-xs" message={errors.location} />
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@ const CreateUniversity = () => {
                         placeholder='e.g. <iframe src="https://www.google.com/maps/embed?"></iframe>"'
                         className="bg-muted/60"
                     />
-                    <InputError message={errors.location_url} />
+                    <InputError className="text-xs" message={errors.location_url} />
                 </div>
 
                 {data.location_url ? (
@@ -176,7 +176,7 @@ const CreateUniversity = () => {
                             imageType="logo"
                             recommendation="transparent background."
                         />
-                        <InputError message={errors.logo} />
+                        <InputError className="text-xs" message={errors.logo} />
                     </div>
 
                     <div className="w-3/4">
@@ -191,7 +191,7 @@ const CreateUniversity = () => {
                                 setCoverPreview(previewUrl ?? '');
                             }}
                         />
-                        <InputError message={errors.cover} />
+                        <InputError className="text-xs" message={errors.cover} />
                     </div>
                 </div>
 
@@ -203,7 +203,7 @@ const CreateUniversity = () => {
                                 Founding Year <span className="text-sm text-red-500">*</span>
                             </Label>
                             <Input value={data.founded} onChange={(e) => setData('founded', e.target.value)} className="bg-muted/60" />
-                            <InputError message={errors.founded} />
+                            <InputError className="text-xs" message={errors.founded} />
                         </div>
 
                         <div>
@@ -213,21 +213,25 @@ const CreateUniversity = () => {
                                 onChange={(e) => setData('guardian_ranking', e.target.value)}
                                 className="bg-muted/60"
                             />
+                            <InputError className="text-xs" message={errors.guardian_ranking} />
                         </div>
 
                         <div>
                             <Label className="mb-1 block text-sm font-medium">The World Ranking</Label>
                             <Input value={data.world_ranking} onChange={(e) => setData('world_ranking', e.target.value)} className="bg-muted/60" />
+                            <InputError className="text-xs" message={errors.world_ranking} />
                         </div>
 
                         <div>
                             <Label className="mb-1 block text-sm font-medium">QS World Ranking</Label>
                             <Input value={data.qs_ranking} onChange={(e) => setData('qs_ranking', e.target.value)} className="bg-muted/60" />
+                            <InputError className="text-xs" message={errors.qs_ranking} />
                         </div>
 
                         <div>
                             <Label className="mb-1 block text-sm font-medium">Scholarship</Label>
                             <Input value={data.scholarship} onChange={(e) => setData('scholarship', e.target.value)} className="bg-muted/60" />
+                            <InputError className="text-xs" message={errors.scholarship} />
                         </div>
                     </div>
                 </div>
@@ -282,7 +286,7 @@ const CreateUniversity = () => {
                                 Add New Section
                             </Button>
 
-                            <InputError message={errors.content} />
+                            <InputError className="text-xs" message={errors.content} />
                         </div>
 
                         <div className="flex w-8/12 flex-col items-start justify-center gap-6">

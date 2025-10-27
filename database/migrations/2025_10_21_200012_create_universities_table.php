@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('location');
             $table->text('location_url');
             $table->string('founded');
-            $table->string('guardian_ranking')->nullable();
-            $table->string('world_ranking')->nullable();
-            $table->string('qs_ranking')->nullable();
+            $table->integer('guardian_ranking')->nullable();
+            $table->integer('world_ranking')->nullable();
+            $table->integer('qs_ranking')->nullable();
             $table->string('scholarship')->nullable();
             $table->timestamps();
         });

@@ -41,7 +41,7 @@ const UniversityShowPage = ({ university }: Props) => {
             <div className="relative">
                 <img src={`/storage/${university?.cover}`} alt={university?.name} className="absolute inset-0 h-full w-full object-cover" />
 
-                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-120 sm:flex-row sm:items-center sm:pt-20">
+                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-120 sm:flex-row sm:items-center">
                     <div className="flex flex-col gap-2 pt-20 sm:gap-4">
                         <img src={`/storage/${university?.logo}`} className="h-14 w-fit sm:h-28" />
                         <h1 className="text-2xl font-bold text-secondary capitalize sm:text-3xl">{university?.name}</h1>

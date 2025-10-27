@@ -12,10 +12,41 @@ use Inertia\Inertia;
 
 class UniversityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $universities = University::query()
+            ->when($request->searchUniversity, function ($query, $searchUniversity) {
+                $query->where('name', 'like', '%'.$searchUniversity.'%');
+            })
+            ->when($request->universities, function ($query, $universityNames) {
+                $query->whereIn('name', $universityNames);
+            })
+            ->when($request->searchLocation, function ($query, $searchLocation) {
+                $query->where('location', 'like', '%'.$searchLocation.'%');
+            })
+            ->when($request->ranking, function ($query, $ranking) {
+                $query->orderBy($ranking, 'asc');
+            })
+            ->orderBy('name', 'asc')
+            ->paginate(12)
+            ->withQueryString();
+
+        $universityNames = University::all()->pluck('name');
+
         return Inertia::render('public/universities/index', [
-            'universities' => University::all(),
+            'universities' => $universities,
+            'universityNames' => $universityNames,
+            'filters' => array_merge([
+                'searchUniversity' => '',
+                'universities' => [],
+                'searchLocation' => '',
+                'ranking' => '',
+            ], $request->only([
+                'searchUniversity',
+                'universities',
+                'searchLocation',
+                'ranking',
+            ])),
         ]);
     }
 
@@ -61,9 +92,9 @@ class UniversityController extends Controller
             'logo' => 'required|image|max:2048',
             'cover' => 'required|image|max:2048',
             'founded' => 'required|string|max:255',
-            'guardian_ranking' => 'nullable|string|max:255',
-            'world_ranking' => 'nullable|string|max:255',
-            'qs_ranking' => 'nullable|string|max:255',
+            'guardian_ranking' => 'nullable|integer|min:1',
+            'world_ranking' => 'nullable|integer|min:1',
+            'qs_ranking' => 'nullable|integer|min:1',
             'scholarship' => 'nullable|string|max:255',
             'content' => 'required|array|min:1',
             'content.*.type' => 'required|in:text,video',
@@ -117,15 +148,15 @@ class UniversityController extends Controller
     public function update(Request $request, University $university)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:universities,name',
+            'name' => 'required|string|max:255|unique:universities,name,'.$university->id,
             'location' => 'required|string|max:255',
             'location_url' => 'required|url',
             'logo' => 'nullable|image|max:2048',
             'cover' => 'nullable|image|max:2048',
             'founded' => 'required|string|max:255',
-            'guardian_ranking' => 'nullable|string|max:255',
-            'world_ranking' => 'nullable|string|max:255',
-            'qs_ranking' => 'nullable|string|max:255',
+            'guardian_ranking' => 'nullable|integer|min:1',
+            'world_ranking' => 'nullable|integer|min:1',
+            'qs_ranking' => 'nullable|integer|min:1',
             'scholarship' => 'nullable|string|max:255',
             'content' => 'required|array|min:1',
             'content.*.type' => 'required|in:text,video',

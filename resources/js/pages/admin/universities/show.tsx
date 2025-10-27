@@ -365,6 +365,7 @@ const ShowUniversity = ({ university }: Props) => {
 
                                             <Editor
                                                 onChange={(e) => handleSectionChange(index, 'paragraph', e)}
+                                                initialHtml={content.paragraph}
                                                 className="rounded-t-none bg-muted/60"
                                             />
                                         </div>
