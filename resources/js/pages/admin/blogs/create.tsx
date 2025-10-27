@@ -9,9 +9,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Content } from '@/types/blog';
+import { BlogContent } from '@/types/blog';
 import { Head, useForm } from '@inertiajs/react';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, TrashIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -30,7 +30,7 @@ const initialData = {
     title: '',
     category: '',
     cover_img: null as File | null,
-    content: [] as Content[],
+    content: [] as BlogContent[],
 };
 
 const CreateBlog = () => {
@@ -45,12 +45,19 @@ const CreateBlog = () => {
             ...data.content,
             {
                 type: 'text',
-                section: 'Section 1',
+                section: `Section ${data.content.length + 1}`,
                 heading: '',
                 paragraph: '',
                 video_url: '',
             },
         ]);
+    };
+
+    const handleDeleteSection = (index: number) => {
+        setData(
+            'content',
+            data.content.filter((_, i) => i !== index),
+        );
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
@@ -76,7 +83,7 @@ const CreateBlog = () => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Blogs" />
+            <Head title="Create New Blog" />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
                 <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -88,11 +95,11 @@ const CreateBlog = () => {
 
                 <div className="flex w-full gap-6">
                     <div className="w-1/4">
-                        <Label htmlFor="type" className="mb-1 block text-lg font-medium">
-                            Type
+                        <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Type <span className="text-sm text-red-500">*</span>
                         </Label>
                         <Select value={data.type} onValueChange={(value) => setData('type', value)}>
-                            <SelectTrigger className="bg-muted/60">
+                            <SelectTrigger id="type" className="bg-muted/60">
                                 <SelectValue placeholder="Select Type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -104,8 +111,8 @@ const CreateBlog = () => {
                     </div>
 
                     <div className="w-2/4">
-                        <Label htmlFor="title" className="mb-1 block text-lg font-medium">
-                            Blog Title
+                        <Label htmlFor="title" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Blog Title <span className="text-sm text-red-500">*</span>
                         </Label>
                         <Input
                             id="title"
@@ -120,11 +127,11 @@ const CreateBlog = () => {
                     </div>
 
                     <div className="w-1/4">
-                        <Label htmlFor="type" className="mb-1 block text-lg font-medium">
-                            Category
+                        <Label htmlFor="category" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Category <span className="sm text-red-500">*</span>
                         </Label>
                         <Select value={data.category} onValueChange={(value) => setData('category', value)}>
-                            <SelectTrigger className="bg-muted/60">
+                            <SelectTrigger id="category" className="bg-muted/60">
                                 <SelectValue placeholder="Select Category" />
                             </SelectTrigger>
                             <SelectContent>
@@ -161,7 +168,9 @@ const CreateBlog = () => {
 
                     <div className="flex gap-6">
                         <div className="w-4/12">
-                            <Label className="mb-2 block font-medium">Sections</Label>
+                            <Label className="mb-2 block font-medium">
+                                Sections <span className="text-red-500">*</span>
+                            </Label>
                             <div className={cn('flex flex-col gap-4', data.content.length > 0 && 'mb-6')}>
                                 {data.content.map((content, index) => (
                                     <div key={index} className="flex items-center gap-2">
@@ -185,6 +194,10 @@ const CreateBlog = () => {
                                                 <SelectItem value="video">Video</SelectItem>
                                             </SelectContent>
                                         </Select>
+
+                                        <Button type="button" onClick={() => handleDeleteSection(index)} variant={'destructive'} className="h-9 w-9">
+                                            <TrashIcon className="h-4 w-4" />
+                                        </Button>
                                     </div>
                                 ))}
                             </div>
@@ -197,6 +210,8 @@ const CreateBlog = () => {
                                 <PlusIcon className="mr-2 h-4 w-4" />
                                 Add New Section
                             </Button>
+
+                            <InputError message={errors.content} />
                         </div>
 
                         <div className="flex w-8/12 flex-col items-start justify-center gap-6">

@@ -1,19 +1,23 @@
 import { Card, CardHeader } from '@/components/ui/card';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
-import { universityList } from '@/pages/public/universities/university-list';
+import { University } from '@/types/university';
 import { Head, Link } from '@inertiajs/react';
 
-const UniversityIndex = () => {
+type Props = {
+    universities: University[];
+};
+
+const UniversityIndex = ({ universities }: Props) => {
     return (
         <AppPublicLayout>
             <Head title="Universities" />
 
-            <Wrapper className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-3">
-                {universityList.map((university) => (
-                    <Link href={route('public.universities.show', university.link)}>
+            <Wrapper className="grid grid-cols-1 gap-6 pt-26 md:grid-cols-3">
+                {universities.map((university) => (
+                    <Link href={route('public.universities.show', university.name)} key={university.id}>
                         <Card>
-                            <CardHeader className='flex items-center justify-center'>
+                            <CardHeader className="flex items-center justify-center">
                                 <img src={university.logo} alt="" className="h-12 w-fit" />
                             </CardHeader>
                         </Card>

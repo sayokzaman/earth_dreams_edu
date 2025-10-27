@@ -1,16 +1,17 @@
 import { Button } from '@/components/ui/button';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
-import { cn } from '@/lib/utils';
-import { universityList } from '@/pages/public/universities/university-list';
-import { Head, usePage } from '@inertiajs/react';
+import { cn } from '@/lib/utils'
+import { University } from '@/types/university';
+import { Head } from '@inertiajs/react';
 import { BookmarkCheckIcon, ChartNoAxesColumn, GraduationCapIcon, LandmarkIcon, MapPinIcon, StarIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const UniversityShowPage = () => {
-    const { props } = usePage();
-    const university = universityList.find((u) => u.link === props.university);
+type Props = {
+    university: University;
+};
 
+const UniversityShowPage = ({ university }: Props) => {
     const [activeId, setActiveId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -38,11 +39,11 @@ const UniversityShowPage = () => {
             <Head title="Universities" />
 
             <div className="relative">
-                <img src={university?.cover} alt={university?.name} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={`/storage/${university?.cover}`} alt={university?.name} className="absolute inset-0 h-full w-full object-cover" />
 
-                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-120 sm:flex-row sm:items-center">
+                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-120 sm:flex-row sm:items-center sm:pt-20">
                     <div className="flex flex-col gap-2 pt-20 sm:gap-4">
-                        <img src={university?.logo} className="h-14 w-fit sm:h-28" />
+                        <img src={`/storage/${university?.logo}`} className="h-14 w-fit sm:h-28" />
                         <h1 className="text-2xl font-bold text-secondary capitalize sm:text-3xl">{university?.name}</h1>
                         <div className="flex items-center gap-2">
                             <MapPinIcon className="h-6 w-6 text-muted/70" />
@@ -58,7 +59,6 @@ const UniversityShowPage = () => {
                             width="100%"
                             height="100%"
                             allowFullScreen={true}
-
                             referrerPolicy="no-referrer-when-downgrade"
                         />
                     </div>
@@ -139,12 +139,14 @@ const UniversityShowPage = () => {
 
             <Wrapper className="relative flex flex-col pb-10 sm:flex-row">
                 <ul className="top-24 flex flex-col gap-6 self-start py-8 text-muted-foreground sm:sticky sm:w-3/12 sm:gap-4 sm:py-12 sm:text-lg">
-                    {university?.contents.map((content, index) => (
+                    {university?.contents?.map((content, index) => (
                         <li key={index}>
                             <a
-                                href={`#${content.id}`}
+                                href={`#${content.section.split(' ').join('_')}`}
                                 className={cn(
-                                    activeId === content.id ? 'border-l-4 border-theme pl-2 font-semibold text-theme' : 'hover:text-theme/70',
+                                    activeId === content.section.split(' ').join('_')
+                                        ? 'border-l-4 border-theme pl-2 font-semibold text-theme'
+                                        : 'hover:text-theme/70',
                                 )}
                             >
                                 {content.section}
@@ -154,22 +156,19 @@ const UniversityShowPage = () => {
                 </ul>
 
                 <div className="sm:w-9/12 sm:border-l sm:pl-12">
-                    {university?.contents.map((content, index) =>
+                    {university?.contents?.map((content, index) =>
                         content.type === 'text' ? (
                             <section
                                 key={index}
-                                id={content.id}
+                                id={content.section.split(' ').join('_')}
                                 className={cn('section-anchor flex flex-col gap-6 border-t pt-8 pb-8 tracking-wide', index === 0 && 'sm:pt-12')}
                             >
-                                <h1 className="text-3xl font-bold text-theme">{content.title}</h1>
-                                {content.paragraphs?.map((paragraph, paragraphIndex) => (
-                                    <p key={paragraphIndex} className="leading-loose">
-                                        {paragraph}
-                                    </p>
-                                ))}
+                                <h1 className="text-3xl font-bold text-theme">{content.heading}</h1>
+
+                                <div dangerouslySetInnerHTML={{ __html: content.paragraph }} className="leading-loose text-theme-foreground"></div>
                             </section>
                         ) : content.type === 'video' ? (
-                            <section key={index} id={content.id} className="section-anchor border-t">
+                            <section key={index} id={content.section.split(' ').join('_')} className="section-anchor border-t">
                                 <iframe
                                     className="my-8 aspect-video w-full sm:my-0 sm:p-8"
                                     src={content.video_url}

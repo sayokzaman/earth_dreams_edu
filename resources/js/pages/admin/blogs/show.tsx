@@ -114,7 +114,7 @@ const AdminBlogShow = ({ blog }: Props) => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Blogs" />
+            <Head title={blog.title} />
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
                 <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                     <div className="flex flex-col gap-2">
@@ -122,12 +122,9 @@ const AdminBlogShow = ({ blog }: Props) => {
                             <h2 className="border-r pr-2 text-xl font-semibold">Blog #{blog.id}</h2>
 
                             <div className="flex gap-1">
-                                <Badge variant={'secondary'} className="capitalize">
-                                    {blog.type}
-                                </Badge>
-                                <Badge variant={'secondary'} className="capitalize">
-                                    {blog.category}
-                                </Badge>
+                                <Badge className="capitalize">{'Type: ' +blog.type}</Badge>
+                                <Badge className="capitalize">{blog.category}</Badge>
+                                <Badge className="capitalize">{blog.date.split(' ')[0]}</Badge>
                             </div>
                         </div>
 
@@ -140,8 +137,8 @@ const AdminBlogShow = ({ blog }: Props) => {
 
                 <div className="flex w-full gap-6">
                     <div className="w-1/4">
-                        <Label htmlFor="type" className="mb-1 block text-lg font-medium">
-                            Type
+                        <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Type <span className="text-sm text-red-500">*</span>
                         </Label>
                         <Select value={data.type} onValueChange={(value) => setData('type', value)}>
                             <SelectTrigger className="bg-muted/60">
@@ -157,8 +154,8 @@ const AdminBlogShow = ({ blog }: Props) => {
                     </div>
 
                     <div className="w-2/4">
-                        <Label htmlFor="title" className="mb-1 block text-lg font-medium">
-                            Blog Title
+                        <Label htmlFor="title" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Blog Title <span className="text-sm text-red-500">*</span>
                         </Label>
                         <Input
                             id="title"
@@ -173,8 +170,8 @@ const AdminBlogShow = ({ blog }: Props) => {
                     </div>
 
                     <div className="w-1/4">
-                        <Label htmlFor="type" className="mb-1 block text-lg font-medium">
-                            Category
+                        <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                            Category <span className="text-sm text-red-500">*</span>
                         </Label>
                         <Select value={data.category} onValueChange={(value) => setData('category', value)}>
                             <SelectTrigger className="bg-muted/60">
@@ -216,7 +213,9 @@ const AdminBlogShow = ({ blog }: Props) => {
 
                     <div className="flex gap-6">
                         <div className="w-4/12">
-                            <Label className="mb-2 block font-medium">Sections</Label>
+                            <Label className="mb-2 block font-medium">
+                                Sections <span className="text-sm text-red-500">*</span>
+                            </Label>
                             <div className={cn('flex flex-col gap-4', data.content.length > 0 && 'mb-6')}>
                                 {data.content.map((content, index) => (
                                     <div key={index} className="flex items-center gap-2">

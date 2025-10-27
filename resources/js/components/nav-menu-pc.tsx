@@ -86,11 +86,11 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                        <NavigationMenuLink asChild>
                             <Link href="/universities">Universities</Link>
-                        </NavigationMenuTrigger>
-                    </NavigationMenuLink>
+                        </NavigationMenuLink>
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
@@ -103,11 +103,11 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                        <NavigationMenuLink asChild>
                             <Link href="/docs">Courses</Link>
-                        </NavigationMenuTrigger>
-                    </NavigationMenuLink>
+                        </NavigationMenuLink>
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
@@ -120,11 +120,11 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                        <NavigationMenuLink asChild>
                             <Link href="/docs">Pathway</Link>
-                        </NavigationMenuTrigger>
-                    </NavigationMenuLink>
+                        </NavigationMenuLink>
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
@@ -137,11 +137,11 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                        <NavigationMenuLink asChild>
                             <Link href="/blogs">Blogs</Link>
-                        </NavigationMenuTrigger>
-                    </NavigationMenuLink>
+                        </NavigationMenuLink>
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (

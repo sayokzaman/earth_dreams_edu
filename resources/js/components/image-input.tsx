@@ -7,9 +7,18 @@ type Props = {
     onChange?: (file: File | null, previewUrl?: string | null) => void;
     aspectClass?: string; // e.g. "aspect-video" or "aspect-[3/1]"
     accept?: string;
+    imageType?: 'cover' | 'logo';
+    recommendation?: string;
 };
 
-export default function CoverImageInput({ initialImage = null, onChange, aspectClass = 'aspect-[3/1]', accept = 'image/*' }: Props) {
+export default function CoverImageInput({
+    initialImage = null,
+    onChange,
+    aspectClass = 'aspect-[3/1]',
+    accept = 'image/*',
+    imageType,
+    recommendation,
+}: Props) {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [preview, setPreview] = useState<string | null>(initialImage);
     const [file, setFile] = useState<File | null>(null);
@@ -72,8 +81,8 @@ export default function CoverImageInput({ initialImage = null, onChange, aspectC
                                 <div className="rounded-full border border-dashed border-border p-4">
                                     <Image className="h-6 w-6" />
                                 </div>
-                                <p className="mt-3 text-sm text-muted-foreground">Upload a cover image</p>
-                                <p className="text-xs text-muted-foreground/80">Recommended size: wide landscape</p>
+                                <p className="mt-3 text-sm text-muted-foreground">Upload a {imageType ? imageType : 'cover'} image</p>
+                                <p className="text-xs text-muted-foreground/80">Recommended: {recommendation || 'wide landscape'}</p>
                             </div>
                         </div>
                     )}

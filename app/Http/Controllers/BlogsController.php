@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\BlogContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BlogsController extends Controller
@@ -96,26 +97,28 @@ class BlogsController extends Controller
         }
 
         // ✅ create blog
-        $blog = Blog::create([
-            'author_id' => Auth::user()->id,
-            'type' => $request['type'],
-            'title' => $request['title'],
-            'cover_img' => $coverPath,
-            'category' => $request['category'],
-            'date' => now(),
-        ]);
-
-        // ✅ save content sections
-        foreach ($request['content'] as $section) {
-            BlogContent::create([
-                'blog_id' => $blog->id,
-                'type' => $section['type'],
-                'section' => $section['section'],
-                'heading' => $section['heading'] ?? null,
-                'paragraph' => $section['paragraph'] ?? null,
-                'video_url' => $section['video_url'] ?? null,
+        DB::transaction(function () use ($validated, $coverPath, $request) {
+            $blog = Blog::create([
+                'author_id' => Auth::user()->id,
+                'type' => $validated['type'],
+                'title' => $validated['title'],
+                'cover_img' => $coverPath,
+                'category' => $validated['category'],
+                'date' => now(),
             ]);
-        }
+
+            // ✅ save content sections
+            foreach ($request['content'] as $section) {
+                BlogContent::create([
+                    'blog_id' => $blog->id,
+                    'type' => $section['type'],
+                    'section' => $section['section'],
+                    'heading' => $section['heading'] ?? null,
+                    'paragraph' => $section['paragraph'] ?? null,
+                    'video_url' => $section['video_url'] ?? null,
+                ]);
+            }
+        });
 
         return redirect()->route('admin.blogs.index')->with('success', 'Blog created successfully!');
     }
@@ -147,26 +150,28 @@ class BlogsController extends Controller
         }
 
         // ✅ update blog info
-        $blog->update([
-            'type' => $validated['type'],
-            'title' => $validated['title'],
-            'cover_img' => $coverPath,
-            'category' => $validated['category'],
-            'date' => now(), // you can keep old $blog->date if preferred
-        ]);
-
-        // ✅ replace existing content sections
-        $blog->contents()->delete(); // assuming Blog has `contents()` relationship
-
-        foreach ($validated['content'] as $section) {
-            $blog->contents()->create([
-                'type' => $section['type'],
-                'section' => $section['section'],
-                'heading' => $section['heading'] ?? null,
-                'paragraph' => $section['paragraph'] ?? null,
-                'video_url' => $section['video_url'] ?? null,
+        DB::transaction(function () use ($validated, $coverPath, $blog) {
+            $blog->update([
+                'type' => $validated['type'],
+                'title' => $validated['title'],
+                'cover_img' => $coverPath,
+                'category' => $validated['category'],
+                'date' => now(), // you can keep old $blog->date if preferred
             ]);
-        }
+
+            // ✅ replace existing content sections
+            $blog->contents()->delete(); // assuming Blog has `contents()` relationship
+
+            foreach ($validated['content'] as $section) {
+                $blog->contents()->create([
+                    'type' => $section['type'],
+                    'section' => $section['section'],
+                    'heading' => $section['heading'] ?? null,
+                    'paragraph' => $section['paragraph'] ?? null,
+                    'video_url' => $section['video_url'] ?? null,
+                ]);
+            }
+        });
 
         return redirect()
             ->route('admin.blogs.index')

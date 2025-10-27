@@ -1,4 +1,4 @@
-type Content = {
+type BlogContent = {
     type: 'text' | 'video';
     section: string;
     heading: string;
@@ -14,6 +14,6 @@ export interface Blog {
     date: string;
     cover_img: string;
     category: string;
-    contents: Content[];
+    contents: BlogContent[];
     author?: User;
 }

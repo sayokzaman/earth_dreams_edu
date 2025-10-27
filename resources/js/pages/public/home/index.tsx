@@ -5,18 +5,42 @@ import HeroSection from '@/pages/public/home/hero-section';
 import StatCards from '@/pages/public/home/stat-cards';
 import StudentReviews from '@/pages/public/home/student-review';
 import { Head } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function PublicHome() {
+    const [changeBackground, setChangeBackground] = useState(false);
+
+    const backgroundRef = useRef<HTMLDivElement>(null);
+    // get prompt when ref is at the top of the viewport
+    useEffect(() => {
+        // just give me a console log for testing
+        const handleScroll = () => {
+            if (backgroundRef.current) {
+                const rect = backgroundRef.current.getBoundingClientRect();
+                if (rect.top <= 0) {
+                    setChangeBackground(true);
+                } else {
+                    setChangeBackground(false);
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        <AppPublicLayout>
+        <AppPublicLayout changeBackground={changeBackground}>
             <Head title="Earth Dreams Edu" />
 
-            <HeroSection />
+            <HeroSection ref={backgroundRef}/>
 
             <div className="-mt-px bg-accent-foreground">
                 <FeaturedUniversities className="py-12 sm:pt-10 sm:pb-20" />
 
-                <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 sm:py-20 shadow-xl">
+                <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 shadow-xl sm:py-20">
                     <StatCards />
                 </Wrapper>
             </div>

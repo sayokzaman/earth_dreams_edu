@@ -70,7 +70,7 @@ function FeaturedUniversities({ className }: { className?: string }) {
                                             href={uni.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center rounded-xl bg-white p-8 shadow transition hover:scale-105"
+                                            className="flex items-center justify-center rounded-xl bg-white h-24 sm:h-32 p-8 shadow transition hover:scale-105"
                                         >
                                             <img src={uni.logo} alt={uni.name} className="h-full max-h-20 object-contain" />
                                         </Link>

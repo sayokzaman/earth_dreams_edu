@@ -34,7 +34,7 @@ export default function DataTableToolbar({ children, showFilters, setShowFilters
                         </Button>
                     )}
 
-                    <Button className="h-8 px-3" onClick={() => setShowFilters(!showFilters)} variant="outline">
+                    <Button className="h-9 px-3" onClick={() => setShowFilters(!showFilters)} variant="outline">
                         {!showFilters ? (
                             <>
                                 <PlusIcon className="mr-1 h-4 w-4" />

@@ -2,25 +2,24 @@ import { TableFilterBase } from '@/types/table';
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
-export interface BlogsFilter extends TableFilterBase {
+export interface BlogFilter extends TableFilterBase {
     search: string;
     category: string;
 }
 
-export const defaultBlogFilters: BlogsFilter = {
+export const defaultBlogFilters: BlogFilter = {
     search: '',
     category: '',
     from: '',
     to: '',
-    trashed: '',
     per_page: '',
     page: '',
     sort_by: '',
     sort_to: '',
 };
 
-export const useBlogFilters = (incoming: Partial<BlogsFilter> = {}) => {
-    const [filters, setFilters] = useState<BlogsFilter>({
+export const useBlogFilters = (incoming: Partial<BlogFilter> = {}) => {
+    const [filters, setFilters] = useState<BlogFilter>({
         ...defaultBlogFilters,
         ...incoming,
     });

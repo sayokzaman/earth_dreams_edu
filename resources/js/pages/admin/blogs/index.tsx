@@ -1,6 +1,6 @@
 import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
-import { BlogsFilter, defaultBlogFilters, useBlogFilters } from '@/hooks/blog/use-blog-filters';
+import { BlogFilter, defaultBlogFilters, useBlogFilters } from '@/hooks/blog/use-blog-filters';
 import AppLayout from '@/layouts/app-layout';
 import { blogColumns } from '@/pages/admin/blogs/data/columns';
 import { BreadcrumbItem } from '@/types';
@@ -55,13 +55,13 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                     </div>
                 </div>
 
-                <DataTable<Blog, BlogsFilter>
+                <DataTable<Blog, BlogFilter>
                     data={blogs}
                     columns={blogColumns}
                     filters={filters}
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultBlogFilters)}
-                    rowId={(expense) => expense.id}
+                    rowId={(blog) => blog.id}
                     // renderMobileRow={(expense) => (
                     //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
                     // )}

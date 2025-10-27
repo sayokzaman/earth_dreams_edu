@@ -1,14 +1,18 @@
-import AppLogoIcon from './app-logo-icon';
+import { useAppearance } from '@/hooks/use-appearance';
+import { useEffect, useState } from 'react';
 
 export default function AppLogo() {
+    const { appearance } = useAppearance();
+
+    const [source, setSource] = useState(appearance === 'dark' ? '/images/edec.svg' : '/images/edec_logo_light.svg');
+
+    useEffect(() => {
+        setSource(appearance === 'dark' ? '/images/edec.svg' : '/images/edec_light.svg');
+    }, [appearance]);
+
     return (
-        <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">Laravel Starter Kit</span>
-            </div>
-        </>
+        <div className="flex w-full justify-center">
+            <img src={source} className="h-12" alt="" />
+        </div>
     );
 }

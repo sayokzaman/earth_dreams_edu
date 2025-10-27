@@ -3,14 +3,13 @@ import NavPublic from '@/components/nav-public';
 import NewsLetter from '@/components/news-letter';
 import { PropsWithChildren } from 'react';
 
-const AppPublicLayout = ({ children }: PropsWithChildren) => {
+const AppPublicLayout = ({ children, changeBackground }: PropsWithChildren & { changeBackground?: boolean }) => {
     return (
         <div className="flex min-h-screen flex-col justify-between">
             {/* Navigation */}
-            <NavPublic />
+            <NavPublic changeBackground={changeBackground} />
 
             {/* Content */}
-            <div className="h-20 bg-theme" />
             <main>{children}</main>
 
             <div>

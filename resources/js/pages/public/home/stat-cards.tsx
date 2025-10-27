@@ -31,6 +31,7 @@ const StatCards = () => {
                         src="/images/stat_card_1.jpg"
                         alt="Partner Universities"
                         className="absolute inset-0 h-full w-full object-cover brightness-75"
+                        loading="lazy"
                     />
                     <div className="relative z-5 rounded-2xl bg-white/30 p-6 backdrop-blur-sm sm:mt-46">
                         <CardContent className="space-y-2">
@@ -52,6 +53,7 @@ const StatCards = () => {
                         src="/images/stat_card_2.jpg"
                         alt="Partner Universities"
                         className="absolute inset-0 h-full w-full object-cover brightness-75"
+                        loading="lazy"
                     />
                     <div className="relative z-5 rounded-2xl bg-white/30 p-6 backdrop-blur-sm sm:mt-46">
                         <CardContent className="space-y-2">
@@ -73,6 +75,7 @@ const StatCards = () => {
                         src="/images/stat_card_3.jpg"
                         alt="Partner Universities"
                         className="absolute inset-0 h-full w-full object-cover brightness-75"
+                        loading="lazy"
                     />
                     <div className="relative z-5 rounded-2xl bg-white/30 p-6 backdrop-blur-sm sm:mt-46">
                         <CardContent className="space-y-2">
@@ -94,6 +97,7 @@ const StatCards = () => {
                         src="/images/stat_card_4.jpg"
                         alt="Partner Universities"
                         className="absolute inset-0 h-full w-full object-cover brightness-75"
+                        loading="lazy"
                     />
                     <div className="relative z-5 rounded-2xl bg-white/30 p-6 backdrop-blur-sm sm:mt-46">
                         <CardContent className="space-y-2">

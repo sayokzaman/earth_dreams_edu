@@ -18,7 +18,7 @@ Route::domain($publicDomain)->name('public.')->group(function () {
 
     Route::prefix('/universities')->name('universities.')->group(function () {
         Route::get('/', [UniversityController::class, 'index'])->name('index');
-        Route::get('/{university}', [UniversityController::class, 'show'])->name('show');
+        Route::get('/{name}', [UniversityController::class, 'show'])->name('show');
     });
 
     Route::prefix('/blogs')->name('blogs.')->group(function () {
@@ -37,6 +37,14 @@ Route::domain($adminDomain)->group(function () {
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DashboardController::class, 'adminIndex'])->name('dashboard');
+
+        Route::prefix('/universities')->name('admin.universities.')->group(function () {
+            Route::get('/', [UniversityController::class, 'adminIndex'])->name('index');
+            Route::get('/create', [UniversityController::class, 'create'])->name('create');
+            Route::post('/', [UniversityController::class, 'store'])->name('store');
+            Route::get('/{university}', [UniversityController::class, 'adminShow'])->name('show');
+            Route::post('/{university}/update', [UniversityController::class, 'update'])->name('update');
+        });
 
         Route::prefix('/blogs')->name('admin.blogs.')->group(function () {
             Route::get('/', [BlogsController::class, 'adminIndex'])->name('index');
