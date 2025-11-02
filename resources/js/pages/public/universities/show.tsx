@@ -41,7 +41,7 @@ const UniversityShowPage = ({ university }: Props) => {
             <div className="relative">
                 <img src={`/storage/${university?.cover}`} alt={university?.name} className="absolute inset-0 h-full w-full object-cover" />
 
-                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-120 sm:flex-row sm:items-center">
+                <Wrapper className="flex h-72 flex-col justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-100 sm:flex-row sm:items-center">
                     <div className="flex flex-col gap-2 pt-20 sm:gap-4">
                         <img src={`/storage/${university?.logo}`} className="h-14 w-fit sm:h-28" />
                         <h1 className="text-2xl font-bold text-secondary capitalize sm:text-3xl">{university?.name}</h1>
@@ -65,10 +65,10 @@ const UniversityShowPage = ({ university }: Props) => {
                 </Wrapper>
             </div>
 
-            <Wrapper className="grid grid-cols-5 gap-4 bg-theme/90 py-6 shadow sm:py-8">
+            <Wrapper className="grid grid-cols-5 gap-4 bg-theme/90 py-6 shadow">
                 <div className="flex flex-col items-center gap-2">
                     <div className="h-fit w-fit rounded-full border">
-                        <LandmarkIcon className="h-12 w-12 p-2.5 text-secondary sm:h-16 sm:w-16 sm:p-4" />
+                        <LandmarkIcon className="h-12 w-12 p-2.5 text-secondary sm:h-14 sm:w-14 sm:p-4" />
                     </div>
                     <div className="text-center">
                         <h6 className="text-sm font-bold text-secondary sm:text-xl">{university?.founded || 'Unknown'}</h6>
@@ -78,7 +78,7 @@ const UniversityShowPage = ({ university }: Props) => {
 
                 <div className="flex flex-col items-center gap-2">
                     <div className="h-fit w-fit rounded-full border">
-                        <BookmarkCheckIcon className="h-12 w-12 p-2.5 text-secondary sm:h-16 sm:w-16 sm:p-4" />
+                        <BookmarkCheckIcon className="h-12 w-12 p-2.5 text-secondary sm:h-14 sm:w-14 sm:p-4" />
                     </div>
                     <div className="text-center">
                         <h6 className="text-sm font-bold text-secondary sm:text-xl">
@@ -90,7 +90,7 @@ const UniversityShowPage = ({ university }: Props) => {
 
                 <div className="flex flex-col items-center gap-2">
                     <div className="h-fit w-fit rounded-full border">
-                        <StarIcon className="h-12 w-12 p-2.5 text-secondary sm:h-16 sm:w-16 sm:p-4" />
+                        <StarIcon className="h-12 w-12 p-2.5 text-secondary sm:h-14 sm:w-14 sm:p-4" />
                     </div>
                     <div className="text-center">
                         <h6 className="text-sm font-bold text-secondary sm:text-xl">
@@ -102,7 +102,7 @@ const UniversityShowPage = ({ university }: Props) => {
 
                 <div className="flex flex-col items-center gap-2">
                     <div className="h-fit w-fit rounded-full border">
-                        <ChartNoAxesColumn className="h-12 w-12 p-2.5 text-secondary sm:h-16 sm:w-16 sm:p-4" />
+                        <ChartNoAxesColumn className="h-12 w-12 p-2.5 text-secondary sm:h-14 sm:w-14 sm:p-4" />
                     </div>
                     <div className="text-center">
                         <h6 className="text-sm font-bold text-secondary sm:text-xl">
@@ -114,7 +114,7 @@ const UniversityShowPage = ({ university }: Props) => {
 
                 <div className="flex flex-col items-center gap-2">
                     <div className="h-fit w-fit rounded-full border">
-                        <GraduationCapIcon className="h-12 w-12 p-2.5 text-secondary sm:h-16 sm:w-16 sm:p-4" />
+                        <GraduationCapIcon className="h-12 w-12 p-2.5 text-secondary sm:h-14 sm:w-14 sm:p-4" />
                     </div>
                     <div className="text-center">
                         <h6 className="text-sm font-bold text-secondary sm:text-xl">

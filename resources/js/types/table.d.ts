@@ -6,6 +6,7 @@ export interface PaginationData {
         url: string | null;
         label: string;
         active: boolean;
+        page: number | null;
     }[];
     path: string;
     next_page_url: string | null;

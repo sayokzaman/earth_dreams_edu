@@ -61,7 +61,7 @@ export default function UniversityCard({ university, className }: UniversityCard
                     </div>
                 </CardHeader>
 
-                <CardContent className="grid grid-cols-2 gap-2">
+                <CardContent className="my-auto grid grid-cols-2 gap-2">
                     <div>
                         <h2 className="text-sm font-semibold">Founded</h2>
                         <Badge variant="outline" className="rounded-full">
@@ -82,7 +82,7 @@ export default function UniversityCard({ university, className }: UniversityCard
                     </div>
                 </CardContent>
 
-                <CardContent className="flex flex-col gap-2">
+                <CardContent className="mt-auto flex flex-col gap-2">
                     <h2 className="text-sm font-semibold">Rankings</h2>
                     <div className="grid grid-cols-3 items-center gap-2">
                         <Tooltip>

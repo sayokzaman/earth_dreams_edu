@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\University;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,14 +14,13 @@ class UniversityFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public function definition(): array
     {
         return [
             'created_by' => 1,
             'name' => $this->faker->unique()->company().' University',
-            'cover' => $this->faker->imageUrl(1200, 400, 'university', true, 'Cover'),
-            'logo' => $this->faker->imageUrl(200, 200, 'logo', true, 'Logo'),
+            'cover' => 'https://picsum.photos/seed/'.$this->faker->numberBetween(1, 200).'/1200/400',
+            'logo' => 'https://picsum.photos/seed/'.$this->faker->numberBetween(1, 200).'/400/200',
             'location' => $this->faker->city(),
             'location_url' => 'https://www.google.com/maps/embed?='.urlencode($this->faker->city()),
             'founded' => $this->faker->year(),

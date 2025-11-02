@@ -10,7 +10,7 @@ const NavPublic = ({ changeBackground }: { changeBackground?: boolean }) => {
         <>
             <div
                 className={cn(
-                    'fixed top-0 right-0 left-0 z-50 flex h-20 items-center justify-between pr-6 pl-5 tracking-wide transition-colors duration-200 ease-in-out sm:px-10 xl:px-52',
+                    'fixed top-0 right-0 left-0 z-50 flex h-20 items-center justify-between pr-6 pl-5 tracking-wide transition-colors duration-200 ease-in-out sm:px-20 xl:px-32 2xl:px-52',
                     currentRoute !== 'public.index' || changeBackground ? 'bg-theme shadow-md backdrop-blur-md' : 'bg-transparent',
                 )}
             >

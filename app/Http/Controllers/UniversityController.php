@@ -25,7 +25,7 @@ class UniversityController extends Controller
                 $query->where('location', 'like', '%'.$searchLocation.'%');
             })
             ->when($request->ranking, function ($query, $ranking) {
-                $query->orderBy($ranking, 'asc');
+                $query->whereNotNull($ranking)->orderBy($ranking, 'asc');
             })
             ->orderBy('name', 'asc')
             ->paginate(12)

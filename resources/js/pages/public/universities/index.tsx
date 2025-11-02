@@ -3,15 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from '@/components/ui/pagination';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
@@ -20,7 +12,7 @@ import UniversityCard from '@/pages/public/universities/card';
 import { TableData } from '@/types/table';
 import { University } from '@/types/university';
 import { Head, Link, router } from '@inertiajs/react';
-import { XIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
@@ -78,24 +70,66 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
         return () => clearTimeout(timeout);
     }, [filters]);
 
-    const navOpts = { preserveState: true, preserveScroll: true, replace: true };
+    const paginate = async (url: string | null) => {
+        if (!url) return;
+        router.get(
+            url,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            },
+        );
+        window.scrollTo(
+            // top of the universities list
+            {
+                top: document.getElementById('main')!.offsetTop - 80, // account for fixed header height
+                // smooth scrolling isn't working
+                behavior: 'smooth',
+            },
+        );
+    };
 
     return (
         <AppPublicLayout>
             <Head title="Universities" />
 
-            <Wrapper className="relative flex flex-col lg:flex-row sm:px-10">
-                <div className="flex w-full flex-col self-start py-6 sm:sticky lg:w-sm sm:pr-6">
+            <div className="relative">
+                <img
+                    src={`/images/index_page_covers/university_index.jpg`}
+                    alt={'universities'}
+                    className="absolute inset-0 h-full w-full object-cover"
+                />
+
+                <Wrapper className="flex h-72 items-center justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-100">
+                    <div className="flex w-full flex-col items-center gap-4 pt-28 sm:gap-6 sm:pt-40">
+                        <h1 className="text-3xl font-bold text-secondary capitalize sm:text-4xl">
+                            <span className="text-theme-accent">Explore</span> Our Top <span className="text-theme-secondary">Universities</span>
+                        </h1>
+                        <p className="max-w-2xl text-center text-muted/80 sm:text-xl">
+                            Discover a world of opportunities with our curated list of top universities. Find the perfect fit for your academic
+                            journey and career aspirations.
+                        </p>
+                    </div>
+                </Wrapper>
+            </div>
+
+            <Wrapper id="main" className="relative flex flex-col pt-6 sm:px-10 lg:flex-row">
+                <div className="top-24 w-full self-start py-4 lg:sticky lg:w-3/12 lg:pr-6">
                     <div>
                         <div className="flex items-center justify-between border-b pb-2">
-                            <span>Filters</span>
-                            <Button onClick={clearFilters} className="h-8 rounded-full bg-theme px-3 text-sm hover:bg-theme/90">
-                                Reset
-                            </Button>
+                            <span className="font-semibold">Filter by</span>
+                            {Object.values(filters).some((value) => (Array.isArray(value) ? value.length > 0 : value !== '')) && (
+                                <Button onClick={clearFilters} className="h-6 gap-1 rounded-full bg-black text-sm hover:bg-black/80">
+                                    <XIcon className="h-3.5 w-3.5" />
+                                    Clear Filters
+                                </Button>
+                            )}
                         </div>
 
                         {filters.universities.length > 0 && (
-                            <div className="mt-2 flex flex-wrap gap-2">
+                            <div className="mt-2 flex flex-wrap gap-2 border-b pb-2">
                                 <p className="text-xs font-semibold text-muted-foreground">Selected Universities</p>
                                 {filters.universities.map((name) => (
                                     <Badge key={name}>
@@ -208,80 +242,117 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                     <h1 className="mb-4 text-xl font-semibold">
                         List of Universities <span className="font-medium text-muted-foreground/70">({universities.total})</span>
                     </h1>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 2xl:grid-cols-3">
-                        {universities.data.map((university) => (
-                            <Link
-                                href={route('public.universities.show', university.name)}
-                                key={university.id}
-                                className="transition-transform duration-500 hover:scale-102"
-                            >
-                                <UniversityCard university={university} />
-                            </Link>
-                        ))}
-                    </div>
+                    {universities.data.length === 0 ? (
+                        <div className="flex h-full items-center justify-center text-center text-muted-foreground">
+                            No universities match your search.
+                        </div>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 2xl:grid-cols-3">
+                                {universities.data.map((university) => (
+                                    <Link
+                                        href={route('public.universities.show', university.name)}
+                                        key={university.id}
+                                        className="transition-transform duration-500 hover:scale-102"
+                                    >
+                                        <UniversityCard university={university} className="h-full" />
+                                    </Link>
+                                ))}
+                            </div>
 
-                    {universities.links && (
-                        <Pagination className="mt-6">
-                            <PaginationContent>
-                                {universities.links.map((link, i: number) => {
-                                    const label = String(link.label);
-                                    const isPrev = /Previous/i.test(label);
-                                    const isNext = /Next/i.test(label);
-                                    const isDots = label === '...';
+                            {universities.links && (
+                                <Pagination className="mt-6">
+                                    <PaginationContent>
+                                        {universities.links.map((link, i: number) => {
+                                            const label = String(link.label);
+                                            const isPrev = /Previous/i.test(label);
+                                            const isNext = /Next/i.test(label);
 
-                                    if (isDots) {
-                                        return (
-                                            <PaginationItem key={i}>
-                                                <PaginationEllipsis />
-                                            </PaginationItem>
-                                        );
-                                    }
+                                            if (isPrev || isNext) {
+                                                return (
+                                                    <PaginationItem
+                                                        key={i}
+                                                        className={!link.url ? 'pointer-events-none' : ''}
+                                                        onClick={() => paginate(link.url)}
+                                                    >
+                                                        <Button
+                                                            variant={'ghost'}
+                                                            size={'icon'}
+                                                            disabled={!link.url}
+                                                            className="rounded-full hover:bg-muted-foreground/10"
+                                                        >
+                                                            {isPrev ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                                                        </Button>
+                                                    </PaginationItem>
+                                                );
+                                            }
 
-                                    if (isPrev) {
-                                        return (
-                                            <PaginationItem key={i}>
-                                                <PaginationPrevious
-                                                    size={'sm'}
-                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
-                                                    onClick={() => link.url && router.get(link.url, {}, navOpts)}
-                                                />
-                                            </PaginationItem>
-                                        );
-                                    }
+                                            // Numbered page
+                                            if (
+                                                link.active ||
+                                                link.page === 1 ||
+                                                link.page === universities.current_page + 1 ||
+                                                link.page === universities.current_page - 1
+                                            ) {
+                                                return (
+                                                    <PaginationItem key={i}>
+                                                        <PaginationLink
+                                                            className={cn(
+                                                                'rounded-full',
+                                                                link.active
+                                                                    ? 'bg-theme-accent text-white hover:bg-theme-accent/90 hover:text-white'
+                                                                    : 'hover:bg-muted-foreground/10',
+                                                            )}
+                                                            size={'icon'}
+                                                            isActive={link.active}
+                                                            onClick={() => paginate(link.url!)}
+                                                        >
+                                                            {label}
+                                                        </PaginationLink>
+                                                    </PaginationItem>
+                                                );
+                                            }
 
-                                    if (isNext) {
-                                        return (
-                                            <PaginationItem key={i}>
-                                                <PaginationNext
-                                                    size={'sm'}
-                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
-                                                    onClick={() => link.url && router.get(link.url, {}, navOpts)}
-                                                />
-                                            </PaginationItem>
-                                        );
-                                    }
+                                            if (universities.links.length > 3 && link.page === universities.links[1].page! + 1) {
+                                                return (
+                                                    <PaginationItem>
+                                                        <div className="pointer-events-none px-3 text-sm text-muted-foreground select-none">...</div>
+                                                    </PaginationItem>
+                                                );
+                                            }
 
-                                    // Numbered page
-                                    return (
-                                        <PaginationItem key={i}>
-                                            <PaginationLink
-                                                className={cn(
-                                                    'rounded-full',
-                                                    link.active
-                                                        ? 'bg-theme-accent text-white hover:bg-theme-accent/90 hover:text-white'
-                                                        : 'hover:bg-muted-foreground/10',
-                                                )}
-                                                size={'sm'}
-                                                isActive={link.active}
-                                                onClick={() => link.url && router.get(link.url, {}, navOpts)}
-                                            >
-                                                {label}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    );
-                                })}
-                            </PaginationContent>
-                        </Pagination>
+                                            if (universities.links.length > 3 && link.page === universities.last_page - 1) {
+                                                return (
+                                                    <PaginationItem>
+                                                        <div className="pointer-events-none px-3 text-sm text-muted-foreground select-none">...</div>
+                                                    </PaginationItem>
+                                                );
+                                            }
+
+                                            if (link.page === universities.last_page) {
+                                                return (
+                                                    <PaginationItem key={i}>
+                                                        <PaginationLink
+                                                            className={cn(
+                                                                'rounded-full',
+                                                                link.active
+                                                                    ? 'bg-theme-accent text-white hover:bg-theme-accent/90 hover:text-white'
+                                                                    : 'hover:bg-muted-foreground/10',
+                                                            )}
+                                                            size={'sm'}
+                                                            isActive={link.active}
+                                                            onClick={() => paginate(link.url!)}
+                                                        >
+                                                            {label}
+                                                        </PaginationLink>
+                                                    </PaginationItem>
+                                                );
+                                            }
+                                        })}
+                                    </PaginationContent>
+                                </Pagination>
+                            )}
+                        </>
                     )}
                 </div>
             </Wrapper>
