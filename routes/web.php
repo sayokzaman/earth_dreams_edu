@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudyInUKController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,20 @@ $adminDomain = config('app.admin_domain');
 */
 Route::domain($publicDomain)->name('public.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+    Route::prefix('/study-in-uk')->name('study.')->group(function () {
+        Route::get('/', [StudyInUKController::class, 'index'])->name('index');
+        Route::get('/why-study-in-uk', [StudyInUKController::class, 'whyStudyInUK'])->name('whyStudyInUK');
+        Route::get('/what-i-can-study', [StudyInUKController::class, 'canStudy'])->name('canStudy');
+        Route::prefix('/intake')->name('intake.')->group(function () {
+            Route::get('/january', [StudyInUKController::class, 'january'])->name('january');
+            Route::get('/may', [StudyInUKController::class, 'may'])->name('may');
+            Route::get('/september', [StudyInUKController::class, 'september'])->name('september');
+        });
+        Route::get('/cost-of-study', [StudyInUKController::class, 'costOfStudy'])->name('costOfStudy');
+        Route::get('/ucas', [StudyInUKController::class, 'ucas'])->name('ucas');
+        Route::get('student-essentials', [StudyInUKController::class, 'studentEssentials'])->name('studentEssentials');
+    });
 
     Route::prefix('/universities')->name('universities.')->group(function () {
         Route::get('/', [UniversityController::class, 'index'])->name('index');

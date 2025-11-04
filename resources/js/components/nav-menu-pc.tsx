@@ -55,7 +55,7 @@ const NavMenuPC = () => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>
-                        <Link href="/docs">Study in UK</Link>
+                        <Link href={route('public.study.index')}>Study in UK</Link>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="mt-2 grid gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -109,7 +109,7 @@ const NavMenuPC = () => {
                         </NavigationMenuLink>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] -translate-x-1/3 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -126,7 +126,7 @@ const NavMenuPC = () => {
                         </NavigationMenuLink>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] -translate-x-1/2 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}
@@ -143,7 +143,7 @@ const NavMenuPC = () => {
                         </NavigationMenuLink>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="mt-2 grid w-[400px] -translate-x-1/2 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {components.map((component) => (
                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                     {component.description}

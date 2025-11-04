@@ -37,7 +37,7 @@ const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) 
                 onEnded={handleEnded}
                 className="absolute inset-0 h-full w-full object-cover"
             />
-            <Wrapper className="relative bg-gradient-to-b from-accent-foreground/10 from-40% to-accent-foreground">
+            <Wrapper className="relative bg-gradient-to-b from-accent-foreground/10 from-40% to-accent-foreground/80">
                 <div className="flex w-full flex-col gap-8 pt-40 pb-24 text-gray-100 sm:gap-6 sm:pt-68 sm:pb-14">
                     <div className="flex flex-col items-center">
                         <p className="bg-gradient-to-r from-gray-400 via-gray-300 to-gray-400 bg-clip-text pb-1 text-xl font-semibold text-transparent sm:text-3xl">
@@ -60,7 +60,9 @@ const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) 
                         </div>
                     </div>
                 </div>
+            </Wrapper>
 
+            <Wrapper className="relative bg-gradient-to-b from-accent-foreground/80 from-40% to-accent-foreground">
                 <SearchTabs className="max-w-4xl" />
             </Wrapper>
         </div>

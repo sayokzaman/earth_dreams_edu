@@ -1,3 +1,4 @@
+import StudentReviews from '@/components/student-review';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -355,6 +356,10 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                         </>
                     )}
                 </div>
+            </Wrapper>
+
+            <Wrapper className="pt-16 pb-12">
+                <StudentReviews />
             </Wrapper>
         </AppPublicLayout>
     );

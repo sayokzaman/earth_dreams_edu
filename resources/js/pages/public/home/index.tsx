@@ -3,7 +3,7 @@ import AppPublicLayout from '@/layouts/app/app-public-layout';
 import FeaturedUniversities from '@/pages/public/home/featured-universities';
 import HeroSection from '@/pages/public/home/hero-section';
 import StatCards from '@/pages/public/home/stat-cards';
-import StudentReviews from '@/pages/public/home/student-review';
+import StudentReviews from '@/components/student-review';
 import { Head } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -35,9 +35,9 @@ export default function PublicHome() {
         <AppPublicLayout changeBackground={changeBackground}>
             <Head title="Earth Dreams Edu" />
 
-            <HeroSection ref={backgroundRef}/>
+            <HeroSection ref={backgroundRef} />
 
-            <div className="-mt-px bg-accent-foreground">
+            <div className="z-10 -mt-px bg-accent-foreground">
                 <FeaturedUniversities className="py-12 sm:pt-10 sm:pb-20" />
 
                 <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 shadow-xl sm:py-20">
