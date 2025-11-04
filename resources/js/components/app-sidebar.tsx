@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, NotebookPen } from 'lucide-react';
+import { FileUserIcon, LandmarkIcon, LayoutGrid, NotebookPen } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export interface NavRouteNameItem extends NavItem {
@@ -21,13 +21,19 @@ const mainNavItems: NavRouteNameItem[] = [
         title: 'Universities',
         href: '/universities',
         routeName: 'admin.universities.index',
-        icon: LayoutGrid,
+        icon: LandmarkIcon,
     },
     {
         title: 'Blogs',
         href: '/blogs',
         routeName: 'admin.blogs.index',
         icon: NotebookPen,
+    },
+    {
+        title: 'Leads',
+        href: '/leads',
+        routeName: 'admin.leads.index',
+        icon: FileUserIcon,
     },
 ];
 

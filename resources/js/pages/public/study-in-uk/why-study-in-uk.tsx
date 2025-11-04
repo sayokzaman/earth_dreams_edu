@@ -197,8 +197,8 @@ const WhyStudyInUK = () => {
             </div>
 
             {/* STICKY PILL NAV */}
-            <div className="sticky top-20 z-20 border-b bg-background/80 backdrop-blur">
-                <Wrapper className="py-3">
+            <div className="sticky top-20 z-20 border-b bg-theme-foreground/70 backdrop-blur">
+                <Wrapper className="bg-theme/20 py-3">
                     <div className="no-scrollbar flex gap-2 overflow-x-auto">
                         {SECTIONS.map((s) => (
                             <button
@@ -206,7 +206,9 @@ const WhyStudyInUK = () => {
                                 onClick={() => scrollTo(s.id)}
                                 className={cn(
                                     'rounded-full border px-3 py-1 text-sm whitespace-nowrap transition',
-                                    active === s.id ? 'border-theme bg-theme text-white shadow-sm' : 'text-muted-foreground hover:bg-muted',
+                                    active === s.id
+                                        ? 'border-white bg-white text-black shadow-lg'
+                                        : 'text-white hover:bg-muted hover:text-theme-foreground',
                                 )}
                             >
                                 {s.label}
@@ -259,7 +261,7 @@ const WhyStudyInUK = () => {
                 </section>
 
                 {/* Benefits (restored long-form copy) */}
-                <section id="benefits" className="mt-16 grid scroll-mt-28 grid-cols-1 gap-8 md:grid-cols-2">
+                <section id="benefits" className="mt-16 grid scroll-mt-28 grid-cols-1 gap-8 lg:grid-cols-2">
                     <div>
                         <div className="mb-4 h-1 w-16 rounded-full bg-gradient-to-r from-theme to-theme-secondary" />
                         <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-3xl font-bold text-transparent">
@@ -551,10 +553,10 @@ const WhyStudyInUK = () => {
 
                     <Card className="mt-6 bg-gradient-to-r from-theme/20 to-theme-secondary/20">
                         <CardContent className="flex flex-col items-center gap-3 p-6 text-center">
-                            <p className="text-lg font-semibold">Want tailored course & city picks?</p>
+                            <p className="text-xl font-semibold">Want tailored course & city picks?</p>
                             <p className="max-w-2xl text-muted-foreground">We can help you find the perfect course and city for you.</p>
 
-                            <Link>
+                            <Link href="/consultation">
                                 <Button>
                                     Get Free Consultation <ArrowRight className="ml-1 h-4 w-4" />
                                 </Button>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\StudyInUKController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,11 @@ Route::domain($publicDomain)->name('public.')->group(function () {
         Route::get('/', [BlogsController::class, 'index'])->name('index');
         Route::get('/{blog}', [BlogsController::class, 'show'])->name('show');
     });
+
+    Route::prefix('/consultation')->name('consultation.')->group(function () {
+        Route::get('/', [LeadsController::class, 'index'])->name('index');
+        Route::post('/', [LeadsController::class, 'store'])->name('store');
+    });
 });
 
 /*
@@ -67,6 +73,10 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [BlogsController::class, 'store'])->name('store');
             Route::get('/{blog}', [BlogsController::class, 'adminShow'])->name('show');
             Route::post('/{blog}/update', [BlogsController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('/leads')->name('admin.leads.')->group(function () {
+            Route::get('/', [LeadsController::class, 'adminIndex'])->name('index');
         });
     });
 });

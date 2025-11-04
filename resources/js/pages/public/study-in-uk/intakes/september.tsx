@@ -253,7 +253,7 @@ const IntakeJanuary = () => {
                 </div>
 
                 <div className="flex w-full justify-center pb-12">
-                    <Link>
+                    <Link href="/consultation">
                         <Button size="lg">
                             Get Free Consultation Today
                             <ArrowRightIcon className="ml-1 h-4 w-4" />

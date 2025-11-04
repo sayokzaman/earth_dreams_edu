@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Wrapper from '@/components/wrapper';
 import { SearchTabs } from '@/pages/public/home/search-tabs';
+import { Link } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) => {
@@ -53,10 +54,14 @@ const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) 
 
                     <div className="flex justify-center">
                         <div className="grid grid-cols-2 gap-4">
-                            <Button className="sm:text-md rounded-3xl font-bold sm:h-12 sm:text-base">Apply Now</Button>
-                            <Button className="sm:text-md rounded-3xl font-bold sm:h-12 sm:text-base" variant="secondary">
-                                Free Consultancy
-                            </Button>
+                            <Link href="/consultation" className="w-full">
+                                <Button className="sm:text-md w-full rounded-3xl font-bold sm:h-12 sm:text-base">Apply Now</Button>
+                            </Link>
+                            <Link href="/consultation">
+                                <Button className="sm:text-md rounded-3xl font-bold sm:h-12 sm:text-base" variant="secondary">
+                                    Free Consultancy
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

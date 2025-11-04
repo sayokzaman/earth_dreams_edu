@@ -1,37 +1,36 @@
 import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
-import { BlogFilter, defaultBlogFilters, useBlogFilters } from '@/hooks/filters/use-blog-filters';
+import { defaultLeadFilters, LeadFilter, useLeadFilters } from '@/hooks/filters/use-lead-filters';
 import AppLayout from '@/layouts/app-layout';
-import { blogColumns } from '@/pages/admin/blogs/data/columns';
-import { BreadcrumbItem } from '@/types';
-import { Blog } from '@/types/blog';
+import { Lead } from '@/types/lead';
 import { TableData } from '@/types/table';
 import { Head, Link } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { leadColumns } from './data/columns';
 
-const breadcrumbs: BreadcrumbItem[] = [
+const breadcrumbs = [
     {
-        title: 'Blogs',
-        href: '/blogs',
+        title: 'Leads',
+        href: '/leads',
     },
 ];
 
 interface Props {
-    blogs: TableData<Blog>;
-    filters: Partial<typeof defaultBlogFilters>;
+    leads: TableData<Lead>;
+    filters: Partial<typeof defaultLeadFilters>;
 }
 
-const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
-    const { filters, setFilters } = useBlogFilters(incomingFilters);
+const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
+    const { filters, setFilters } = useLeadFilters(incomingFilters);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Blogs" />
+            <Head title="Leads" />
 
             <main className="p-4">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h2 className="text-xl font-semibold">Blogs</h2>
+                        <h2 className="text-xl font-semibold">Leads</h2>
                         <p className="text-base text-muted-foreground">
                             Showing results for
                             <span className="ml-1 font-semibold text-foreground">
@@ -55,12 +54,12 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                     </div>
                 </div>
 
-                <DataTable<Blog, BlogFilter>
-                    data={blogs}
-                    columns={blogColumns}
+                <DataTable<Lead, LeadFilter>
+                    data={leads}
+                    columns={leadColumns}
                     filters={filters}
                     setFilters={setFilters}
-                    onReset={() => setFilters(defaultBlogFilters)}
+                    onReset={() => setFilters(defaultLeadFilters)}
                     rowId={(blog) => blog.id}
                     // renderMobileRow={(expense) => (
                     //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
@@ -71,18 +70,8 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                     {null}
                 </DataTable>
             </main>
-
-            {/* Modals */}
-            {/* <ExpenseModal open={!!blogModal || openBlogModal} blog={blogModal} onClose={handleCloseBlogModal} /> */}
-            {/* <DeleteRestoreModal
-                resource={deleteModal?.expense ?? null}
-                action={deleteModal?.action ?? 'delete'}
-                onClose={() => setDeleteModal(null)}
-                resourceName="expense"
-                routePrefix="expenses"
-            /> */}
         </AppLayout>
     );
 };
 
-export default AdminBlogsIndex;
+export default LeadsIndex;

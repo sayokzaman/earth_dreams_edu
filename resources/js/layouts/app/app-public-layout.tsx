@@ -1,6 +1,7 @@
 import Footer from '@/components/footer';
 import NavPublic from '@/components/nav-public';
 import NewsLetter from '@/components/news-letter';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import { PropsWithChildren } from 'react';
 
@@ -14,6 +15,7 @@ const AppPublicLayout = ({ children, changeBackground }: PropsWithChildren & { c
 
             {/* Content */}
             <main className={cn('flex-1', currentRoute !== 'public.index' ? 'mt-20' : '')}>{children}</main>
+            <Toaster />
 
             <div>
                 <NewsLetter />

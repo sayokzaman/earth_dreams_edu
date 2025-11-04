@@ -1,6 +1,6 @@
 import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
-import { defaultUniversityFilters, UniversityFilter, useUniversityFilters } from '@/hooks/blog/use-university-filters';
+import { defaultUniversityFilters, UniversityFilter, useUniversityFilters } from '@/hooks/filters/use-university-filters';
 import AppLayout from '@/layouts/app-layout';
 import { universityColumns } from '@/pages/admin/universities/data/columns';
 import { BreadcrumbItem } from '@/types';
