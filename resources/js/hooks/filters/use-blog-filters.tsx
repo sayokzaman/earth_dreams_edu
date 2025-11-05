@@ -41,7 +41,7 @@ export const useBlogFilters = (incoming: Partial<BlogFilter> = {}) => {
         });
 
         const timeout = setTimeout(() => {
-            router.get(route('expenses.index'), query, {
+            router.get(route('admin.blogs.index'), query, {
                 preserveState: true,
                 replace: true,
                 preserveScroll: true,

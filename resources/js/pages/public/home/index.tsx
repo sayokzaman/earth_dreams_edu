@@ -1,13 +1,14 @@
+import StudentReviews from '@/components/student-review';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
 import FeaturedUniversities from '@/pages/public/home/featured-universities';
 import HeroSection from '@/pages/public/home/hero-section';
 import StatCards from '@/pages/public/home/stat-cards';
-import StudentReviews from '@/components/student-review';
+import { University } from '@/types/university';
 import { Head } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
-export default function PublicHome() {
+export default function PublicHome({ universities }: { universities: University[] }) {
     const [changeBackground, setChangeBackground] = useState(false);
 
     const backgroundRef = useRef<HTMLDivElement>(null);
@@ -38,7 +39,7 @@ export default function PublicHome() {
             <HeroSection ref={backgroundRef} />
 
             <div className="z-10 -mt-px bg-accent-foreground">
-                <FeaturedUniversities className="py-12 sm:pt-10 sm:pb-20" />
+                <FeaturedUniversities universities={universities} className="py-12 sm:pt-10 sm:pb-20" />
 
                 <Wrapper className="bg-gradient-to-b to-gray-800 pt-6 pb-20 text-gray-100 shadow-xl sm:py-20">
                     <StatCards />

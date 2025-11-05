@@ -41,7 +41,7 @@ export const useUniversityFilters = (incoming: Partial<UniversityFilter> = {}) =
         });
 
         const timeout = setTimeout(() => {
-            router.get(route('expenses.index'), query, {
+            router.get(route('admin.universities.index'), query, {
                 preserveState: true,
                 replace: true,
                 preserveScroll: true,

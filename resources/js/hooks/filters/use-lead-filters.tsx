@@ -41,7 +41,7 @@ export const useLeadFilters = (incoming: Partial<LeadFilter> = {}) => {
         });
 
         const timeout = setTimeout(() => {
-            router.get(route('expenses.index'), query, {
+            router.get(route('admin.leads.index'), query, {
                 preserveState: true,
                 replace: true,
                 preserveScroll: true,

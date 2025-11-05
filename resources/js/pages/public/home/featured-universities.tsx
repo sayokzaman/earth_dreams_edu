@@ -1,39 +1,12 @@
-import Wrapper from '@/components/wrapper'
+import Wrapper from '@/components/wrapper';
 import { cn } from '@/lib/utils';
+import { University } from '@/types/university';
 import { Link } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
-type University = {
-    name: string;
-    logo: string;
-    link: string;
-};
-
-const universities: University[] = [
-    { name: 'Abertay University', logo: '/images/versity_logos/abertay.png', link: 'https://www.coventry.ac.uk/' },
-    { name: 'Aberystwyth University', logo: '/images/versity_logos/aberystwyth.png', link: 'https://www.bucks.ac.uk/' },
-    { name: 'Anglia Ruskin University College', logo: '/images/versity_logos/anglia-ruskin.png', link: 'https://www.aber.ac.uk/' },
-    { name: 'Arts University Bournemouth', logo: '/images/versity_logos/aub.avif', link: 'https://www.dur.ac.uk/' },
-    { name: 'Bangor University', logo: '/images/versity_logos/bangor.png', link: 'https://www.coventry.ac.uk/' },
-    { name: 'Birmingham City University International College', logo: '/images/versity_logos/birmingham.png', link: 'https://www.bucks.ac.uk/' },
-    { name: 'Bishop Grosseteste University', logo: '/images/versity_logos/bishop-groseteste.webp', link: 'https://www.aber.ac.uk/' },
-    { name: 'BPP University', logo: '/images/versity_logos/bpp.jpeg', link: 'https://www.dur.ac.uk/' },
-    { name: 'Abertay University', logo: '/images/versity_logos/abertay.png', link: 'https://www.coventry.ac.uk/' },
-    { name: 'Aberystwyth University', logo: '/images/versity_logos/aberystwyth.png', link: 'https://www.bucks.ac.uk/' },
-    { name: 'Anglia Ruskin University College', logo: '/images/versity_logos/anglia-ruskin.png', link: 'https://www.aber.ac.uk/' },
-    { name: 'Arts University Bournemouth', logo: '/images/versity_logos/aub.avif', link: 'https://www.dur.ac.uk/' },
-    { name: 'Bangor University', logo: '/images/versity_logos/bangor.png', link: 'https://www.coventry.ac.uk/' },
-    { name: 'Birmingham City University International College', logo: '/images/versity_logos/birmingham.png', link: 'https://www.bucks.ac.uk/' },
-    { name: 'Bishop Grosseteste University', logo: '/images/versity_logos/bishop-groseteste.webp', link: 'https://www.aber.ac.uk/' },
-    { name: 'BPP University', logo: '/images/versity_logos/bpp.jpeg', link: 'https://www.dur.ac.uk/' },
-    { name: 'Bishop Grosseteste University', logo: '/images/versity_logos/bishop-groseteste.webp', link: 'https://www.aber.ac.uk/' },
-    { name: 'BPP University', logo: '/images/versity_logos/bpp.jpeg', link: 'https://www.dur.ac.uk/' },
-    // …more
-];
-
-function FeaturedUniversities({ className }: { className?: string }) {
+function FeaturedUniversities({ className, universities }: { className?: string; universities: University[] }) {
     // initialise Embla
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
@@ -67,10 +40,10 @@ function FeaturedUniversities({ className }: { className?: string }) {
                                     {group.map((uni) => (
                                         <Link
                                             key={uni.name}
-                                            href={uni.link}
+                                            href={route('public.universities.show', uni.name)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center rounded-xl bg-white h-24 sm:h-32 p-8 shadow transition hover:scale-105"
+                                            className="flex h-24 items-center justify-center rounded-xl bg-white p-8 shadow transition hover:scale-105 sm:h-32"
                                         >
                                             <img src={uni.logo} alt={uni.name} className="h-full max-h-20 object-contain" />
                                         </Link>
@@ -82,7 +55,7 @@ function FeaturedUniversities({ className }: { className?: string }) {
                 </div>
 
                 {/* arrows */}
-                <div className='flex justify-center gap-4 pt-4'>
+                <div className="flex justify-center gap-4 pt-4">
                     <button
                         onClick={scrollPrev}
                         className="top-1/2 -left-14 cursor-pointer rounded-full bg-black/40 p-2 text-gray-100 transition-all duration-300 hover:bg-gray-100 hover:text-gray-950 sm:absolute sm:-translate-y-1/2"
