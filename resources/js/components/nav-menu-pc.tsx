@@ -7,178 +7,179 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
+    NavigationMenuViewport,
 } from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import { ChevronRightIcon } from 'lucide-react';
 
-const components: { title: string; href: string; description: string }[] = [
-    {
-        title: 'Alert Dialog',
-        href: '/docs/primitives/alert-dialog',
-        description: 'A modal dialog that interrupts the user with important content and expects a response.',
-    },
-    {
-        title: 'Hover Card',
-        href: '/docs/primitives/hover-card',
-        description: 'For sighted users to preview content available behind a link.',
-    },
-    {
-        title: 'Progress',
-        href: '/docs/primitives/progress',
-        description: 'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
-    },
-    {
-        title: 'Scroll-area',
-        href: '/docs/primitives/scroll-area',
-        description: 'Visually or semantically separates content.',
-    },
-    {
-        title: 'Tabs',
-        href: '/docs/primitives/tabs',
-        description: 'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-    },
-    {
-        title: 'Tooltip',
-        href: '/docs/primitives/tooltip',
-        description: 'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-    },
-];
+/**
+ * shadcn/ui NavigationMenu — centered viewport version
+ * ----------------------------------------------------
+ * This keeps the dropdown (mega menu) centered on the SCREEN
+ * regardless of which trigger opens it.
+ *
+ * Key idea:
+ *   - Use a custom <NavigationMenuViewport> that is FIXED and centered
+ *     via left-1/2 -translate-x-1/2. Radix will still mount/unmount the
+ *     active <NavigationMenuContent> inside this viewport, so it stays
+ *     perfectly centered relative to the viewport, not the trigger.
+ */
 
-const NavMenuPC = () => {
+export default function UKNavbar() {
     return (
-        <NavigationMenu>
-            <NavigationMenuList className="gap-2">
-                <NavigationMenuItem className="hidden 2xl:block">
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/">Home</Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        <Link href={route('public.study.index')}>Study in UK</Link>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="mt-2 grid gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                            <li className="row-span-3 border-r">
-                                <NavigationMenuLink asChild>
-                                    <a
-                                        className="flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-hidden select-none hover:bg-gray-300 focus:shadow-md"
-                                        href="/"
-                                    >
-                                        <div className="mt-4 mb-2 text-lg font-medium">shadcn/ui</div>
-                                        <p className="text-sm leading-tight text-muted-foreground">
-                                            Beautifully designed components built with Tailwind CSS.
-                                        </p>
-                                    </a>
+        <div className="sticky top-0 z-50 w-full text-white">
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-1 px-4 py-3">
+                {/* NAVIGATION */}
+                <NavigationMenu
+                    /**
+                     * Put the viewport on a fixed layer, centered on screen.
+                     * We still render the list inline here.
+                     */
+                    className="hidden items-center md:flex"
+                >
+                    <NavigationMenuList>
+                        <NavigationMenuItem>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                <Link href={route('public.index')}>Home</Link>
+                            </NavigationMenuLink>
+                        </NavigationMenuItem>
+
+                        <NavigationMenuItem>
+                            <NavigationMenuTrigger>
+                                <NavigationMenuLink>
+                                    <Link href={route('public.study.index')}>Study in UK</Link>
                                 </NavigationMenuLink>
-                            </li>
-                            <ListItem href="/docs" title="Introduction">
-                                Re-usable components built using Radix UI and Tailwind CSS.
-                            </ListItem>
-                            <ListItem href="/docs/installation" title="Installation">
-                                How to install dependencies and structure your app.
-                            </ListItem>
-                            <ListItem href="/docs/primitives/typography" title="Typography">
-                                Styles for headings, paragraphs, lists...etc
-                            </ListItem>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                                <StudyInUKGrid />
+                            </NavigationMenuContent>
+                        </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        <NavigationMenuLink asChild>
-                            <Link href="/universities">Universities</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {components.map((component) => (
-                                <ListItem key={component.title} title={component.title} href={component.href}>
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavigationMenuTrigger>
+                                <NavigationMenuLink>
+                                    <Link href={route('public.universities.index')}>Universities</Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                                <UniversitiesGrid />
+                            </NavigationMenuContent>
+                        </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        <NavigationMenuLink asChild>
-                            <Link href="/docs">Courses</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] -translate-x-1/3 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {components.map((component) => (
-                                <ListItem key={component.title} title={component.title} href={component.href}>
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavigationMenuTrigger>
+                                <NavigationMenuLink>
+                                    <Link href={route('public.universities.index')}>Courses</Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                                <UniversitiesGrid />
+                            </NavigationMenuContent>
+                        </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        <NavigationMenuLink asChild>
-                            <Link href="/docs">Pathway</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] -translate-x-1/2 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {components.map((component) => (
-                                <ListItem key={component.title} title={component.title} href={component.href}>
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                        <NavigationMenuItem className={navigationMenuTriggerStyle()}>
+                            <Link href={route('public.blogs.index')}>Blogs & Events</Link>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
 
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        <NavigationMenuLink asChild>
-                            <Link href="/blogs">Blogs</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="mt-2 grid w-[400px] -translate-x-1/2 gap-2 rounded-lg bg-muted p-5 shadow-lg md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {components.map((component) => (
-                                <ListItem key={component.title} title={component.title} href={component.href}>
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                    {/* FIXED, CENTERED VIEWPORT */}
+                    <NavigationMenuViewport
+                        className={cn(
+                            // base shadcn styles + our centered layer
+                            'origin-top-center rounded-2xl bg-[#f1f5f8] text-zinc-900 shadow-2xl',
+                            // fixed centered position — same as viewportRefClassName fallback
+                            'fixed top-[66px] left-1/2 w-full max-w-[80vw] -translate-x-1/2',
+                        )}
+                    />
+                </NavigationMenu>
 
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/docs">
-                            <Button className="group rounded-3xl font-bold">
-                                <span className="pl-1">Apply Now</span>
-                                <ChevronRightIcon className="size-4 transform transition-all duration-200 group-hover:translate-x-1" />
-                            </Button>
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu>
-    );
-};
-
-function ListItem({ title, children, href, ...props }: React.ComponentPropsWithoutRef<'li'> & { href: string }) {
-    return (
-        <li {...props} className="rounded-sm p-3 outline-black/5 hover:bg-theme-foreground/5 hover:outline">
-            <NavigationMenuLink asChild>
-                <Link href={href} className="flex flex-col gap-2">
-                    <div className="text-sm leading-none font-medium">{title}</div>
-                    <p className="line-clamp-2 text-sm leading-snug text-theme-foreground">{children}</p>
+                <Link href={route('public.consultation.index')}>
+                    <Button className="rounded-3xl font-semibold">Apply Now</Button>
                 </Link>
-            </NavigationMenuLink>
-        </li>
+            </div>
+        </div>
     );
 }
 
-export default NavMenuPC;
+/**
+ * Mega menu content
+ */
+function StudyInUKGrid() {
+    const studyInUK = [
+        {
+            img: '/images/study-in-uk/why-study-in-uk.svg',
+            title: 'Why Study in the UK',
+            href: route('public.study.whyStudyInUK'),
+            description: 'Explore the benefits and opportunities of studying in the UK.',
+        },
+        {
+            img: '/images/study-in-uk/what-can-i-study.svg',
+            title: 'What can I Study',
+            href: route('public.study.canStudy'),
+            description: 'Discover the wide range of courses and programs available for international students in the UK.',
+        },
+        {
+            img: '/images/study-in-uk/january-intake.svg',
+            title: 'January Intake',
+            href: route('public.study.intake.january'),
+            description: 'Learn about the January intake options for international students in the UK.',
+        },
+        {
+            img: '/images/study-in-uk/may-intake.svg',
+            title: 'May Intake',
+            href: route('public.study.intake.may'),
+            description: 'Find out about the May intake options for international students in the UK.',
+        },
+        {
+            img: '/images/study-in-uk/september-intake.svg',
+            title: 'September Intake',
+            href: route('public.study.intake.september'),
+            description: 'Explore the September intake options for international students in the UK.',
+        },
+        {
+            img: '/images/study-in-uk/cost-of-study.svg',
+            title: 'Cost of Study',
+            href: route('public.study.costOfStudy'),
+            description: 'Get a clear understanding of the cost of studying in the UK for international students.',
+        },
+        {
+            img: '/images/study-in-uk/ucas.svg',
+            title: 'UCAS',
+            href: route('public.study.ucas'),
+            description: 'Learn about the UCAS application process for international students applying to UK universities.',
+        },
+        {
+            img: '/images/study-in-uk/student-essentials.svg',
+            title: 'Student Essentials',
+            href: route('public.study.studentEssentials'),
+            description: 'Find out about the essential information and resources for international students studying in the UK.',
+        },
+    ];
+
+    return (
+        <div className="grid w-[60vw] grid-cols-2 p-2">
+            {studyInUK.map((item) => (
+                <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-center gap-6 rounded-lg p-4 transition-transform duration-200 ease-in-out hover:scale-102"
+                >
+                    <img src={item.img} alt="" className="h-16 w-16" />
+                    <div>
+                        <div className="mb-1 h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary" />
+
+                        <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-lg font-bold text-transparent">
+                            {item.title}
+                        </h2>
+                        {/* <h3 className="mb-2 text-lg font-semibold">{item.title}</h3> */}
+                        <p className="text-sm text-gray-600">{item.description}</p>
+                    </div>
+                </Link>
+            ))}
+        </div>
+    );
+}
+
+function UniversitiesGrid() {
+    return <div>UniversitiesGrid</div>;
+}
