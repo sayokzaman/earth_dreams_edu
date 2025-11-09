@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('faculty_id')->constrained('faculties')->cascadeOnDelete();
             $table->string('title');
             $table->string('study_level');
-            $table->string('duration');
+            $table->integer('duration_months');
             $table->string('cover')->nullable();
             $table->timestamps();
         });

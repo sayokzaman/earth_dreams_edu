@@ -3,41 +3,53 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
 import { cn } from '@/lib/utils';
-import UniversityCard from '@/pages/public/universities/card';
+import CourseCard from '@/pages/public/courses/card';
+import { DurationRangeFilter } from '@/pages/public/courses/duration-range';
+import { Course } from '@/types/course';
 import { TableData } from '@/types/table';
-import { University } from '@/types/university';
 import { Head, Link, router } from '@inertiajs/react';
 import { ChevronLeft, ChevronRight, SearchIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
-    universities: TableData<University>;
-    universityNames: string[];
+    courses: TableData<Course>;
+    faculties: string[];
     filters: {
-        searchUniversity: string;
-        universities: string[];
-        searchLocation: string;
-        ranking: Ranking;
+        searchCourse: string;
+        searchFaculty: string;
+        faculties: string[];
+        studyLevels: string[];
+        durationRange?: [number, number];
     };
 };
 
-type Ranking = 'guardian_ranking' | 'world_ranking' | 'qs_ranking' | '';
+const DEFAULT_RANGE: [number, number] = [1, 72];
 
 const initialFilters = {
-    searchUniversity: '',
-    universities: [],
-    searchLocation: '',
-    ranking: '' as Ranking,
+    searchCourse: '',
+    searchFaculty: '',
+    faculties: [],
+    studyLevels: [],
+    durationRange: DEFAULT_RANGE,
 };
 
-const UniversityIndex = ({ universities, universityNames, filters: incomingFilters }: Props) => {
+const studyLevels = ['undergraduate', 'masters', 'foundation', 'top_up', 'phd', 'doctorate'];
+
+const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) => {
     const [filters, setFilters] = useState(incomingFilters);
+
+    const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
+        if (key === 'durationRange') {
+            const r = value as [number, number] | undefined;
+            return r ? r[0] !== DEFAULT_RANGE[0] || r[1] !== DEFAULT_RANGE[1] : false;
+        }
+        if (Array.isArray(value)) return value.length > 0;
+        return value !== '';
+    });
 
     const clearFilters = () => {
         setFilters(initialFilters);
@@ -61,7 +73,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
         );
 
         const timeout = setTimeout(() => {
-            router.get(route('public.universities.index'), payload, {
+            router.get(route('public.courses.index'), payload, {
                 preserveState: true,
                 replace: true,
                 preserveScroll: true,
@@ -94,7 +106,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
 
     return (
         <AppPublicLayout>
-            <Head title="Universities" />
+            <Head title="Courses" />
 
             <div className="relative">
                 <img
@@ -128,7 +140,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                     </h1>
                                 </div>
                             </div>
-                            {Object.values(filters).some((value) => (Array.isArray(value) ? value.length > 0 : value !== '')) && (
+                            {hasActiveFilters && (
                                 <Button onClick={clearFilters} className="h-6 gap-1 rounded-full text-sm">
                                     <XIcon className="h-3.5 w-3.5" />
                                     Clear Filters
@@ -136,19 +148,19 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                             )}
                         </div>
 
-                        {filters.universities.length > 0 && (
+                        {filters.faculties.length > 0 && (
                             <div className="mt-2 flex flex-wrap gap-2 border-b pb-2">
-                                <p className="text-xs font-semibold text-muted-foreground">Selected Universities</p>
-                                {filters.universities.map((name) => (
+                                <p className="text-xs font-semibold text-muted-foreground">Selected Faculties</p>
+                                {filters.faculties.map((name) => (
                                     <Badge variant="accent" key={name}>
                                         {name}
                                         <button
                                             type="button"
-                                            className="ml-1 flex size-4 cursor-pointer items-center justify-center rounded-full hover:bg-white hover:text-black"
+                                            className="ml-1 flex size-4 cursor-pointer items-center justify-center rounded-full capitalize hover:bg-white hover:text-black"
                                             onClick={() =>
                                                 setFilters((prev) => ({
                                                     ...prev,
-                                                    universities: prev.universities.filter((university) => university !== name),
+                                                    faculties: prev.faculties.filter((faculty) => faculty !== name),
                                                 }))
                                             }
                                         >
@@ -160,26 +172,26 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                         )}
                     </div>
                     <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="universities">
-                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Universities</AccordionTrigger>
+                        <AccordionItem value="faculties">
+                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Faculties</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
-                                {universityNames.map((name) => (
+                                {faculties.map((name) => (
                                     <div key={name} className="flex items-center">
                                         <input
                                             id={name}
                                             type="checkbox"
                                             className="aspect-square h-4 w-4 rounded border-muted focus:ring-theme"
-                                            checked={filters.universities.some((university) => university === name)}
+                                            checked={filters.faculties.some((faculty) => faculty === name)}
                                             onChange={(e) =>
                                                 setFilters((prev) => ({
                                                     ...prev,
-                                                    universities: e.target.checked
-                                                        ? [...prev.universities, name]
-                                                        : prev.universities.filter((university) => university !== name),
+                                                    faculties: e.target.checked
+                                                        ? [...prev.faculties, name]
+                                                        : prev.faculties.filter((faculty) => faculty !== name),
                                                 }))
                                             }
                                         />
-                                        <label htmlFor={name} className="ml-2 cursor-pointer text-sm select-none">
+                                        <label htmlFor={name} className="ml-2 cursor-pointer text-sm capitalize select-none">
                                             {name}
                                         </label>
                                     </div>
@@ -187,52 +199,37 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                             </AccordionContent>
                         </AccordionItem>
 
-                        <AccordionItem value="location">
-                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Location</AccordionTrigger>
+                        <AccordionItem value="study_level">
+                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Study Level</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-60 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
-                                <Input
-                                    value={filters.searchLocation}
-                                    onChange={(e) => setFilters((prev) => ({ ...prev, searchLocation: e.target.value }))}
-                                    placeholder="Search Locations"
-                                    className="w-full rounded-2xl"
-                                />
+                                {studyLevels.map((name) => (
+                                    <div key={name} className="flex items-center">
+                                        <input
+                                            id={name}
+                                            type="checkbox"
+                                            className="aspect-square h-4 w-4 rounded border-muted focus:ring-theme"
+                                            checked={filters.studyLevels.some((level) => level === name)}
+                                            onChange={(e) =>
+                                                setFilters((prev) => ({
+                                                    ...prev,
+                                                    studyLevels: e.target.checked
+                                                        ? [...prev.studyLevels, name]
+                                                        : prev.studyLevels.filter((level) => level !== name),
+                                                }))
+                                            }
+                                        />
+                                        <label htmlFor={name} className="ml-2 cursor-pointer text-sm capitalize select-none">
+                                            {name}
+                                        </label>
+                                    </div>
+                                ))}
                             </AccordionContent>
                         </AccordionItem>
 
-                        <AccordionItem value="Ranking">
-                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Ranking</AccordionTrigger>
+                        <AccordionItem value="duration">
+                            <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Duration</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-60 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
-                                <p className="text-xs font-semibold">Top Rated By</p>
-                                <RadioGroup
-                                    value={filters.ranking}
-                                    onValueChange={(value) => setFilters((prev) => ({ ...prev, ranking: value as Ranking }))}
-                                    className="flex flex-col gap-3"
-                                >
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem
-                                            value="guardian_ranking"
-                                            id="guardian_ranking"
-                                            className="size-5 border-2 border-gray-400 data-[state=checked]:border-theme/70 data-[state=checked]:text-theme/70"
-                                        />
-                                        <Label htmlFor="guardian_ranking">Guardian Ranking</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem
-                                            value="world_ranking"
-                                            id="world_ranking"
-                                            className="size-5 border-2 border-gray-400 data-[state=checked]:border-theme/70 data-[state=checked]:text-theme/70"
-                                        />
-                                        <Label htmlFor="world_ranking">THE World Ranking</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem
-                                            value="qs_ranking"
-                                            id="qs_ranking"
-                                            className="size-5 border-2 border-gray-400 data-[state=checked]:border-theme/70 data-[state=checked]:text-theme/70"
-                                        />
-                                        <Label htmlFor="qs_ranking">QS Ranking</Label>
-                                    </div>
-                                </RadioGroup>
+                                <DurationRangeFilter filters={filters} setFilters={setFilters} />
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
@@ -243,17 +240,17 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                         <div className="mb-2 h-1 w-14 rounded-full bg-gradient-to-r from-theme to-theme-secondary" />
                         <div className="flex gap-1.5">
                             <h1 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-2xl font-bold text-transparent">
-                                List of Universities
+                                List of Courses
                             </h1>
-                            <span className="font-medium text-muted-foreground/70">({universities.total})</span>
+                            <span className="font-medium text-muted-foreground/70">({courses.total})</span>
                         </div>
                     </div>
 
                     <div className="my-4 flex w-full gap-2">
                         <Input
-                            value={filters.searchUniversity}
-                            onChange={(e) => setFilters((prev) => ({ ...prev, searchUniversity: e.target.value }))}
-                            placeholder="Search Universities"
+                            value={filters.searchCourse}
+                            onChange={(e) => setFilters((prev) => ({ ...prev, searchCourse: e.target.value }))}
+                            placeholder="Search Courses"
                             className="w-full rounded-2xl bg-white"
                         />
 
@@ -263,28 +260,28 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                         </Button>
                     </div>
 
-                    {universities.data.length === 0 ? (
+                    {courses.data.length === 0 ? (
                         <div className="flex h-full items-center justify-center text-center text-muted-foreground">
                             No universities match your search.
                         </div>
                     ) : (
                         <>
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 2xl:grid-cols-3">
-                                {universities.data.map((university) => (
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                {courses.data.map((course) => (
                                     <Link
-                                        href={route('public.universities.show', university.name)}
-                                        key={university.id}
+                                        href={route('public.courses.show', course.title)}
+                                        key={course.id}
                                         className="transition-transform duration-500 hover:scale-102"
                                     >
-                                        <UniversityCard university={university} className="h-full" />
+                                        <CourseCard course={course} className="h-full" />
                                     </Link>
                                 ))}
                             </div>
 
-                            {universities.links && (
+                            {courses.links && (
                                 <Pagination className="mt-6">
                                     <PaginationContent>
-                                        {universities.links.map((link, i: number) => {
+                                        {courses.links.map((link, i: number) => {
                                             const label = String(link.label);
                                             const isPrev = /Previous/i.test(label);
                                             const isNext = /Next/i.test(label);
@@ -312,8 +309,8 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                             if (
                                                 link.active ||
                                                 link.page === 1 ||
-                                                link.page === universities.current_page + 1 ||
-                                                link.page === universities.current_page - 1
+                                                link.page === courses.current_page + 1 ||
+                                                link.page === courses.current_page - 1
                                             ) {
                                                 return (
                                                     <PaginationItem key={i}>
@@ -334,7 +331,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                                 );
                                             }
 
-                                            if (universities.links.length > 3 && link.page === universities.links[1].page! + 1) {
+                                            if (courses.links.length > 3 && link.page === courses.links[1].page! + 1) {
                                                 return (
                                                     <PaginationItem>
                                                         <div className="pointer-events-none px-3 text-sm text-muted-foreground select-none">...</div>
@@ -342,7 +339,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                                 );
                                             }
 
-                                            if (universities.links.length > 3 && link.page === universities.last_page - 1) {
+                                            if (courses.links.length > 3 && link.page === courses.last_page - 1) {
                                                 return (
                                                     <PaginationItem>
                                                         <div className="pointer-events-none px-3 text-sm text-muted-foreground select-none">...</div>
@@ -350,7 +347,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                                 );
                                             }
 
-                                            if (link.page === universities.last_page) {
+                                            if (link.page === courses.last_page) {
                                                 return (
                                                     <PaginationItem key={i}>
                                                         <PaginationLink
@@ -385,4 +382,4 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
     );
 };
 
-export default UniversityIndex;
+export default CourseIndex;

@@ -42,6 +42,7 @@ Route::domain($publicDomain)->name('public.')->group(function () {
 
     Route::prefix('/courses')->name('courses.')->group(function () {
         Route::get('/', [CourseController::class, 'index'])->name('index');
+        Route::get('/{course}', [CourseController::class, 'show'])->name('show');
     });
 
     Route::prefix('/blogs')->name('blogs.')->group(function () {

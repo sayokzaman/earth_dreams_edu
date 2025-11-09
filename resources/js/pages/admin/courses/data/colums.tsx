@@ -52,7 +52,7 @@ export const courseColumns: GenericColumnDef<Course>[] = [
         align: 'start',
         render: (course) => (
             <div className="flex items-center">
-                <span className="pl-3 capitalize">{course.duration}</span>
+                <span className="pl-3 capitalize">{course.duration} {course.duration_unit}</span>
             </div>
         ),
     },

@@ -27,6 +27,7 @@ const CreateCourse = ({ course }: Props) => {
         faculty_id: course.faculty?.id.toString() || '',
         study_level: course.study_level || '',
         duration: course.duration || '',
+        duration_unit: course.duration_unit || '',
         cover: null as File | null,
         contents: [] as CourseContent[],
     });
@@ -50,11 +51,12 @@ const CreateCourse = ({ course }: Props) => {
                 faculty_id: course.faculty?.id.toString() || '',
                 study_level: course.study_level || '',
                 duration: course.duration || '',
+                duration_unit: course.duration_unit || '',
                 cover: null,
                 contents: course.contents,
             });
 
-            if(course.cover) {
+            if (course.cover) {
                 setCoverPreview(`/storage/${course.cover}`);
             }
         }
@@ -268,21 +270,41 @@ const CreateCourse = ({ course }: Props) => {
                         <InputError className="text-xs" message={errors.study_level} />
                     </div>
 
-                    <div className="w-1/2">
-                        <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
-                            Duration <span className="text-sm text-red-500">*</span>
-                        </Label>
+                    <div className="flex w-1/2 gap-4">
+                        <div className="w-1/2">
+                            <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                                Duration <span className="text-sm text-red-500">*</span>
+                            </Label>
 
-                        <Input
-                            id="duration"
-                            type="text"
-                            name="duration"
-                            value={data.duration}
-                            onChange={(e) => setData('duration', e.target.value)}
-                            placeholder="e.g., 3 years, 6 months"
-                            className="w-full bg-muted/60"
-                        />
-                        <InputError className="text-xs" message={errors.duration} />
+                            <Input
+                                id="duration"
+                                type="text"
+                                name="duration"
+                                value={data.duration}
+                                onChange={(e) => setData('duration', e.target.value)}
+                                placeholder="e.g., 3, 6 etc."
+                                className="w-full bg-muted/60"
+                            />
+                            <InputError className="text-xs" message={errors.duration} />
+                        </div>
+
+                        <div className="w-1/2">
+                            <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
+                                Month/Year <span className="text-sm text-red-500">*</span>
+                            </Label>
+
+                            <Select value={data.duration_unit} onValueChange={(value) => setData('duration_unit', value as 'months' | 'years')}>
+                                <SelectTrigger className="bg-muted/60">
+                                    <SelectValue placeholder="Select Month/Year" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="months">Month</SelectItem>
+                                    <SelectItem value="years">Year</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <InputError className="text-xs" message={errors.duration_unit} />
+                        </div>
                     </div>
                 </div>
 
@@ -325,7 +347,11 @@ const CreateCourse = ({ course }: Props) => {
                                             className="w-full bg-muted/60"
                                         />
 
-                                        <Select value={content.type} onValueChange={(value) => handleSectionChange(index, 'type', value)} defaultValue="text">
+                                        <Select
+                                            value={content.type}
+                                            onValueChange={(value) => handleSectionChange(index, 'type', value)}
+                                            defaultValue="text"
+                                        >
                                             <SelectTrigger className="w-5/12 bg-muted/60">
                                                 <SelectValue placeholder="Select Type" />
                                             </SelectTrigger>

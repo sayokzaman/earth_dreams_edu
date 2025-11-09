@@ -31,7 +31,7 @@ class UniversityController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        $universityNames = University::all()->pluck('name');
+        $universityNames = University::orderBy('name', 'asc')->pluck('name');
 
         return Inertia::render('public/universities/index', [
             'universities' => $universities,

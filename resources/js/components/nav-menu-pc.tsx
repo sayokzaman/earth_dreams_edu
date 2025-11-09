@@ -69,7 +69,7 @@ export default function UKNavbar() {
                         <NavigationMenuItem>
                             <NavigationMenuTrigger>
                                 <NavigationMenuLink>
-                                    <Link href={route('public.universities.index')}>Courses</Link>
+                                    <Link href={route('public.courses.index')}>Courses</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuTrigger>
                             <NavigationMenuContent>
@@ -157,12 +157,12 @@ function StudyInUKGrid() {
     ];
 
     return (
-        <div className="grid w-[60vw] grid-cols-2 p-2">
+        <div className="grid w-[60vw] grid-cols-2 p-2 gap-1">
             {studyInUK.map((item) => (
                 <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-6 rounded-lg p-4 transition-transform duration-200 ease-in-out hover:scale-102"
+                    className="flex items-center gap-6 rounded-lg py-2 px-4 transition-transform duration-200 ease-in-out hover:bg-white"
                 >
                     <img src={item.img} alt="" className="h-16 w-16" />
                     <div>

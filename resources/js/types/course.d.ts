@@ -13,7 +13,9 @@ export interface Course {
     title: string;
     faculty_id: number;
     study_level: string;
-    duration: string;
+    duration_months: number;
+    duration: number;
+    duration_unit: 'months' | 'years';
     cover: string;
     contents: CourseContent[];
     faculty?: Faculty;
