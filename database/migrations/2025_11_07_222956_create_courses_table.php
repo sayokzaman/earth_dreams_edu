@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
-            $table->string('type');
+            $table->foreignId('faculty_id')->constrained('faculties')->cascadeOnDelete();
             $table->string('title');
-            $table->string('cover_img')->nullable();
-            $table->string('category');
-            $table->datetime('date');
+            $table->string('study_level');
+            $table->string('duration');
+            $table->string('cover')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blogs');
+        Schema::dropIfExists('courses');
     }
 };

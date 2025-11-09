@@ -13,17 +13,6 @@ import { Head, useForm } from '@inertiajs/react';
 import { PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Universities',
-        href: '/universities',
-    },
-    {
-        title: 'Create',
-        href: `/universities/create`,
-    },
-];
-
 type Props = {
     university: University;
 };
@@ -47,6 +36,17 @@ const ShowUniversity = ({ university }: Props) => {
     const [coverPreview, setCoverPreview] = useState<string>('');
 
     const { data, setData, post, processing, errors, reset, clearErrors, setDefaults } = useForm(initialData);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Universities',
+            href: '/universities',
+        },
+        {
+            title: university.name,
+            href: `/universities/${university.id}`,
+        },
+    ];
 
     useEffect(() => {
         if (university) {
@@ -289,7 +289,7 @@ const ShowUniversity = ({ university }: Props) => {
                                             className="w-full bg-muted/60"
                                         />
 
-                                        <Select onValueChange={(value) => handleSectionChange(index, 'type', value)} defaultValue="text">
+                                        <Select value={content.type} onValueChange={(value) => handleSectionChange(index, 'type', value)} defaultValue="text">
                                             <SelectTrigger className="w-5/12 bg-muted/60">
                                                 <SelectValue placeholder="Select Type" />
                                             </SelectTrigger>

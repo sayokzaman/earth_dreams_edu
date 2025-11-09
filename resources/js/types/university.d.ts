@@ -19,4 +19,6 @@ export interface University {
     qs_ranking: string;
     scholarship: string;
     contents?: UniversityContent[];
+    created_at: string;
+    updated_at: string;
 }

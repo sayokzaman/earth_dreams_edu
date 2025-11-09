@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\StudyInUKController;
 use App\Http\Controllers\UniversityController;
@@ -36,9 +38,10 @@ Route::domain($publicDomain)->name('public.')->group(function () {
         Route::get('/', [UniversityController::class, 'index'])->name('index');
         Route::get('/{name}', [UniversityController::class, 'show'])->name('show');
     });
+    
 
     Route::prefix('/courses')->name('courses.')->group(function () {
-        Route::get('/', [UniversityController::class, 'index'])->name('index');
+        Route::get('/', [CourseController::class, 'index'])->name('index');
     });
 
     Route::prefix('/blogs')->name('blogs.')->group(function () {
@@ -69,6 +72,19 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [UniversityController::class, 'store'])->name('store');
             Route::get('/{university}', [UniversityController::class, 'adminShow'])->name('show');
             Route::post('/{university}/update', [UniversityController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('/courses')->name('admin.courses.')->group(function () {
+            Route::get('/', [CourseController::class, 'adminIndex'])->name('index');
+            Route::get('/create', [CourseController::class, 'create'])->name('create');
+            Route::post('/', [CourseController::class, 'store'])->name('store');
+            Route::get('/{course}', [CourseController::class, 'adminShow'])->name('show');
+            Route::post('/{course}/update', [CourseController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('/faculties')->name('admin.faculties.')->group(function () {
+            Route::get('/', [FacultyController::class, 'index'])->name('index');
+            Route::post('/', [FacultyController::class, 'store'])->name('store');
         });
 
         Route::prefix('/blogs')->name('admin.blogs.')->group(function () {

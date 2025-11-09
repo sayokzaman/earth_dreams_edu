@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->string('name')->unique();
-            $table->string('cover');
-            $table->string('logo');
+            $table->string('cover')->nullable();
+            $table->string('logo')->nullable();
             $table->string('location');
             $table->text('location_url');
             $table->string('founded');
