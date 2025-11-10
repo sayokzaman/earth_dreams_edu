@@ -118,6 +118,15 @@ class CourseController extends Controller
         return redirect()->route('admin.courses.index')->with('success', 'Course created successfully.');
     }
 
+    public function show($title)
+    {
+        $course = Course::where('title', $title)->firstOrFail();
+
+        return inertia('public/courses/show', [
+            'course' => $course->load('faculty', 'contents'),
+        ]);
+    }
+
     public function adminShow(Course $course)
     {
         return inertia('admin/courses/show', [

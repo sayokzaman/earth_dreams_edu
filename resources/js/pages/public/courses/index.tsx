@@ -110,19 +110,20 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
 
             <div className="relative">
                 <img
-                    src={`/images/index_page_covers/university_index.jpg`}
-                    alt={'universities'}
+                    src={`/images/index_page_covers/courses.jpg`}
+                    alt={'student essentials uk'}
                     className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <Wrapper className="flex h-72 items-center justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-100">
-                    <div className="flex w-full flex-col items-center gap-4 pt-28 sm:gap-6 sm:pt-40">
-                        <h1 className="text-3xl font-bold text-secondary capitalize sm:text-4xl">
-                            <span className="text-theme-accent">Explore</span> Our Top <span className="text-theme-secondary">Universities</span>
+                <Wrapper className="flex h-72 items-center justify-between bg-accent-foreground/70 backdrop-blur-xs sm:h-[28rem]">
+                    <div className="flex w-full flex-col items-center gap-2 pt-28 sm:gap-4">
+                        <h1 className="text-center text-3xl font-extrabold tracking-tight text-secondary capitalize sm:text-4xl xl:text-5xl">
+                            {/* some copy about Courses */}
+                            Top <span className="text-theme-accent">Courses</span> in the <span className="text-theme-secondary">UK</span>
                         </h1>
-                        <p className="max-w-2xl text-center text-muted/80 sm:text-xl">
-                            Discover a world of opportunities with our curated list of top universities. Find the perfect fit for your academic
-                            journey and career aspirations.
+                        <p className="max-w-3xl text-center text-muted/80 sm:text-xl xl:text-2xl">
+                            Study globally recognized programs in business, engineering, arts, and health. Build skills that stand out anywhere in the
+                            world.
                         </p>
                     </div>
                 </Wrapper>
@@ -171,7 +172,7 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
                             </div>
                         )}
                     </div>
-                    <Accordion type="single" collapsible className="w-full">
+                    <Accordion type="multiple" className="w-full">
                         <AccordionItem value="faculties">
                             <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Faculties</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
@@ -266,7 +267,7 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
                         </div>
                     ) : (
                         <>
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-6">
                                 {courses.data.map((course) => (
                                     <Link
                                         href={route('public.courses.show', course.title)}

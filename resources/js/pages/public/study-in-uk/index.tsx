@@ -69,19 +69,19 @@ const StudyInUKIndex = () => {
 
             <div className="relative">
                 <img
-                    src={`/images/index_page_covers/university_index.jpg`}
-                    alt={'universities'}
+                    src={`/images/index_page_covers/study-in-uk.jpg`}
+                    alt={'student essentials uk'}
                     className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <Wrapper className="flex h-72 items-center justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-100">
-                    <div className="flex w-full flex-col items-center gap-2 pt-28 sm:gap-6 sm:pt-40">
-                        <h1 className="text-3xl font-bold text-secondary capitalize sm:text-4xl">
+                <Wrapper className="flex h-72 items-center justify-between bg-accent-foreground/70 backdrop-blur-xs sm:h-[28rem]">
+                    <div className="flex w-full flex-col items-center gap-2 pt-28 sm:gap-4">
+                        <h1 className="text-center text-3xl font-extrabold tracking-tight text-secondary capitalize sm:text-4xl xl:text-5xl">
+                            {/* some copy about Courses */}
                             <span className="text-theme-accent">Study</span> In The <span className="text-theme-secondary">UK</span>
                         </h1>
-                        <p className="max-w-2xl text-start text-muted/80 sm:text-center sm:text-xl">
-                            Discover a world of opportunities with our curated list of top universities. Find the perfect fit for your academic
-                            journey and career aspirations.
+                        <p className="max-w-3xl text-center text-muted/80 sm:text-2xl">
+                            World-class education and global exposure await. Shape your future in a country where innovation meets opportunity.
                         </p>
                     </div>
                 </Wrapper>

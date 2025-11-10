@@ -54,7 +54,7 @@ export default function UniversityCard({ university, className }: UniversityCard
                 </div>
 
                 <CardHeader className="gap-0.5">
-                    <h3 className="text-lg font-semibold tracking-tight text-wrap">{university.name}</h3>
+                    <h3 className="text-xl font-extrabold text-wrap">{university.name}</h3>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <MapPin className="h-3.5 w-3.5" />
                         <span>{university.location}</span>

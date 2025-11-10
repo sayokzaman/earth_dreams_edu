@@ -180,14 +180,14 @@ const WhyStudyInUK = () => {
                             <p className="mt-3 max-w-2xl text-muted/90 sm:text-lg">
                                 Cut through the noise: what to study, how to apply, costs you’ll actually face, and the visa moves that matter.
                             </p>
-                            <div className="mt-5 flex flex-wrap gap-2">
-                                <span className="rounded-full border border-theme-accent bg-theme-accent/30 px-3 py-1 text-sm text-theme-accent">
+                            <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold">
+                                <span className="rounded-full border border-theme-accent bg-theme-accent/30 px-3 py-1 text-theme-accent">
                                     3-year UG
                                 </span>
-                                <span className="rounded-full border border-theme-secondary bg-theme-secondary/15 px-3 py-1 text-sm text-theme-secondary">
+                                <span className="rounded-full border border-theme-secondary bg-theme-secondary/15 px-3 py-1 text-theme-secondary">
                                     1-year PG
                                 </span>
-                                <span className="rounded-full border border-emerald-600 bg-emerald-500/15 px-3 py-1 text-sm text-emerald-600">
+                                <span className="rounded-full border border-emerald-600 bg-emerald-500/15 px-3 py-1 text-emerald-600">
                                     Graduate Visa up to 3y
                                 </span>
                             </div>

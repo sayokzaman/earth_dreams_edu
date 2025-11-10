@@ -39,66 +39,70 @@ export default function UniversityCard({ course, className }: UniversityCardProp
 
     return (
         <TooltipProvider>
-            <Card className={`group gap-3 overflow-hidden rounded-2xl border pt-0 shadow-sm transition hover:shadow-md ${className}`}>
+            <Card
+                className={`group flex-col gap-3 overflow-hidden rounded-2xl border pt-0 shadow-sm transition hover:shadow-md sm:flex-row sm:gap-6 sm:pt-6 ${className}`}
+            >
                 {/* Cover */}
-                <div className="relative h-36 w-full overflow-hidden bg-muted">
+                <div className="relative flex h-40 w-full items-center justify-center overflow-hidden sm:h-full sm:w-4/12 sm:pl-6">
                     <SafeImg
                         src={course.cover}
                         alt={`${course.title} cover image`}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-fit object-cover shadow-sm sm:border transition-transform duration-500 sm:mb-6 sm:aspect-video sm:h-50 sm:rounded-lg"
                     />
-                    {/* Gradient overlay */}
-                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
+
+                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-black/20 to-transparent sm:hidden" />
                 </div>
 
-                <CardHeader className="gap-2">
-                    <h3 className="text-lg font-semibold tracking-tight text-wrap">{course.title}</h3>
+                <div className="flex flex-col gap-3 sm:w-8/12">
+                    <CardHeader className="gap-2 sm:pl-0">
+                        <h3 className="text-xl font-semibold tracking-tight text-wrap">{course.title}</h3>
 
-                    <div className="flex flex-col gap-1 text-sm text-theme-foreground">
-                        <div className="flex gap-1.5">
-                            <ChartNoAxesGanttIcon className="h-5 w-5" />
-                            <h4 className="font-semibold underline underline-offset-2">Overview:</h4>
+                        <div className="flex flex-col gap-1 text-sm text-theme-foreground">
+                            <div className="flex gap-1.5">
+                                <ChartNoAxesGanttIcon className="h-5 w-5" />
+                                <h4 className="font-semibold underline underline-offset-2">Overview:</h4>
+                            </div>
+                            <div className="line-clamp-2 text-muted-foreground" dangerouslySetInnerHTML={{ __html: textContent }} />
                         </div>
-                        <div className="line-clamp-2 text-muted-foreground" dangerouslySetInnerHTML={{ __html: textContent }} />
-                    </div>
-                </CardHeader>
+                    </CardHeader>
 
-                <div className="mx-6">
-                    <Separator />
+                    <div className="mx-6">
+                        <Separator />
+                    </div>
+
+                    <CardContent className="my-auto grid grid-cols-2 gap-2 sm:pl-0">
+                        <div className="col-span-2">
+                            <h2 className="text-sm font-semibold">Faculty</h2>
+                            <Badge className="rounded-full capitalize">
+                                <GraduationCapIcon className="mr-1 h-3.5 w-3.5" /> {course.faculty?.name}
+                            </Badge>
+                        </div>
+
+                        <div>
+                            <h2 className="text-sm font-semibold">Degree</h2>
+                            <Badge variant="outline" className="rounded-full capitalize">
+                                <BookIcon className="mr-1 h-3.5 w-3.5" /> {course.study_level}
+                            </Badge>
+                        </div>
+
+                        <div>
+                            <h2 className="text-sm font-semibold">Duration</h2>
+                            <Badge variant="outline" className="rounded-full capitalize">
+                                <HourglassIcon className="mr-1 h-3.5 w-3.5" /> {course.duration} {course.duration_unit}
+                            </Badge>
+                        </div>
+                    </CardContent>
+
+                    <div className="mx-6">
+                        <Separator />
+                    </div>
+
+                    <CardFooter className="flex justify-center sm:pl-0">
+                        <Button size="sm" variant="secondary" className="w-full rounded-full lg:mx-6">
+                            View details
+                        </Button>
+                    </CardFooter>
                 </div>
-
-                <CardContent className="my-auto grid grid-cols-2 gap-2">
-                    <div className="col-span-2">
-                        <h2 className="text-sm font-semibold">Faculty</h2>
-                        <Badge className="rounded-full capitalize">
-                            <GraduationCapIcon className="mr-1 h-3.5 w-3.5" /> {course.faculty?.name}
-                        </Badge>
-                    </div>
-
-                    <div>
-                        <h2 className="text-sm font-semibold">Degree</h2>
-                        <Badge variant="outline" className="rounded-full capitalize">
-                            <BookIcon className="mr-1 h-3.5 w-3.5" /> {course.study_level}
-                        </Badge>
-                    </div>
-
-                    <div>
-                        <h2 className="text-sm font-semibold">Duration</h2>
-                        <Badge variant="outline" className="rounded-full capitalize">
-                            <HourglassIcon className="mr-1 h-3.5 w-3.5" /> {course.duration} {course.duration_unit}
-                        </Badge>
-                    </div>
-                </CardContent>
-
-                <div className="mx-6">
-                    <Separator />
-                </div>
-
-                <CardFooter>
-                    <Button size="sm" variant="secondary" className="w-full rounded-full">
-                        View details
-                    </Button>
-                </CardFooter>
             </Card>
         </TooltipProvider>
     );
