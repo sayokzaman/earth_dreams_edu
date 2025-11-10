@@ -200,7 +200,7 @@ export const universityList = [
                 section: 'Accommodation',
                 title: 'Accommodation For International Students',
                 paragraphs: [
-                    "While BPP University does not have its own halls of residence, there are still several off-campus accommodation options available for its students, including private halls of residence, homestays, and private rentals. AHZ's accommodation service can assist students in finding suitable living arrangements outside the university's campus.",
+                    "While BPP University does not have its own halls of residence, there are still several off-campus accommodation options available for its students, including private halls of residence, homestays, and private rentals. EDEC's accommodation service can assist students in finding suitable living arrangements outside the university's campus.",
                 ],
             },
         ],

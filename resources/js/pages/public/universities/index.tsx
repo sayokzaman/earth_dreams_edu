@@ -20,6 +20,7 @@ type Props = {
     universities: TableData<University>;
     universityNames: string[];
     filters: {
+        searchUniversityNames: string;
         searchUniversity: string;
         universities: string[];
         searchLocation: string;
@@ -30,6 +31,7 @@ type Props = {
 type Ranking = 'guardian_ranking' | 'world_ranking' | 'qs_ranking' | '';
 
 const initialFilters = {
+    searchUniversityNames: '',
     searchUniversity: '',
     universities: [],
     searchLocation: '',
@@ -164,6 +166,13 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                         <AccordionItem value="universities">
                             <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Universities</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
+                                <Input
+                                    type="search"
+                                    placeholder="Search faculties"
+                                    value={filters.searchUniversityNames}
+                                    onChange={(e) => setFilters({ ...filters, searchUniversityNames: e.target.value })}
+                                    className="h-7"
+                                />
                                 {universityNames.map((name) => (
                                     <div key={name} className="flex items-center">
                                         <input
@@ -195,7 +204,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                     value={filters.searchLocation}
                                     onChange={(e) => setFilters((prev) => ({ ...prev, searchLocation: e.target.value }))}
                                     placeholder="Search Locations"
-                                    className="w-full rounded-2xl"
+                                    className="w-full h-7"
                                 />
                             </AccordionContent>
                         </AccordionItem>

@@ -176,6 +176,13 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
                         <AccordionItem value="faculties">
                             <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Faculties</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
+                                <Input
+                                    type="search"
+                                    placeholder="Search faculties"
+                                    value={filters.searchFaculty}
+                                    onChange={(e) => setFilters({ ...filters, searchFaculty: e.target.value })}
+                                    className="h-7"
+                                />
                                 {faculties.map((name) => (
                                     <div key={name} className="flex items-center">
                                         <input

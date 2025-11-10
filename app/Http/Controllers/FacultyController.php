@@ -41,4 +41,15 @@ class FacultyController extends Controller
             'success' => 'Faculty added successfully.',
         ]);
     }
+
+    public function getFacultiesList(Request $request)
+    {
+        $query = $request->input('query');
+        $faculties = Faculty::orderBy('name', 'asc')
+            ->when($query, fn ($q) => $q->where('name', 'like', "%{$query}%"))
+            ->take(12)
+            ->get();
+
+        return response()->json($faculties);
+    }
 }

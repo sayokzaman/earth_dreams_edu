@@ -33,7 +33,11 @@ class CourseController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        $faculties = Faculty::orderBy('name', 'asc')->pluck('name');
+        $faculties = Faculty::where(function ($query) use ($request) {
+            $query->when($request->searchFaculty, function ($query, $searchFaculty) {
+                $query->where('name', 'like', '%'.$searchFaculty.'%');
+            });
+        })->orderBy('name', 'asc')->pluck('name');
 
         return inertia('public/courses/index', [
             'courses' => $courses,
@@ -188,5 +192,30 @@ class CourseController extends Controller
         });
 
         return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
+    }
+
+    public function foundationCourses()
+    {
+        return inertia('public/courses/sub-pages/foundation-courses');
+    }
+
+    public function undergraduateCourses()
+    {
+        return inertia('public/courses/sub-pages/undergraduate-courses');
+    }
+
+    public function mastersCourses()
+    {
+        return inertia('public/courses/sub-pages/masters-courses');
+    }
+
+    public function topUpCourses()
+    {
+        return inertia('public/courses/sub-pages/top-up-courses');
+    }
+
+    public function phdCourses()
+    {
+        return inertia('public/courses/sub-pages/phd-courses');
     }
 }

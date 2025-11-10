@@ -31,7 +31,8 @@ class UniversityController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        $universityNames = University::orderBy('name', 'asc')->pluck('name');
+        $universityNames = University::where('name', 'like', '%'.$request->searchUniversityNames.'%')
+            ->orderBy('name', 'asc')->pluck('name');
 
         return Inertia::render('public/universities/index', [
             'universities' => $universities,
@@ -215,5 +216,31 @@ class UniversityController extends Controller
         });
 
         return redirect()->route('admin.universities.index')->with('success', 'University updated successfully!');
+    }
+
+    public function getUniversitiesList(Request $request)
+    {
+        $query = $request->input('query');
+        $universities = University::orderBy('name', 'asc')
+            ->when($query, fn ($q) => $q->where('name', 'like', "%{$query}%"))
+            ->take(12)
+            ->get();
+
+        return response()->json($universities);
+    }
+
+    public function russellGroup()
+    {
+        return inertia('public/universities/russell-group');
+    }
+
+    public function rankings()
+    {
+        return inertia('public/universities/rankings');
+    }
+
+    public function topUniversities()
+    {
+        return inertia('public/universities/top-universities');
     }
 }

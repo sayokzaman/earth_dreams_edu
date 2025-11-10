@@ -25,6 +25,8 @@ const badgeVariants = cva(
           'border-transparent bg-yellow-100 text-yellow-600',
         manual:
           "border-transparent bg-cyan-200 text-cyan-800",
+        themeSecondary:
+          "text-primary-foreground shadow-xs bg-gradient-to-r from-blue-400 to-cyan-500 font-bold transition-colors duration-200",
         accent:
           "text-primary-foreground shadow-xs bg-gradient-to-r from-amber-500 to-[#ffb24f] font-bold transition-colors duration-200 hover:from-amber-600 hover:to-amber-400",
         blue:

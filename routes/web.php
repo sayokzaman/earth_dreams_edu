@@ -36,12 +36,21 @@ Route::domain($publicDomain)->name('public.')->group(function () {
 
     Route::prefix('/universities')->name('universities.')->group(function () {
         Route::get('/', [UniversityController::class, 'index'])->name('index');
+        Route::get('/russell-group-universities', [UniversityController::class, 'russellGroup'])->name('russellGroup');
+        Route::get('/rankings', [UniversityController::class, 'rankings'])->name('rankings');
+        Route::get('/top-universities-in-uk', [UniversityController::class, 'topUniversities'])->name('topUniversities');
+        Route::get('/api/list', [UniversityController::class, 'getUniversitiesList'])->name('list');
         Route::get('/{name}', [UniversityController::class, 'show'])->name('show');
+
     });
-    
 
     Route::prefix('/courses')->name('courses.')->group(function () {
         Route::get('/', [CourseController::class, 'index'])->name('index');
+        Route::get('/foundation-courses', [CourseController::class, 'foundationCourses'])->name('foundationCourses');
+        Route::get('/undergraduate-courses', [CourseController::class, 'undergraduateCourses'])->name('undergraduateCourses');
+        Route::get('/masters-courses', [CourseController::class, 'mastersCourses'])->name('mastersCourses');
+        Route::get('/top-up-courses', [CourseController::class, 'topUpCourses'])->name('topUpCourses');
+        Route::get('/phd-courses', [CourseController::class, 'phdCourses'])->name('phdCourses');
         Route::get('/{course}', [CourseController::class, 'show'])->name('show');
     });
 
@@ -53,6 +62,10 @@ Route::domain($publicDomain)->name('public.')->group(function () {
     Route::prefix('/consultation')->name('consultation.')->group(function () {
         Route::get('/', [LeadsController::class, 'index'])->name('index');
         Route::post('/', [LeadsController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('/faculties')->name('faculties.')->group(function () {
+        Route::get('/api/list', [FacultyController::class, 'getFacultiesList'])->name('list');
     });
 });
 
