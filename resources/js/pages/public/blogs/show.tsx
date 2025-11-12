@@ -5,7 +5,8 @@ import AppPublicLayout from '@/layouts/app/app-public-layout';
 import { cn } from '@/lib/utils';
 import { Blog } from '@/types/blog';
 import { Head } from '@inertiajs/react';
-import { Share2Icon } from 'lucide-react';
+import { format } from 'date-fns';
+import { AlbumIcon, CalendarClockIcon, CompassIcon, LayoutListIcon, PenToolIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -46,27 +47,43 @@ const BlogShow = ({ blog }: Props) => {
                     className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <div className="flex h-72 flex-col items-end justify-between bg-accent-foreground/40 backdrop-blur-xs sm:h-100 sm:flex-row">
-                    <Wrapper>
-                        <div className="flex justify-between py-12">
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-2xl font-bold text-secondary capitalize sm:text-3xl">{blog.title}</h1>
-
-                                <div className="flex gap-2">
-                                    <Badge variant={'secondary'} className="text-sm font-semibold">
-                                        Published : {blog.date.split(' ')[0]}
-                                    </Badge>
-                                    <Badge variant={'secondary'} className="text-sm font-semibold">
-                                        Category : {blog.category}
-                                    </Badge>
-                                </div>
+                <div className="relative z-10 flex h-80 items-end bg-gradient-to-b from-black/10 via-black/40 to-black/90 sm:h-[28rem]">
+                    <Wrapper className="w-full justify-between pb-6 sm:flex sm:items-end sm:pb-10">
+                        <div className="flex flex-col gap-2 pt-20 sm:gap-4">
+                            <div className="flex w-fit items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 backdrop-blur-lg">
+                                <span className="text-sm font-semibold text-muted/70"></span>
                             </div>
 
-                            <Button className="w-fit rounded-3xl font-bold sm:text-base">
-                                <Share2Icon className="mr-2 h-4 w-4" />
-                                Share
-                            </Button>
+                            <h1 className="text-3xl font-extrabold tracking-tight text-secondary sm:text-5xl">{blog.title}</h1>
+
+                            <div className="flex flex-wrap gap-2 font-semibold">
+                                <Badge variant={'secondary'} className="rounded-full text-sm font-bold capitalize">
+                                    {blog.type === 'blog' ? (
+                                        <PenToolIcon className="size-5" />
+                                    ) : blog.type === 'news' ? (
+                                        <CompassIcon className="size-5" />
+                                    ) : blog.type === 'event' ? (
+                                        <CalendarClockIcon className="size-5" />
+                                    ) : null}
+                                    {blog.type}
+                                </Badge>
+
+                                <div className="rounded-full bg-black/30 backdrop-blur-lg">
+                                    <span className="flex w-fit items-center gap-2 rounded-full border border-theme-secondary bg-theme-secondary/5 px-3 py-1 text-xs text-theme-secondary sm:text-sm">
+                                        <AlbumIcon className="h-4 w-4" />
+                                        <span className="capitalize">Published: {format(new Date(blog.date), 'dd MMM yyyy')}</span>
+                                    </span>
+                                </div>
+                                <div className="rounded-full bg-black/30 backdrop-blur-lg">
+                                    <span className="flex w-fit items-center gap-2 rounded-full border border-emerald-500 bg-emerald-500/5 px-3 py-1 text-xs text-emerald-500 sm:text-sm">
+                                        <LayoutListIcon className="h-4 w-4" />
+                                        <span className="capitalize">Category: {blog.category}</span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
+
+                        <Button className="mt-2.5 w-fit rounded-3xl font-bold sm:text-base">Enquire Now</Button>
                     </Wrapper>
                 </div>
             </div>

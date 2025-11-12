@@ -12,6 +12,8 @@ class Blog extends Model
 
     protected $fillable = ['author_id', 'type', 'title', 'cover_img', 'category', 'date'];
 
+    protected $casts = ['date' => 'datetime'];
+
     public function contents()
     {
         return $this->hasMany(BlogContent::class);

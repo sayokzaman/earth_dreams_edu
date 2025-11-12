@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\BlogContent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,10 +12,49 @@ use Illuminate\Support\Facades\Storage;
 
 class BlogsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $blogs = Blog::query()->with('contents')
+            ->when($request->filled('date'), function ($q) use ($request) {
+                // Parse the incoming date safely
+                $date = Carbon::parse($request->date)->toDateString();
+
+                // Compare only the date portion, ignoring time
+                $q->whereDate('date', $date);
+            })
+            ->when($request->searchBlog, function ($q) use ($request) {
+                $q->where(function ($query) use ($request) {
+                    $query->where('title', 'like', "%{$request->searchBlog}%");
+                });
+            })
+            ->when($request->types, function ($q) use ($request) {
+                $q->whereIn('type', $request->types);
+            })
+            ->when($request->categories, function ($q) use ($request) {
+                $q->whereIn('category', $request->categories);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        $categories = Blog::query()
+            ->distinct()
+            ->pluck('category')
+            ->toArray();
+
         return inertia('public/blogs/index', [
-            'blogs' => Blog::query()->with('contents')->orderBy('created_at', 'desc')->get(),
+            'blogs' => $blogs,
+            'categories' => $categories,
+            'filters' => array_merge([
+                'date' => null,
+                'searchBlog' => '',
+                'types' => [],
+                'categories' => [],
+            ], $request->only([
+                'date',
+                'searchBlog',
+                'types',
+                'categories',
+            ])),
         ]);
     }
 

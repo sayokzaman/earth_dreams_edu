@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
 import { Head, useForm } from '@inertiajs/react';
+import { format } from 'date-fns';
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -122,9 +123,9 @@ const AdminBlogShow = ({ blog }: Props) => {
                             <h2 className="border-r pr-2 text-xl font-semibold">Blog #{blog.id}</h2>
 
                             <div className="flex gap-1">
-                                <Badge className="capitalize">{'Type: ' +blog.type}</Badge>
+                                <Badge className="capitalize">{'Type: ' + blog.type}</Badge>
                                 <Badge className="capitalize">{blog.category}</Badge>
-                                <Badge className="capitalize">{blog.date.split(' ')[0]}</Badge>
+                                <Badge className="capitalize">{format(new Date(blog.date), 'dd MMM yyyy')}</Badge>
                             </div>
                         </div>
 
