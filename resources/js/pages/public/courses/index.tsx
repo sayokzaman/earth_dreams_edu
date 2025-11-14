@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
+import { studyLevels } from '@/lib/constants'
 import { cn } from '@/lib/utils';
 import CourseCard from '@/pages/public/courses/card';
 import { DurationRangeFilter } from '@/pages/public/courses/duration-range';
@@ -36,8 +37,6 @@ const initialFilters = {
     studyLevels: [],
     durationRange: DEFAULT_RANGE,
 };
-
-const studyLevels = ['undergraduate', 'masters', 'foundation', 'top_up', 'phd', 'doctorate'];
 
 const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) => {
     const [filters, setFilters] = useState(incomingFilters);

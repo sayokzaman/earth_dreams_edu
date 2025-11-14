@@ -17,7 +17,7 @@ class LeadsController extends Controller
     {
         $leads = Lead::query();
 
-        $leads = $leads->paginate(10);
+        $leads = $leads->orderBy('created_at', 'desc')->paginate(10);
 
         return inertia('admin/leads/index', [
             'leads' => $leads,
@@ -26,7 +26,7 @@ class LeadsController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {   
         $request->merge([
             'certify_truth' => (bool) $request->certify_truth,
             'in_uk_now' => (bool) $request['in_uk_now'],

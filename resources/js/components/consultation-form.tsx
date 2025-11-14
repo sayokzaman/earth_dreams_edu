@@ -7,10 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { studyLevels } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { Lead } from '@/types/lead';
+import { Subject } from '@/types/subject';
 import { useForm } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const initialData = {
@@ -21,7 +23,7 @@ const initialData = {
     mobile: '',
     is_whatsapp: false,
     country_of_residence: '',
-    in_uk_now: 'no', // 'yes' | 'no'
+    in_uk_now: false,
     study_type: '',
     subject_interested: '',
     certify_truth: false,
@@ -36,21 +38,42 @@ type Props = {
 export default function ConsultationForm({ lead, isAdmin = false, className }: Props) {
     const { data, setData, post, processing, reset, errors, clearErrors, setDefaults } = useForm(initialData);
 
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [search, setSearch] = useState('');
+
+    useEffect(() => {
+        const fetchSubjects = async () => {
+            try {
+                const response = await fetch(
+                    isAdmin ? route('admin.subjects.list', { query: search }) : route('public.subjects.list', { query: search }),
+                );
+                const subjectsData = await response.json();
+                setSubjects(subjectsData);
+            } catch (error) {
+                console.error('Error fetching subjects:', error);
+            }
+        };
+
+        fetchSubjects();
+    }, [search, isAdmin]);
+
     useEffect(() => {
         if (lead) {
-            setData({
-                first_name: lead.first_name || '',
-                last_name: lead.last_name || '',
-                email: lead.email || '',
-                mobile_country_code: lead.mobile_country_code || '',
-                mobile: lead.mobile || '',
-                is_whatsapp: lead.is_whatsapp || false,
-                country_of_residence: lead.country_of_residence || '',
-                in_uk_now: lead.in_uk_now ? 'yes' : 'no',
-                study_type: lead.study_type || '',
-                subject_interested: lead.subject_interested || '',
-                certify_truth: false,
-            });
+            setTimeout(() => {
+                setData({
+                    first_name: lead.first_name || '',
+                    last_name: lead.last_name || '',
+                    email: lead.email || '',
+                    mobile_country_code: lead.mobile_country_code || '',
+                    mobile: lead.mobile || '',
+                    is_whatsapp: lead.is_whatsapp || false,
+                    country_of_residence: lead.country_of_residence || '',
+                    in_uk_now: lead.in_uk_now || false,
+                    study_type: lead.study_type || '',
+                    subject_interested: lead.subject_interested || '',
+                    certify_truth: false,
+                });
+            }, 100);
         }
     }, [lead, setData]);
 
@@ -211,17 +234,17 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                     <RadioGroup
                         name="in_uk_now"
                         className="flex items-center gap-6"
-                        value={data.in_uk_now}
-                        onValueChange={(val) => setData('in_uk_now', val)}
+                        value={data.in_uk_now.toString()}
+                        onValueChange={(val) => setData('in_uk_now', val === 'true')}
                     >
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="inuk-yes" className={cn(isAdmin ? '' : 'bg-white')} />
+                            <RadioGroupItem value={'true'} id="inuk-yes" className={cn(isAdmin ? '' : 'bg-white')} />
                             <Label htmlFor="inuk-yes" className="font-normal">
                                 Yes
                             </Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="inuk-no" className={cn(isAdmin ? '' : 'bg-white')} />
+                            <RadioGroupItem value={'false'} id="inuk-no" className={cn(isAdmin ? '' : 'bg-white')} />
                             <Label htmlFor="inuk-no" className="font-normal">
                                 No
                             </Label>
@@ -240,11 +263,11 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                             <SelectValue placeholder="Please select" />
                         </SelectTrigger>
                         <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
-                            <SelectItem value="foundation">Foundation</SelectItem>
-                            <SelectItem value="undergraduate">Undergraduate</SelectItem>
-                            <SelectItem value="postgraduate">Postgraduate</SelectItem>
-                            <SelectItem value="phd">PhD / Research</SelectItem>
-                            <SelectItem value="pathway">Pre-sessional / Pathway</SelectItem>
+                            {studyLevels.map((level) => (
+                                <SelectItem key={level} value={level}>
+                                    {level.charAt(0).toUpperCase() + level.slice(1).replace('_', ' ')}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.study_type} />
@@ -257,16 +280,27 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                     </Label>
                     <Select name="subject_interested" value={data.subject_interested} onValueChange={(val) => setData('subject_interested', val)}>
                         <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
-                            <SelectValue placeholder="Please select" />
+                            <SelectValue placeholder="Please select a subject" />
                         </SelectTrigger>
                         <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
-                            <SelectItem value="business">Business &amp; Management</SelectItem>
-                            <SelectItem value="cs">Computer Science / Data</SelectItem>
-                            <SelectItem value="engineering">Engineering</SelectItem>
-                            <SelectItem value="law">Law</SelectItem>
-                            <SelectItem value="medicine">Medicine &amp; Health</SelectItem>
-                            <SelectItem value="arts">Arts / Design / Media</SelectItem>
-                            <SelectItem value="other">Other / Not sure yet</SelectItem>
+                            <Input
+                                value={search}
+                                placeholder="Search subject..."
+                                className={cn('mb-2 flex-1', isAdmin ? '' : 'rounded-2xl bg-white')}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyDown={(e) => e.stopPropagation()}
+                            />
+                            {subjects && subjects.length > 0 ? (
+                                subjects
+                                    .filter((subject) => subject.subject_name.toLowerCase().includes(search.toLowerCase()))
+                                    .map((subject) => (
+                                        <SelectItem key={subject.subject_name} value={subject.subject_name.toLowerCase()}>
+                                            {subject.subject_name.charAt(0).toUpperCase() + subject.subject_name.slice(1)}
+                                        </SelectItem>
+                                    ))
+                            ) : (
+                                <div className="p-4 text-center text-sm text-muted-foreground">No subjects found.</div>
+                            )}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.subject_interested} />

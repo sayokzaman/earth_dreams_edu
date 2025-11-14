@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\StudyInUKController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,10 @@ Route::domain($publicDomain)->name('public.')->group(function () {
     Route::prefix('/faculties')->name('faculties.')->group(function () {
         Route::get('/api/list', [FacultyController::class, 'getFacultiesList'])->name('list');
     });
+
+    Route::prefix('/subjects')->name('subjects.')->group(function () {
+        Route::get('/api/list', [SubjectController::class, 'getSubjects'])->name('list');
+    });
 });
 
 /*
@@ -114,6 +119,11 @@ Route::domain($adminDomain)->group(function () {
         Route::prefix('/leads')->name('admin.leads.')->group(function () {
             Route::get('/', [LeadsController::class, 'adminIndex'])->name('index');
             Route::get('/{lead}', [LeadsController::class, 'adminShow'])->name('show');
+        });
+
+        Route::prefix('/subjects')->name('admin.subjects.')->group(function () {
+            Route::get('/', [SubjectController::class, 'getSubjects'])->name('list');
+            Route::post('/', [SubjectController::class, 'store'])->name('store');
         });
     });
 });

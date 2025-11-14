@@ -1,0 +1,113 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Subject;
+use Illuminate\Database\Seeder;
+
+class SubjectSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $subjects = [
+            'accounting',
+            'accounting & finance',
+            'agriculture & forestry',
+            'animal science',
+            'anthropology',
+            'archaeology',
+            'architecture',
+            'art, performing arts & design',
+            'arts',
+            'biological sciences',
+            'biology',
+            'bsc occupational therapy',
+            'building',
+            'business & management',
+            'business studies',
+            'chemical engineering',
+            'chemistry',
+            'chemistry / biochemistry',
+            'cinematic and photography',
+            'civil engineering',
+            'communication & media studies',
+            'communication and information science',
+            'computer science',
+            'culinary arts',
+            'dentistry',
+            'design studies',
+            'development studies',
+            'drama',
+            'earth & marine sciences',
+            'economics',
+            'economics & econometrics',
+            'education',
+            'education studies',
+            'electrical & electronic engineering',
+            'engineering',
+            'english studies',
+            'environmental',
+            'fashion',
+            'finance',
+            'general engineering',
+            'geography',
+            'geography: environmental science',
+            'geology',
+            'geology, environmental, earth & marine sciences',
+            'health studies',
+            'history',
+            'history, philosophy & theology',
+            'hr management',
+            'journalism',
+            'landscape design',
+            'languages, literature & linguistics',
+            'law',
+            'linguistics',
+            'literary studies',
+            'management studies',
+            'marketing',
+            'materials science',
+            'math',
+            'mathematics & statistics',
+            'mba',
+            'mechanical & aerospace engineering',
+            'media studies',
+            'medicine',
+            'medicine & dentistry',
+            'modern languages and european studies',
+            'msc occupational therapy (pre-reg)',
+            'music',
+            'not decided',
+            'not set',
+            'nursing',
+            'nutrition',
+            'other health',
+            'pharmacology, toxicology & pharmacy',
+            'photography',
+            'physics',
+            'physics & astronomy',
+            'physiotherapy',
+            'planning (urban, rural & regional)',
+            'politics',
+            'politics & international studies (incl development studies)',
+            'psychology',
+            'social policy',
+            'social work',
+            'sociology',
+            'software engineering',
+            'sport science',
+            'tourism, transport & travel',
+            'translation',
+            'veterinary',
+            'veterinary science',
+            'other',
+        ];
+
+        foreach ($subjects as $subject) {
+            Subject::create(['subject_name' => $subject]);
+        }
+    }
+}
