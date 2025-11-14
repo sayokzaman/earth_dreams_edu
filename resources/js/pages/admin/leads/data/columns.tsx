@@ -1,5 +1,6 @@
 import { GenericColumnDef } from '@/components/table/data-table';
 import { Lead } from '@/types/lead';
+import { Link } from '@inertiajs/react';
 
 export const leadColumns: GenericColumnDef<Lead>[] = [
     {
@@ -7,7 +8,11 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         label: '#',
         sortable: true,
         align: 'start',
-        render: (lead) => <span className="pl-4">{lead.id}</span>,
+        render: (lead) => (
+            <Link href={route('admin.leads.show', lead.id)} className="pl-4 text-blue-300 hover:underline underline-offset-2">
+                Lead #{lead.id}
+            </Link>
+        ),
     },
     {
         key: 'name',

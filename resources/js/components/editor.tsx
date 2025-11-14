@@ -119,7 +119,7 @@ export default function Editor({ onChange, initialHtml = '', className }: Props)
                 <Toolbar initialHtml={initialHtml} />
                 <RichTextPlugin
                     contentEditable={<ContentEditable className="min-h-[200px] outline-none" />}
-                    placeholder={<div className="absolute top-1/4 -translate-y-1/5 cursor-text text-gray-400 select-none">Write something…</div>}
+                    placeholder={<div className="absolute sm:top-1/4 top-28 -translate-y-1/5 cursor-text text-gray-400 select-none">Write something…</div>}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
                 <HistoryPlugin />

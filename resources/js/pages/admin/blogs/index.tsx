@@ -2,12 +2,16 @@ import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
 import { BlogFilter, defaultBlogFilters, useBlogFilters } from '@/hooks/filters/use-blog-filters';
 import AppLayout from '@/layouts/app-layout';
+import BlogActions from '@/pages/admin/blogs/actions';
 import { blogColumns } from '@/pages/admin/blogs/data/columns';
+import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
+import BlogFilters from '@/pages/admin/blogs/filters';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
 import { TableData } from '@/types/table';
 import { Head, Link } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,6 +27,8 @@ interface Props {
 
 const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useBlogFilters(incomingFilters);
+
+    const [deleteModalData, setDeleteModalData] = useState<Blog | null>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -65,22 +71,14 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                     // renderMobileRow={(expense) => (
                     //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
                     // )}
+                    renderActions={(blog) => <BlogActions blog={blog} setBlogModal={(blog) => setDeleteModalData(blog)} />}
                     storageKey="blogsTable"
                 >
-                    {/* <BlogFilters filters={filters} setFilters={setFilters} /> */}
-                    {null}
+                    <BlogFilters filters={filters} setFilters={setFilters} />
                 </DataTable>
             </main>
 
-            {/* Modals */}
-            {/* <ExpenseModal open={!!blogModal || openBlogModal} blog={blogModal} onClose={handleCloseBlogModal} /> */}
-            {/* <DeleteRestoreModal
-                resource={deleteModal?.expense ?? null}
-                action={deleteModal?.action ?? 'delete'}
-                onClose={() => setDeleteModal(null)}
-                resourceName="expense"
-                routePrefix="expenses"
-            /> */}
+            <DeleteBlogDialog blog={deleteModalData} setBlog={setDeleteModalData} />
         </AppLayout>
     );
 };

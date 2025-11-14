@@ -17,6 +17,9 @@ export interface Course {
     duration: number;
     duration_unit: 'months' | 'years';
     cover: string;
+    content_count: number;
+    text_section_count?: number;
+    video_section_count?: number;
     contents: CourseContent[];
     faculty?: Faculty;
     created_at: string;

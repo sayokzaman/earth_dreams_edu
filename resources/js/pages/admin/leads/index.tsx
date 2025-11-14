@@ -1,10 +1,10 @@
 import { DataTable } from '@/components/table/data-table';
-import { Button } from '@/components/ui/button';
 import { defaultLeadFilters, LeadFilter, useLeadFilters } from '@/hooks/filters/use-lead-filters';
 import AppLayout from '@/layouts/app-layout';
+import { CreateLeadDialog } from '@/pages/admin/leads/create-lead-dialog';
 import { Lead } from '@/types/lead';
 import { TableData } from '@/types/table';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { leadColumns } from './data/columns';
 
@@ -39,19 +39,8 @@ const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
                             </span>
                         </p>
                     </div>
-                    <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
-                        <Link href={route('admin.blogs.create')}>
-                            <Button
-                                // onClick={() => {
-                                //     setBlogModal(null);
-                                //     setOpenBlogModal(true);
-                                // }}
-                                className="w-full sm:w-auto"
-                            >
-                                Add New Blog
-                            </Button>
-                        </Link>
-                    </div>
+
+                    <CreateLeadDialog />
                 </div>
 
                 <DataTable<Lead, LeadFilter>

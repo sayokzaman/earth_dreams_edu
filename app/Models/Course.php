@@ -20,6 +20,9 @@ class Course extends Model
     protected $appends = [
         'duration',
         'duration_unit',
+        'content_count',
+        'text_section_count',
+        'video_section_count',
     ];
 
     public function faculty()
@@ -42,5 +45,20 @@ class Course extends Model
     public function getDurationUnitAttribute(): string
     {
         return ((int) $this->duration_months % 12 === 0) ? 'years' : 'months';
+    }
+
+    public function getContentCountAttribute()
+    {
+        return $this->contents()->count();
+    }
+
+    public function getTextSectionCountAttribute()
+    {
+        return $this->contents()->where('type', 'text')->count();
+    }
+
+    public function getVideoSectionCountAttribute()
+    {
+        return $this->contents()->where('type', 'video')->count();
     }
 }

@@ -2,12 +2,17 @@ import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
 import { defaultUniversityFilters, UniversityFilter, useUniversityFilters } from '@/hooks/filters/use-university-filters';
 import AppLayout from '@/layouts/app-layout';
+import UniversityActions from '@/pages/admin/universities/actions';
 import { universityColumns } from '@/pages/admin/universities/data/columns';
+import { DeleteUniversityDialog } from '@/pages/admin/universities/delete-dialog';
+import UniversityFilters from '@/pages/admin/universities/filters';
+import UniversityMobileRow from '@/pages/admin/universities/mobile-row';
 import { BreadcrumbItem } from '@/types';
 import { TableData } from '@/types/table';
 import { University } from '@/types/university';
 import { Head, Link } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,6 +28,8 @@ interface Props {
 
 const AdminUniversitiesIndex = ({ universities, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useUniversityFilters(incomingFilters);
+
+    const [deleteModalData, setDeleteModalData] = useState<University | null>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -42,15 +49,7 @@ const AdminUniversitiesIndex = ({ universities, filters: incomingFilters }: Prop
                     </div>
                     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
                         <Link href={route('admin.universities.create')}>
-                            <Button
-                                // onClick={() => {
-                                //     setBlogModal(null);
-                                //     setOpenBlogModal(true);
-                                // }}
-                                className="w-full sm:w-auto"
-                            >
-                                Add New University
-                            </Button>
+                            <Button className="w-full sm:w-auto">Add New University</Button>
                         </Link>
                     </div>
                 </div>
@@ -62,25 +61,17 @@ const AdminUniversitiesIndex = ({ universities, filters: incomingFilters }: Prop
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultUniversityFilters)}
                     rowId={(university) => university.id}
-                    // renderMobileRow={(expense) => (
-                    //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
-                    // )}
+                    renderMobileRow={(university) => <UniversityMobileRow university={university} />}
+                    renderActions={(university) => (
+                        <UniversityActions university={university} setUniversityModal={(university) => setDeleteModalData(university)} />
+                    )}
                     storageKey="universityTable"
                 >
-                    {/* <BlogFilters filters={filters} setFilters={setFilters} /> */}
-                    {null}
+                    <UniversityFilters filters={filters} setFilters={setFilters} />
                 </DataTable>
             </main>
 
-            {/* Modals */}
-            {/* <ExpenseModal open={!!blogModal || openBlogModal} blog={blogModal} onClose={handleCloseBlogModal} /> */}
-            {/* <DeleteRestoreModal
-                resource={deleteModal?.expense ?? null}
-                action={deleteModal?.action ?? 'delete'}
-                onClose={() => setDeleteModal(null)}
-                resourceName="expense"
-                routePrefix="expenses"
-            /> */}
+            <DeleteUniversityDialog university={deleteModalData} setUniversity={setDeleteModalData} />
         </AppLayout>
     );
 };

@@ -4,14 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 export interface UniversityFilter extends TableFilterBase {
     search: string;
-    category: string;
 }
 
 export const defaultUniversityFilters: UniversityFilter = {
     search: '',
-    category: '',
-    from: '',
-    to: '',
+    from: undefined,
+    to: undefined,
     per_page: '',
     page: '',
     sort_by: '',

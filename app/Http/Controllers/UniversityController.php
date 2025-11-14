@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\University;
 use App\Models\UniversityContent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,15 +52,50 @@ class UniversityController extends Controller
         ]);
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
+        $from = $request->from ? Carbon::parse($request->from)->startOfDay() : null;
+        $to = $request->to ? Carbon::parse($request->to)->endOfDay() : null;
+
+        $sortableColumns = ['id', 'name', 'location', 'contents', 'created_at'];
+
         $universities = University::query()
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('location', 'like', '%'.$search.'%');
+            })
+            ->when($from && $to, function ($query) use ($from, $to) {
+                $query->whereBetween('created_at', [$from, $to]);
+            })
+            ->when($request->filled('sort_by'), function ($query) use ($request, $sortableColumns) {
+                $direction = $request->sort_to === 'desc' ? 'DESC' : 'ASC';
+
+                // Sort by content count
+                if ($request->sort_by === 'contents') {
+                    $query->withCount('contents')->orderBy('contents_count', $direction);
+
+                    return;
+                }
+
+                if (in_array($request->sort_by, $sortableColumns)) {
+                    $query->orderBy($request->sort_by, $direction);
+                } else {
+                    $query->orderBy('created_at', 'desc');
+                }
+            }, fn ($query) => $query)
             ->orderBy('created_at', 'desc');
 
         $universities = $universities->paginate($request->per_page ?? 20);
 
         return Inertia::render('admin/universities/index', [
             'universities' => $universities,
+            'filters' => array_merge([
+                'search' => '',
+                'per_page' => 20,
+            ], $request->only([
+                'search',
+                'per_page',
+            ])),
         ]);
     }
 
@@ -216,6 +252,13 @@ class UniversityController extends Controller
         });
 
         return redirect()->route('admin.universities.index')->with('success', 'University updated successfully!');
+    }
+
+    public function destroy(University $university)
+    {
+        $university->delete();
+
+        return redirect()->route('admin.universities.index')->with('success', 'University deleted successfully!');
     }
 
     public function getUniversitiesList(Request $request)

@@ -59,4 +59,11 @@ class LeadsController extends Controller
 
         return redirect()->back()->with('success', 'Your message has been sent successfully.');
     }
+
+    public function adminShow(Lead $lead)
+    {
+        return inertia('admin/leads/show', [
+            'lead' => $lead,
+        ]);
+    }
 }

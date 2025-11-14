@@ -19,7 +19,7 @@ class CourseFactory extends Factory
         return [
             'faculty_id' => $this->faker->numberBetween(1, 10),
             'title' => $this->faker->sentence,
-            'study_level' => $this->faker->word,
+            'study_level' => $this->faker->randomElement(['undergraduate', 'masters', 'foundation', 'top_up', 'phd', 'doctorate']),
             'duration_months' => $this->faker->numberBetween(1, 72),
             'cover' => $this->faker->imageUrl(),
         ];

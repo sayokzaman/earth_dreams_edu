@@ -117,27 +117,27 @@ const AdminBlogShow = ({ blog }: Props) => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={blog.title} />
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2">
-                            <h2 className="border-r pr-2 text-xl font-semibold">Blog #{blog.id}</h2>
+                            <h2 className="border-r pr-2 text-xl font-semibold">{blog.title}</h2>
 
-                            <div className="flex gap-1">
+                            <div className="flex flex-wrap gap-1">
                                 <Badge className="capitalize">{'Type: ' + blog.type}</Badge>
                                 <Badge className="capitalize">{blog.category}</Badge>
                                 <Badge className="capitalize">{format(new Date(blog.date), 'dd MMM yyyy')}</Badge>
                             </div>
                         </div>
 
-                        <p className="text-sm text-muted-foreground">{blog.title}</p>
+                        <p className="text-base text-muted-foreground">Blog #{blog.id}</p>
                     </div>
                     <Button type="submit" disabled={processing}>
                         {processing ? 'Updating...' : 'Update Blog'}
                     </Button>
                 </div>
 
-                <div className="flex w-full gap-6">
-                    <div className="w-1/4">
+                <div className="flex flex-col sm:flex-row w-full gap-6">
+                    <div className="sm:w-1/4">
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Type <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -154,7 +154,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                         <InputError message={errors.type} />
                     </div>
 
-                    <div className="w-2/4">
+                    <div className="sm:w-2/4">
                         <Label htmlFor="title" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Blog Title <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -170,7 +170,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                         <InputError message={errors.title} />
                     </div>
 
-                    <div className="w-1/4">
+                    <div className="sm:w-1/4">
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Category <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -212,8 +212,8 @@ const AdminBlogShow = ({ blog }: Props) => {
                         Content
                     </Label>
 
-                    <div className="flex gap-6">
-                        <div className="w-4/12">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-sm text-red-500">*</span>
                             </Label>
@@ -254,7 +254,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                             </Button>
                         </div>
 
-                        <div className="flex w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {

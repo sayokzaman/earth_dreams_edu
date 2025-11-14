@@ -4,12 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 
 export interface BlogFilter extends TableFilterBase {
     search: string;
+    type: string;
     category: string;
+    date: string;
 }
 
 export const defaultBlogFilters: BlogFilter = {
     search: '',
+    type: '',
     category: '',
+    date: '',
     from: '',
     to: '',
     per_page: '',

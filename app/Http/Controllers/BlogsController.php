@@ -60,17 +60,27 @@ class BlogsController extends Controller
 
     public function adminIndex(Request $request)
     {
-        $sortableColumns = ['id', 'date'];
-
-        $from = $request->get('from') ?: now()->startOfMonth()->toDateString();
-        $to = $request->get('to') ?: now()->endOfMonth()->toDateString();
+        $sortableColumns = ['id', 'title', 'type', 'category', 'date'];
 
         $blogs = Blog::query()
-            ->whereBetween('date', [$from, $to])
+            ->when($request->filled('date'), function ($q) use ($request) {
+                $date = Carbon::parse($request->date)->startOfDay();
+
+                $q->whereDate('date', $date);
+            })
             ->when($request->search, function ($q) use ($request) {
                 $q->where(function ($query) use ($request) {
-                    $query->where('title', 'like', "%{$request->search}%");
+                    $query->where('title', 'like', "%{$request->search}%")
+                        ->orWhereHas('author', function ($authorQuery) use ($request) {
+                            $authorQuery->where('name', 'like', "%{$request->search}%");
+                        });
                 });
+            })
+            ->when($request->type, function ($q) use ($request) {
+                $q->where('type', $request->type);
+            })
+            ->when($request->category, function ($q) use ($request) {
+                $q->where('category', 'like', "%{$request->category}%");
             })
             ->when(
                 $request->filled('sort_by'),

@@ -7,7 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { Lead } from '@/types/lead';
 import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 const initialData = {
@@ -24,11 +27,34 @@ const initialData = {
     certify_truth: false,
 };
 
-export default function ConsultationForm() {
-    // initialize form state
+type Props = {
+    lead?: Lead;
+    isAdmin?: boolean;
+    className?: string;
+};
+
+export default function ConsultationForm({ lead, isAdmin = false, className }: Props) {
     const { data, setData, post, processing, reset, errors, clearErrors, setDefaults } = useForm(initialData);
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        if (lead) {
+            setData({
+                first_name: lead.first_name || '',
+                last_name: lead.last_name || '',
+                email: lead.email || '',
+                mobile_country_code: lead.mobile_country_code || '',
+                mobile: lead.mobile || '',
+                is_whatsapp: lead.is_whatsapp || false,
+                country_of_residence: lead.country_of_residence || '',
+                in_uk_now: lead.in_uk_now ? 'yes' : 'no',
+                study_type: lead.study_type || '',
+                subject_interested: lead.subject_interested || '',
+                certify_truth: false,
+            });
+        }
+    }, [lead, setData]);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
         post('/consultation', {
@@ -46,7 +72,7 @@ export default function ConsultationForm() {
     };
 
     return (
-        <form onSubmit={onSubmit} className="mx-auto max-w-5xl p-6">
+        <form onSubmit={handleSubmit} className={cn('mx-auto max-w-5xl p-6', className)}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                 {/* First Name */}
                 <div className="grid gap-2">
@@ -54,7 +80,7 @@ export default function ConsultationForm() {
                         First Name <span className="text-destructive">*</span>
                     </Label>
                     <Input
-                        className="rounded-2xl bg-white"
+                        className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}
                         id="first_name"
                         name="first_name"
                         placeholder="Enter the first name"
@@ -70,7 +96,7 @@ export default function ConsultationForm() {
                         Last Name <span className="text-destructive">*</span>
                     </Label>
                     <Input
-                        className="rounded-2xl bg-white"
+                        className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}
                         id="last_name"
                         name="last_name"
                         placeholder="Enter the last name"
@@ -86,7 +112,7 @@ export default function ConsultationForm() {
                         Email <span className="text-destructive">*</span>
                     </Label>
                     <Input
-                        className="rounded-2xl bg-white"
+                        className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}
                         id="email"
                         name="email"
                         type="email"
@@ -122,10 +148,10 @@ export default function ConsultationForm() {
                             value={data.mobile_country_code}
                             onValueChange={(val) => setData('mobile_country_code', val)}
                         >
-                            <SelectTrigger className="w-[92px] rounded-2xl bg-white">
+                            <SelectTrigger className={cn('w-[92px]', isAdmin ? '' : 'rounded-2xl bg-white')}>
                                 <SelectValue />
                             </SelectTrigger>
-                            <SelectContent className="rounded-2xl">
+                            <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
                                 <SelectItem value="+44">🇬🇧 +44</SelectItem>
                                 <SelectItem value="+1">🇺🇸 +1</SelectItem>
                                 <SelectItem value="+61">🇦🇺 +61</SelectItem>
@@ -136,7 +162,7 @@ export default function ConsultationForm() {
 
                         {/* Number */}
                         <Input
-                            className="flex-1 rounded-2xl bg-white"
+                            className={cn('flex-1', isAdmin ? '' : 'rounded-2xl bg-white')}
                             id="mobile"
                             name="mobile"
                             placeholder="Mobile number"
@@ -158,10 +184,10 @@ export default function ConsultationForm() {
                         value={data.country_of_residence}
                         onValueChange={(val) => setData('country_of_residence', val)}
                     >
-                        <SelectTrigger className="rounded-2xl bg-white">
+                        <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
                             <SelectValue placeholder="Select Country" />
                         </SelectTrigger>
-                        <SelectContent className="max-h-64 rounded-2xl">
+                        <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
                             <SelectItem value="bangladesh">Bangladesh</SelectItem>
                             <SelectItem value="india">India</SelectItem>
                             <SelectItem value="pakistan">Pakistan</SelectItem>
@@ -189,13 +215,13 @@ export default function ConsultationForm() {
                         onValueChange={(val) => setData('in_uk_now', val)}
                     >
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="inuk-yes" className="bg-white" />
+                            <RadioGroupItem value="yes" id="inuk-yes" className={cn(isAdmin ? '' : 'bg-white')} />
                             <Label htmlFor="inuk-yes" className="font-normal">
                                 Yes
                             </Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="inuk-no" className="bg-white" />
+                            <RadioGroupItem value="no" id="inuk-no" className={cn(isAdmin ? '' : 'bg-white')} />
                             <Label htmlFor="inuk-no" className="font-normal">
                                 No
                             </Label>
@@ -210,10 +236,10 @@ export default function ConsultationForm() {
                         Type of Study <span className="text-destructive">*</span>
                     </Label>
                     <Select name="study_type" value={data.study_type} onValueChange={(val) => setData('study_type', val)}>
-                        <SelectTrigger className="rounded-2xl bg-white">
+                        <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
                             <SelectValue placeholder="Please select" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-2xl">
+                        <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
                             <SelectItem value="foundation">Foundation</SelectItem>
                             <SelectItem value="undergraduate">Undergraduate</SelectItem>
                             <SelectItem value="postgraduate">Postgraduate</SelectItem>
@@ -230,10 +256,10 @@ export default function ConsultationForm() {
                         Subject Interested <span className="text-destructive">*</span>
                     </Label>
                     <Select name="subject_interested" value={data.subject_interested} onValueChange={(val) => setData('subject_interested', val)}>
-                        <SelectTrigger className="rounded-2xl bg-white">
+                        <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
                             <SelectValue placeholder="Please select" />
                         </SelectTrigger>
-                        <SelectContent className="max-h-64 rounded-2xl">
+                        <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
                             <SelectItem value="business">Business &amp; Management</SelectItem>
                             <SelectItem value="cs">Computer Science / Data</SelectItem>
                             <SelectItem value="engineering">Engineering</SelectItem>
@@ -257,21 +283,24 @@ export default function ConsultationForm() {
                         className="bg-white"
                     />
                     <span>
-                        I hereby certify that, to the best of my knowledge, the provided information is true and accurate. The documents provided are
-                        genuine and the applicant named above is a genuine student and intends to fulfil their student visa in its entirety.{' '}
-                        <a href="/privacy" className="text-red-600 underline underline-offset-2">
-                            Privacy Policy
-                        </a>{' '}
+                        {isAdmin ? (
+                            <span>I certify that the information provided above is true and accurate.</span>
+                        ) : (
+                            <span>
+                                I hereby certify that, to the best of my knowledge, the provided information is true and accurate. The documents
+                                provided are genuine and the applicant named above is a genuine student and intends to fulfil their student visa in
+                                its entirety.{' '}
+                                <a href="#" className="text-red-600 underline underline-offset-2">
+                                    Privacy Policy
+                                </a>{' '}
+                            </span>
+                        )}
                         <span className="text-destructive">*</span>
                     </span>
                 </label>
                 <InputError message={errors.certify_truth} />
 
-                <Button
-                    type="submit"
-                    disabled={processing}
-                    className="w-full max-w-3xl rounded-2xl bg-theme-accent text-white hover:bg-theme-accent/90 disabled:opacity-70"
-                >
+                <Button type="submit" disabled={processing} className={cn('w-full max-w-3xl disabled:opacity-70', isAdmin ? '' : 'rounded-full')}>
                     {processing ? 'Submitting…' : 'Submit'}
                 </Button>
             </div>

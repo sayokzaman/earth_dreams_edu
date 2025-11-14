@@ -18,6 +18,9 @@ export interface University {
     world_ranking: string;
     qs_ranking: string;
     scholarship: string;
+    content_count: number;
+    text_section_count?: number;
+    video_section_count?: number;
     contents?: UniversityContent[];
     created_at: string;
     updated_at: string;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Faculty;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -58,13 +59,42 @@ class CourseController extends Controller
         ]);
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $courses = Course::with('faculty')->paginate(10);
+        $from = $request->from ?? null;
+        $to = $request->to ?? null;
+
+        $sortableColumns = ['id', 'title', 'study_level', 'duration_months', 'created_at'];
+
+        $courses = Course::with('faculty')
+            ->when($request->search, function ($query, $search) {
+                $query->where('title', 'like', '%'.$search.'%')->orWhereHas('faculty', function ($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                });
+            })
+            ->when($request->study_level, function ($query, $study_level) {
+                $query->where('study_level', $study_level);
+            })
+            ->when(in_array($request->sort_by, $sortableColumns), function ($query) use ($request) {
+                $direction = $request->sort_to === 'desc' ? 'desc' : 'asc';
+                $query->orderBy($request->sort_by, $direction);
+            }, function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })
+            ->when($from && $to, function ($query) use ($from, $to) {
+                $query->whereBetween('duration_months', [$from, $to]);
+            })
+            ->paginate($request->per_page ?? 20);
 
         return inertia('admin/courses/index', [
             'courses' => $courses,
-            'filters' => request()->all('search', 'trashed'),
+            'filters' => array_merge([
+                'search' => '',
+                'per_page' => 20,
+            ], $request->only([
+                'search',
+                'per_page',
+            ])),
         ]);
     }
 
@@ -192,6 +222,13 @@ class CourseController extends Controller
         });
 
         return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
+    }
+
+    public function destroy(Course $course)
+    {
+        $course->delete();
+
+        return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully.');
     }
 
     public function foundationCourses()

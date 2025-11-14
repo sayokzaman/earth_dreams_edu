@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 export interface CourseFilter extends TableFilterBase {
     search: string;
-    category: string;
+    study_level: string;
 }
 
 export const defaultCourseFilters: CourseFilter = {
     search: '',
-    category: '',
+    study_level: '',
     from: '',
     to: '',
     per_page: '',

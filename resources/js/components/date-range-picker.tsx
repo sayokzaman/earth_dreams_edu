@@ -110,7 +110,7 @@ export default function DateRangePicker({ value, onChange, placeholder, alignIco
                 <Button
                     variant="outline"
                     className={cn(
-                        'flex w-full justify-start font-normal',
+                        'flex h-9 w-full justify-start font-normal',
                         !value?.from && !value?.to ? 'text-muted-foreground' : '',
                         alignIcon === 'end' && 'flex-row-reverse',
                     )}

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
+import { DeleteUniversityDialog } from '@/pages/admin/universities/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { University, UniversityContent } from '@/types/university';
 import { Head, useForm } from '@inertiajs/react';
@@ -36,6 +37,8 @@ const ShowUniversity = ({ university }: Props) => {
     const [coverPreview, setCoverPreview] = useState<string>('');
 
     const { data, setData, post, processing, errors, reset, clearErrors, setDefaults } = useForm(initialData);
+
+    const [deleteModalData, setDeleteModalData] = useState<University | null>(null);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -126,18 +129,27 @@ const ShowUniversity = ({ university }: Props) => {
             <Head title={university.name} />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
                     <div>
                         <h2 className="text-xl font-semibold">{university.name}</h2>
                         <p className="text-muted-foreground">{university.location}</p>
                     </div>
-                    <Button type="submit" disabled={processing}>
-                        {processing ? 'Update...' : 'Update University'}
-                    </Button>
+
+                    <div className="flex justify-end gap-2">
+                        <Button type="submit" disabled={processing}>
+                            {processing ? 'Update...' : 'Update University'}
+                        </Button>
+
+                        <Button type="button" variant="destructive" disabled={processing} onClick={() => setDeleteModalData(university)}>
+                            {processing ? 'Deleting...' : 'Delete University'}
+                        </Button>
+
+                        <DeleteUniversityDialog university={deleteModalData} setUniversity={setDeleteModalData} />
+                    </div>
                 </div>
 
-                <div className="flex w-full gap-6">
-                    <div className="w-1/2">
+                <div className="flex flex-col sm:flex-row w-full gap-6">
+                    <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 block text-lg font-medium">
                             Name
                         </Label>
@@ -153,7 +165,7 @@ const ShowUniversity = ({ university }: Props) => {
                         <InputError message={errors.name} />
                     </div>
 
-                    <div className="w-1/2">
+                    <div className="sm:w-1/2">
                         <Label htmlFor="location" className="mb-1 block text-lg font-medium">
                             Location
                         </Label>
@@ -187,7 +199,7 @@ const ShowUniversity = ({ university }: Props) => {
                 </div>
 
                 {data.location_url ? (
-                    <div className="relative hidden h-full w-full overflow-hidden rounded-2xl sm:block sm:h-80">
+                    <div className="relative h-full w-full overflow-hidden rounded-2xl sm:h-80">
                         <iframe
                             src={data?.location_url}
                             width="100%"
@@ -198,8 +210,8 @@ const ShowUniversity = ({ university }: Props) => {
                     </div>
                 ) : null}
 
-                <div className="flex gap-6">
-                    <div className="w-1/4">
+                <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="lg:w-1/4">
                         <Label htmlFor="cover-image" className="mb-1 block text-lg font-medium">
                             Logo
                         </Label>
@@ -217,7 +229,7 @@ const ShowUniversity = ({ university }: Props) => {
                         <InputError message={errors.logo} />
                     </div>
 
-                    <div className="w-3/4">
+                    <div className="lg:w-3/4">
                         <Label htmlFor="cover-image" className="mb-1 block text-lg font-medium">
                             Cover Image
                         </Label>
@@ -228,6 +240,7 @@ const ShowUniversity = ({ university }: Props) => {
                                 setData('cover', file); // ✅ Inertia will send this file
                                 setCoverPreview(previewUrl ?? '');
                             }}
+                            aspectClass={'aspect-[16/9] sm:aspect-[3/1]'}
                         />
                         <InputError message={errors.cover} />
                     </div>
@@ -235,7 +248,7 @@ const ShowUniversity = ({ university }: Props) => {
 
                 <div>
                     <Label className="mb-1 block text-lg font-medium">Rankings</Label>
-                    <div className="grid grid-cols-5 gap-4 pt-2">
+                    <div className="grid lg:grid-cols-5 gap-4 pt-2">
                         <div>
                             <Label className="mb-1 block text-sm font-medium">Founding Year</Label>
                             <Input value={data.founded} onChange={(e) => setData('founded', e.target.value)} className="bg-muted/60" />
@@ -272,8 +285,8 @@ const ShowUniversity = ({ university }: Props) => {
                         Content
                     </Label>
 
-                    <div className="flex gap-6">
-                        <div className="w-4/12">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">Sections</Label>
                             <div className={cn('flex flex-col gap-4', data.content.length > 0 && 'mb-6')}>
                                 {data.content.map((content, index) => (
@@ -289,7 +302,11 @@ const ShowUniversity = ({ university }: Props) => {
                                             className="w-full bg-muted/60"
                                         />
 
-                                        <Select value={content.type} onValueChange={(value) => handleSectionChange(index, 'type', value)} defaultValue="text">
+                                        <Select
+                                            value={content.type}
+                                            onValueChange={(value) => handleSectionChange(index, 'type', value)}
+                                            defaultValue="text"
+                                        >
                                             <SelectTrigger className="w-5/12 bg-muted/60">
                                                 <SelectValue placeholder="Select Type" />
                                             </SelectTrigger>
@@ -316,7 +333,7 @@ const ShowUniversity = ({ university }: Props) => {
                             </Button>
                         </div>
 
-                        <div className="flex w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {

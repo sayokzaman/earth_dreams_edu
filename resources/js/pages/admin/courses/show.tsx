@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
+import { DeleteCourseDialog } from '@/pages/admin/courses/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { Course, CourseContent } from '@/types/course';
 import { Faculty } from '@/types/faculty';
@@ -43,6 +44,20 @@ const CreateCourse = ({ course }: Props) => {
         },
     ];
 
+    const [deleteModalData, setDeleteModalData] = useState<Course | null>(null);
+
+    const [coverPreview, setCoverPreview] = useState<string>('');
+
+    const [faculties, setFaculties] = useState<Faculty[]>([]);
+    const [search, setSearch] = useState('');
+
+    const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(course.faculty || null);
+
+    const [open, setOpen] = useState(false);
+
+    const widthRef = useRef<HTMLButtonElement>(null);
+    const [contentWidth, setContentWidth] = useState(widthRef.current?.offsetWidth || 0);
+
     useEffect(() => {
         if (course) {
             setData({
@@ -62,25 +77,6 @@ const CreateCourse = ({ course }: Props) => {
         }
     }, [course, setData]);
 
-    const [coverPreview, setCoverPreview] = useState<string>('');
-
-    const [faculties, setFaculties] = useState<Faculty[]>([]);
-    const [search, setSearch] = useState('');
-
-    const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(course.faculty || null);
-
-    const [open, setOpen] = useState(false);
-
-    const widthRef = useRef<HTMLButtonElement>(null);
-    const [contentWidth, setContentWidth] = useState(widthRef.current?.offsetWidth || 0);
-
-    useEffect(() => {
-        if (widthRef.current) {
-            const width = widthRef.current.offsetWidth;
-            setContentWidth(width);
-        }
-    }, [widthRef]);
-
     useEffect(() => {
         const fetchFaculties = async () => {
             try {
@@ -95,6 +91,13 @@ const CreateCourse = ({ course }: Props) => {
 
         fetchFaculties();
     }, [search]);
+
+    useEffect(() => {
+        if (widthRef.current) {
+            const width = widthRef.current.offsetWidth;
+            setContentWidth(width);
+        }
+    }, [widthRef]);
 
     const handleAddNewSection = () => {
         setData('contents', [
@@ -160,18 +163,26 @@ const CreateCourse = ({ course }: Props) => {
             <Head title={`Edit ${course.title}`} />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h2 className="text-xl font-semibold">{course.title}</h2>
                         <p className="text-sm text-muted-foreground">Faculty: {course.faculty?.name}</p>
                     </div>
-                    <Button type="submit" disabled={processing}>
-                        {processing ? 'Updating...' : 'Update Course'}
-                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
+                        <Button type="submit" disabled={processing}>
+                            {processing ? 'Updating...' : 'Update Course'}
+                        </Button>
+
+                        <Button type="button" variant="destructive" disabled={processing} onClick={() => setDeleteModalData(course)}>
+                            {processing ? 'Deleting...' : 'Delete Course'}
+                        </Button>
+                    </div>
+
+                    <DeleteCourseDialog course={deleteModalData} setCourse={setDeleteModalData} />
                 </div>
 
-                <div className="flex gap-4">
-                    <div className="w-1/2">
+                <div className="flex flex-col gap-4 sm:flex-row">
+                    <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Course Title <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -187,7 +198,7 @@ const CreateCourse = ({ course }: Props) => {
                         <InputError className="text-xs" message={errors.title} />
                     </div>
 
-                    <div className="w-1/2">
+                    <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Faculty <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -247,8 +258,8 @@ const CreateCourse = ({ course }: Props) => {
                     </div>
                 </div>
 
-                <div className="flex gap-4">
-                    <div className="w-1/2">
+                <div className="flex flex-col gap-4 sm:flex-row">
+                    <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Study Level <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -270,7 +281,7 @@ const CreateCourse = ({ course }: Props) => {
                         <InputError className="text-xs" message={errors.study_level} />
                     </div>
 
-                    <div className="flex w-1/2 gap-4">
+                    <div className="flex gap-4 sm:w-1/2">
                         <div className="w-1/2">
                             <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                                 Duration <span className="text-sm text-red-500">*</span>
@@ -328,8 +339,8 @@ const CreateCourse = ({ course }: Props) => {
                         Content
                     </Label>
 
-                    <div className="flex gap-6">
-                        <div className="w-4/12">
+                    <div className="flex flex-col gap-6 lg:flex-row">
+                        <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-sm text-red-500">*</span>
                             </Label>
@@ -380,7 +391,7 @@ const CreateCourse = ({ course }: Props) => {
                             <InputError className="text-xs" message={errors.contents} />
                         </div>
 
-                        <div className="flex w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.contents.length > 0 ? (
                                 data.contents.map((content, index) => {
                                     if (content.type === 'video') {

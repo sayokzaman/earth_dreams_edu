@@ -86,6 +86,7 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [UniversityController::class, 'store'])->name('store');
             Route::get('/{university}', [UniversityController::class, 'adminShow'])->name('show');
             Route::post('/{university}/update', [UniversityController::class, 'update'])->name('update');
+            Route::delete('/{university}', [UniversityController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('/courses')->name('admin.courses.')->group(function () {
@@ -94,6 +95,7 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [CourseController::class, 'store'])->name('store');
             Route::get('/{course}', [CourseController::class, 'adminShow'])->name('show');
             Route::post('/{course}/update', [CourseController::class, 'update'])->name('update');
+            Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('/faculties')->name('admin.faculties.')->group(function () {
@@ -111,6 +113,7 @@ Route::domain($adminDomain)->group(function () {
 
         Route::prefix('/leads')->name('admin.leads.')->group(function () {
             Route::get('/', [LeadsController::class, 'adminIndex'])->name('index');
+            Route::get('/{lead}', [LeadsController::class, 'adminShow'])->name('show');
         });
     });
 });

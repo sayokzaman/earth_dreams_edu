@@ -23,8 +23,34 @@ class University extends Model
         'scholarship',
     ];
 
+    protected $appends = [
+        'content_count',
+        'text_section_count',
+        'video_section_count',
+    ];
+
     public function contents()
     {
         return $this->hasMany(UniversityContent::class);
+    }
+
+    public function getContentCountAttribute()
+    {
+        return $this->contents()->count();
+    }
+
+    public function getTextSectionCountAttribute()
+    {
+        return $this->contents()->where('type', 'text')->count();
+    }
+
+    public function getVideoSectionCountAttribute()
+    {
+        return $this->contents()->where('type', 'video')->count();
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

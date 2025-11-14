@@ -2,12 +2,17 @@ import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
 import { CourseFilter, defaultCourseFilters, useCourseFilters } from '@/hooks/filters/use-course-filters';
 import AppLayout from '@/layouts/app-layout';
+import CourseActions from '@/pages/admin/courses/actions';
 import { courseColumns } from '@/pages/admin/courses/data/colums';
+import { DeleteCourseDialog } from '@/pages/admin/courses/delete-dialog';
 import FacultyModal from '@/pages/admin/courses/faculty-modal';
+import CourseFilters from '@/pages/admin/courses/filters'
 import { BreadcrumbItem } from '@/types';
 import { Course } from '@/types/course';
+import { TableData } from '@/types/table';
 import { Head, Link } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,12 +22,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type Props = {
-    courses: any; // Replace 'any' with the actual type of courses data
-    filters: any; // Replace 'any' with the actual type of filters data
+    courses: TableData<Course>;
+    filters: Partial<typeof defaultCourseFilters>;
 };
 
 const CourseIndex = ({ courses, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useCourseFilters(incomingFilters);
+    const [deleteModalData, setDeleteModalData] = useState<Course | null>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -56,11 +62,14 @@ const CourseIndex = ({ courses, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultCourseFilters)}
                     rowId={(course) => course.id}
+                    renderActions={(course) => <CourseActions course={course} setCourseModal={(course) => setDeleteModalData(course)} />}
                     storageKey="courseTable"
                 >
-                    {null}
+                    <CourseFilters filters={filters} setFilters={setFilters} />
                 </DataTable>
             </main>
+
+            <DeleteCourseDialog course={deleteModalData} setCourse={setDeleteModalData} />
         </AppLayout>
     );
 };

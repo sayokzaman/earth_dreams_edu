@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Faculty } from '@/types/faculty';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { ListIcon } from 'lucide-react';
+import { ListIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const FacultyModal = () => {
@@ -50,7 +50,7 @@ const FacultyModal = () => {
                     List Faculties
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="h-screen min-w-screen overflow-auto rounded-none sm:h-auto sm:min-w-auto sm:rounded-lg">
                 <DialogHeader>
                     <DialogTitle>Add New Faculty</DialogTitle>
                     <DialogDescription />
@@ -72,14 +72,20 @@ const FacultyModal = () => {
                         <ul className="mt-2 flex flex-col gap-2 overflow-y-auto sm:max-h-140">
                             {faculties && faculties.length > 0 ? (
                                 faculties.map((faculty) => (
-                                    <li key={faculty.id} className="mr-2 rounded-md border bg-accent px-4 py-2">
-                                        <p className="text-xs font-bold text-muted-foreground">Name</p>
-                                        <p className="font-bold">{faculty.name}</p>
+                                    <li key={faculty.id} className="mr-2 rounded-md border px-4 py-2 flex items-center justify-between">
+                                        <div>
+                                            <p className="text-xs font-bold text-muted-foreground">Faculty Name</p>
+                                            <p className="font-bold">{faculty.name}</p>
 
-                                        <div className="mt-2 flex items-center gap-1 text-sm">
-                                            <p className="text-xs font-bold text-muted-foreground">Number of Courses: </p>
-                                            <p className="text-sm font-bold">{faculty.course_count || 0}</p>
+                                            <div className="mt-2 flex items-center gap-1 text-sm">
+                                                <p className="text-xs font-bold text-muted-foreground">Number of Courses: </p>
+                                                <p className="text-sm font-bold">{faculty.course_count || 0}</p>
+                                            </div>
                                         </div>
+
+                                        <Button size={'icon'} variant={'destructive'}>
+                                            <Trash2Icon className="h-4 w-4" />
+                                        </Button>
                                     </li>
                                 ))
                             ) : (

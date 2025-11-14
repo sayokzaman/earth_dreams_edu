@@ -86,15 +86,15 @@ const CreateBlog = () => {
             <Head title="Create New Blog" />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
                     <h2 className="text-xl font-semibold">New Blog</h2>
                     <Button type="submit" disabled={processing}>
                         {processing ? 'Creating...' : 'Create New Blog'}
                     </Button>
                 </div>
 
-                <div className="flex w-full gap-6">
-                    <div className="w-1/4">
+                <div className="flex flex-col sm:flex-row w-full gap-6">
+                    <div className="sm:w-1/4">
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Type <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -110,7 +110,7 @@ const CreateBlog = () => {
                         </Select>
                     </div>
 
-                    <div className="w-2/4">
+                    <div className="sm:w-2/4">
                         <Label htmlFor="title" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Blog Title <span className="text-sm text-red-500">*</span>
                         </Label>
@@ -126,7 +126,7 @@ const CreateBlog = () => {
                         <InputError message={errors.title} />
                     </div>
 
-                    <div className="w-1/4">
+                    <div className="sm:w-1/4">
                         <Label htmlFor="category" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Category <span className="sm text-red-500">*</span>
                         </Label>
@@ -166,8 +166,8 @@ const CreateBlog = () => {
                         Content
                     </Label>
 
-                    <div className="flex gap-6">
-                        <div className="w-4/12">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-red-500">*</span>
                             </Label>
@@ -214,7 +214,7 @@ const CreateBlog = () => {
                             <InputError message={errors.content} />
                         </div>
 
-                        <div className="flex w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {
