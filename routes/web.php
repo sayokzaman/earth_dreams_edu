@@ -132,7 +132,7 @@ Route::domain($adminDomain)->group(function () {
             Route::prefix('/users')->name('admin.users.')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('index');
                 Route::post('/', [UserController::class, 'store'])->name('store');
-                Route::post('/{user}/update', [UserController::class, 'update'])->name('update');
+                Route::patch('/{user}/update', [UserController::class, 'update'])->name('update');
                 Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
             });
         });

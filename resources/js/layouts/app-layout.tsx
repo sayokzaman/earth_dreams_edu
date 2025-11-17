@@ -12,8 +12,6 @@ interface AppLayoutProps {
 export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
     const { auth } = usePage<SharedData>().props;
 
-    console.log('User in AppLayout:', auth.user);
-
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
             {children}

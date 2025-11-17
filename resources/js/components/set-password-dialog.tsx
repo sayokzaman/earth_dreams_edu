@@ -13,13 +13,7 @@ export function SetPasswordDialog() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Submitting password:', data);
-
-        post(route('invites.setPassword'), {
-            onSuccess: () => {
-                //
-            },
-        });
+        post(route('invites.setPassword'));
     };
 
     return (

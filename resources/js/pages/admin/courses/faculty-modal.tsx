@@ -22,7 +22,6 @@ const FacultyModal = () => {
                 const response = await axios.get(route('admin.faculties.index'), {
                     params: { search: data.name },
                 });
-                console.log('Fetched faculties:', response.data);
                 setFaculties(response.data.faculties);
             } catch (error) {
                 console.error('Error fetching faculties:', error);

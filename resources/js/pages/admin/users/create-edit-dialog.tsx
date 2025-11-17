@@ -4,7 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+
+type Props = {
+    user: User | null;
+    setModalData: (user: User | null) => void;
+};
 
 const initialData = {
     name: '',
@@ -13,14 +20,34 @@ const initialData = {
     roles: [] as string[],
 };
 
-const CreateUserDialog = () => {
-    const { data, setData, post, processing, reset, setDefaults, clearErrors, errors } = useForm(initialData);
+const CreateEditUserDialog = ({ user, setModalData }: Props) => {
+    const { data, setData, post, patch, processing, reset, setDefaults, clearErrors, errors } = useForm(initialData);
+
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            setData({
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                roles: user.roles ? user.roles.map((role) => role.name) : [],
+            });
+        }
+    }, [user, setData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post(route('admin.users.store'), {
+        const method = user ? 'patch' : 'post';
+
+        const action = user ? route('admin.users.update', user.id) : route('admin.users.store');
+
+        (method === 'post' ? post : patch)(action, {
+            method: method,
             onSuccess: () => {
+                setOpen(false);
+                setModalData(null);
                 reset();
                 clearErrors();
                 setDefaults(initialData);
@@ -28,7 +55,16 @@ const CreateUserDialog = () => {
         });
     };
     return (
-        <Dialog>
+        <Dialog
+            open={open || user !== null}
+            onOpenChange={(v) => {
+                setOpen(v);
+                setModalData(null);
+                reset();
+                clearErrors();
+                setDefaults(initialData);
+            }}
+        >
             <DialogTrigger asChild>
                 <Button className="w-full sm:w-auto">Add New User</Button>
             </DialogTrigger>
@@ -114,7 +150,7 @@ const CreateUserDialog = () => {
                         </DialogClose>
 
                         <Button type="submit" disabled={processing}>
-                            Create User
+                            {user ? 'Update User' : 'Create User'}
                         </Button>
                     </div>
                 </form>
@@ -123,4 +159,4 @@ const CreateUserDialog = () => {
     );
 };
 
-export default CreateUserDialog;
+export default CreateEditUserDialog;

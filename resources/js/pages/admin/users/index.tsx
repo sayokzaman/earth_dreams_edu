@@ -1,8 +1,10 @@
 import { DataTable } from '@/components/table/data-table';
 import { UserFilter, defaultUserFilters, useUserFilters } from '@/hooks/filters/use-user-filters';
 import AppLayout from '@/layouts/app-layout';
-import CreateUserDialog from '@/pages/admin/users/create-dialog';
+import UserActions from '@/pages/admin/users/actions';
+import CreateEditUserDialog from '@/pages/admin/users/create-edit-dialog';
 import { userColumns } from '@/pages/admin/users/data/columns';
+import { DeleteUserDialog } from '@/pages/admin/users/delete-dialog';
 import { BreadcrumbItem, User } from '@/types';
 import { TableData } from '@/types/table';
 import { Head } from '@inertiajs/react';
@@ -24,6 +26,7 @@ interface Props {
 const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useUserFilters(incomingFilters);
 
+    const [createEditModalData, setCreateEditModalData] = useState<User | null>(null);
     const [deleteModalData, setDeleteModalData] = useState<User | null>(null);
 
     return (
@@ -41,7 +44,7 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                             </span>
                         </p>
                     </div>
-                    <CreateUserDialog />
+                    <CreateEditUserDialog user={createEditModalData} setModalData={setCreateEditModalData} />
                 </div>
 
                 <DataTable<User, UserFilter>
@@ -54,14 +57,20 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                     // renderMobileRow={(expense) => (
                     //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
                     // )}
-                    // renderActions={(user) => <UserActions user={user} setUserModal={(user) => setDeleteModalData(user)} />}
+                    renderActions={(user) => (
+                        <UserActions
+                            user={user}
+                            setDeleteModalData={(user) => setDeleteModalData(user)}
+                            setCreateEditModalData={(user) => setCreateEditModalData(user)}
+                        />
+                    )}
                     storageKey="usersTable"
                 >
                     {/* <UserFilters filters={filters} setFilters={setFilters} /> */}
                 </DataTable>
             </main>
 
-            {/* <DeleteUserDialog user={deleteModalData} setUser={setDeleteModalData} /> */}
+            <DeleteUserDialog user={deleteModalData} setUser={setDeleteModalData} />
         </AppLayout>
     );
 };
