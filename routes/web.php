@@ -4,10 +4,12 @@ use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\StudyInUKController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UniversityController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 $publicDomain = config('app.domain');
@@ -125,7 +127,22 @@ Route::domain($adminDomain)->group(function () {
             Route::get('/', [SubjectController::class, 'getSubjects'])->name('list');
             Route::post('/', [SubjectController::class, 'store'])->name('store');
         });
+
+        Route::middleware('role:admin')->group(function () {
+            Route::prefix('/users')->name('admin.users.')->group(function () {
+                Route::get('/', [UserController::class, 'index'])->name('index');
+                Route::post('/', [UserController::class, 'store'])->name('store');
+                Route::post('/{user}/update', [UserController::class, 'update'])->name('update');
+                Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+            });
+        });
     });
+
+    Route::get('/invite/accept/{token}', [InviteController::class, 'accept'])
+        ->name('invites.accept');
+
+    Route::post('/invite/set-password', [InviteController::class, 'setPassword'])
+        ->name('invites.setPassword');
 });
 
 require __DIR__.'/settings.php';

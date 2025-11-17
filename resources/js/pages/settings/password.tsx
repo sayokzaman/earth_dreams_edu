@@ -34,7 +34,9 @@ export default function Password() {
                         method="put"
                         action={route('password.update')}
                         options={{
+                            preserveState: true,
                             preserveScroll: true,
+                            replace: true,
                         }}
                         resetOnError={['password', 'password_confirmation', 'current_password']}
                         resetOnSuccess
