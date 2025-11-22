@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\University;
 use Inertia\Inertia;
 
@@ -9,11 +10,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // get universities in random order
         $universities = University::inRandomOrder()->limit(18)->get();
 
-        return Inertia::render('public/home/index',[
-            'universities' => $universities
+        $blogs = Blog::where('type', 'blog')->latest()->limit(3)->with('contents')->get();
+        $news = Blog::where('type', 'news')->latest()->limit(3)->with('contents')->get();
+
+        return Inertia::render('public/home/index', [
+            'universities' => $universities,
+            'blogs' => $blogs,
+            'news' => $news,
         ]);
     }
 

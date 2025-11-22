@@ -15,7 +15,7 @@ class BlogSeeder extends Seeder
     {
         // Create 10 blogs, each with 3–6 content blocks
         Blog::factory()
-            ->count(10)
+            ->count(30)
             ->create([
                 'date' => now()->subDays(rand(0, now()->daysInMonth - 1))->toDateString(),
             ])

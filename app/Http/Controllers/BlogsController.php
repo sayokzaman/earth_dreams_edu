@@ -16,10 +16,8 @@ class BlogsController extends Controller
     {
         $blogs = Blog::query()->with('contents')
             ->when($request->filled('date'), function ($q) use ($request) {
-                // Parse the incoming date safely
                 $date = Carbon::parse($request->date)->toDateString();
 
-                // Compare only the date portion, ignoring time
                 $q->whereDate('date', $date);
             })
             ->when($request->searchBlog, function ($q) use ($request) {
@@ -102,6 +100,19 @@ class BlogsController extends Controller
 
         return inertia('admin/blogs/index', [
             'blogs' => $blogs,
+            'filters' => array_merge([
+                'date' => null,
+                'search' => '',
+                'type' => '',
+                'category' => '',
+                'per_page' => 20,
+            ], $request->only([
+                'date',
+                'search',
+                'type',
+                'category',
+                'per_page',
+            ])),
         ]);
     }
 

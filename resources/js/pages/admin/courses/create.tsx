@@ -57,7 +57,7 @@ const CreateCourse = () => {
             const width = widthRef.current.offsetWidth;
             setContentWidth(width);
         }
-    }, [widthRef]);
+    }, [widthRef.current?.offsetWidth]);
 
     useEffect(() => {
         const fetchFaculties = async () => {

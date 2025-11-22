@@ -36,7 +36,7 @@ const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) 
                 muted
                 playsInline
                 onEnded={handleEnded}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full bg-accent-foreground object-cover"
             />
             <Wrapper className="relative bg-gradient-to-b from-accent-foreground/10 from-40% to-accent-foreground/80">
                 <div className="flex w-full flex-col gap-8 pt-40 pb-24 text-gray-100 sm:gap-6 sm:pt-68 sm:pb-14">

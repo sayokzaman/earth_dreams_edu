@@ -90,7 +90,10 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                     position: 'top-center',
                     invert: true,
                 });
+                clearErrors();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 
@@ -321,12 +324,13 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                             <span>I certify that the information provided above is true and accurate.</span>
                         ) : (
                             <span>
-                                I hereby certify that, to the best of my knowledge, the provided information is true and accurate. The documents
+                                I hereby certify that, to the best of my knowledge, the provided information is true and accurate. 
+                                {/* The documents
                                 provided are genuine and the applicant named above is a genuine student and intends to fulfil their student visa in
                                 its entirety.{' '}
                                 <a href="#" className="text-red-600 underline underline-offset-2">
                                     Privacy Policy
-                                </a>{' '}
+                                </a>{' '} */}
                             </span>
                         )}
                         <span className="text-destructive">*</span>

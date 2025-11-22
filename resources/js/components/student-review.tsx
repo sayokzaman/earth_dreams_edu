@@ -122,7 +122,15 @@ function StudentReviews() {
 
     return (
         <section className="w-full">
-            <h2 className="mb-8 text-center text-3xl font-bold">What our students say</h2>
+            <div className="mb-4 flex flex-col items-center gap-4">
+                <h2 className="text-center text-4xl font-extrabold">
+                    <span className="text-theme-accent/80">Student</span> <span className="text-theme-secondary/80">Reviews</span>
+                </h2>
+
+                <p className="text-center text-theme-foreground lg:w-1/2 sm:text-lg">
+                    Hear from our students about their experiences studying abroad with our assistance and support.
+                </p>
+            </div>
 
             <Carousel plugins={[plugin]} opts={{ loop: true }} className="relative w-full">
                 <CarouselContent>

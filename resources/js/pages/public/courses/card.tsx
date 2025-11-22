@@ -7,7 +7,7 @@ import { Course } from '@/types/course';
 import { BookIcon, ChartNoAxesGanttIcon, GraduationCapIcon, HourglassIcon, ImageOff } from 'lucide-react';
 import * as React from 'react';
 
-interface UniversityCardProps {
+interface CourseCardProps {
     course: Course;
     className?: string;
 }
@@ -34,7 +34,7 @@ function SafeImg({
     );
 }
 
-export default function UniversityCard({ course, className }: UniversityCardProps) {
+export default function CourseCard({ course, className }: CourseCardProps) {
     const textContent = course.contents.find((c) => c.type === 'text')?.paragraph || '';
 
     return (
@@ -43,11 +43,11 @@ export default function UniversityCard({ course, className }: UniversityCardProp
                 className={`group flex-col gap-3 overflow-hidden rounded-2xl border pt-0 shadow-sm transition hover:shadow-md sm:flex-row sm:gap-6 sm:pt-6 ${className}`}
             >
                 {/* Cover */}
-                <div className="relative flex h-40 w-full items-center justify-center overflow-hidden sm:h-full sm:w-4/12 sm:pl-6">
+                <div className="relative flex h-40 w-full items-center justify-center overflow-hidden sm:h-full sm:w-4/12 sm:pl-4">
                     <SafeImg
                         src={course.cover}
                         alt={`${course.title} cover image`}
-                        className="h-full w-fit object-cover shadow-sm sm:border transition-transform duration-500 sm:mb-6 sm:aspect-video sm:h-50 sm:rounded-lg"
+                        className="h-full w-fit object-cover shadow-sm transition-transform duration-500 sm:mb-6 sm:aspect-video sm:h-50 sm:rounded-lg sm:border"
                     />
 
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-black/20 to-transparent sm:hidden" />
@@ -109,7 +109,7 @@ export default function UniversityCard({ course, className }: UniversityCardProp
 }
 
 // Optional: lightweight skeleton for loading states
-export function UniversityCardSkeleton() {
+export function CourseCardSkeleton() {
     return (
         <Card className="overflow-hidden rounded-2xl">
             <div className="h-40 w-full animate-pulse bg-muted" />
