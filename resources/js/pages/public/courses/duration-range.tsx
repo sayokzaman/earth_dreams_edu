@@ -42,7 +42,7 @@ export function DurationRangeFilter({ filters, setFilters }: Props) {
             />
 
             <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
-                {['1m', '6m', '1y', '2y', '3y', '4y', '5y', '6y'].map((k) => (
+                {['1m', '6y'].map((k) => (
                     <span key={k}>{k}</span>
                 ))}
             </div>
