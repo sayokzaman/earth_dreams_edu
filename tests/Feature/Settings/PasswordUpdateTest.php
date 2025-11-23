@@ -16,6 +16,7 @@ class PasswordUpdateTest extends TestCase
         $user = User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '1234567890',
             'password' => bcrypt('password'),
         ]);
 
@@ -40,6 +41,7 @@ class PasswordUpdateTest extends TestCase
         $user = User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '1234567890',
             'password' => bcrypt('password'),
         ]);
 

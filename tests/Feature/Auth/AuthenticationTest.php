@@ -48,6 +48,7 @@ class AuthenticationTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
+            'phone' => '1234567890',
         ]);
 
         $response = $this->actingAs($user)->post(route('logout'));
