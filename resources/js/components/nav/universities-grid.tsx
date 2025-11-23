@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { University } from '@/types/university';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import axios from 'axios';
 import useEmblaCarousel from 'embla-carousel-react';
-import { ListIcon, Search } from 'lucide-react';
+import { ListIcon, MapPinIcon, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function UniversitiesGrid() {
@@ -73,19 +73,28 @@ export default function UniversitiesGrid() {
         return arr;
     }, [universities]);
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.visit(route('public.universities.index', { searchUniversity: query }));
+    };
+
     return (
         <div className="w-[72vw]">
-            {/* Search + quick links */}
             <div className="flex flex-col gap-2">
-                <div className="relative mx-4 mt-4">
-                    <Search className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" size={18} />
-                    <input
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search university…"
-                        className="w-full rounded-3xl border bg-white/70 px-9 py-2 text-sm ring-0 transition outline-none focus:border-theme focus:bg-white"
-                    />
-                </div>
+                <form className="mx-4 mt-4 flex items-center gap-2" onSubmit={handleSubmit}>
+                    <div className="relative w-full">
+                        <Search className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" size={18} />
+                        <input
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="Search universities…"
+                            className="w-full rounded-3xl border bg-white/70 px-9 py-2 text-sm ring-0 transition outline-none focus:border-theme focus:bg-white"
+                        />
+                    </div>
+                    <Button type="submit" variant={'secondary'} className="h-9 rounded-3xl">
+                        Search
+                    </Button>
+                </form>
 
                 <div className="grid grid-cols-2 gap-1 px-4 py-2">
                     {quickLinks.map((item) => (
@@ -107,46 +116,36 @@ export default function UniversitiesGrid() {
                 </div>
             </div>
 
-            <div className="w-full text-center font-semibold border-b pb-2 mb-2 text-muted-foreground">{query ? 'Search Results' : 'Featured Universities'}</div>
-            {/* Featured carousel (optional) */}
+            <div className="mb-2 w-full border-b pb-2 text-center font-semibold text-muted-foreground">
+                {query ? 'Search Results' : 'Featured Universities'}
+            </div>
             {universities.length > 0 && query === '' ? (
-                <div>
-                    <div className="relative flex flex-col items-center gap-4 px-4 pb-4">
-                        <div className="overflow-hidden" ref={emblaRef}>
-                            <div className="flex">
-                                {slides.map((group, i) => (
-                                    <div key={i} className="w-full flex-none p-2">
-                                        <div
-                                            className={cn(
-                                                'grid justify-center gap-4',
-                                                universities.length <= 4 ? `grid-cols-${universities.length}` : 'grid-cols-4',
-                                            )}
-                                        >
-                                            {group.map((uni) => (
-                                                <Link
-                                                    key={uni.name}
-                                                    href={route('public.universities.show', uni.name)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex h-24 flex-col items-center justify-center gap-2 rounded-xl bg-white shadow transition hover:scale-105 sm:h-28"
-                                                >
-                                                    <img src={uni.logo} alt={uni.name} className="h-full max-h-16 object-contain" />
-                                                    <p className="line-clamp-2 px-4 text-center text-xs font-bold text-theme-foreground">
-                                                        {uni.name}
-                                                    </p>
-                                                </Link>
-                                            ))}
-                                        </div>
+                <div className="relative flex flex-col items-center gap-4 px-4 pb-4">
+                    <div className="overflow-hidden" ref={emblaRef}>
+                        <div className="flex">
+                            {slides.map((group, i) => (
+                                <div key={i} className="w-full flex-none p-2">
+                                    <div
+                                        className={cn(
+                                            'grid justify-center gap-4',
+                                            universities.length <= 4 ? `grid-cols-${universities.length}` : 'grid-cols-4',
+                                        )}
+                                    >
+                                        {group.map((uni) => (
+                                            <UniversityCard key={uni.name} uni={uni} />
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
+                    </div>
 
+                    <Link href={route('public.universities.index')}>
                         <Button variant={'secondary'} className="rounded-3xl">
                             <ListIcon className="h-5 w-5" />
                             Show List of All Universities
                         </Button>
-                    </div>
+                    </Link>
                 </div>
             ) : universities.length > 0 && query !== '' ? (
                 <div className="flex flex-col items-center gap-4 px-4 pb-4">
@@ -160,34 +159,85 @@ export default function UniversitiesGrid() {
                                     )}
                                 >
                                     {group.map((uni) => (
-                                        <Link
-                                            key={uni.name}
-                                            href={route('public.universities.show', uni.name)}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex h-24 items-center justify-center rounded-xl bg-white p-6 shadow transition hover:scale-105 sm:h-28"
-                                        >
-                                            <img src={uni.logo} alt={uni.name} className="h-full max-h-16 object-contain" />
-                                        </Link>
+                                        <UniversityCard key={uni.name} uni={uni} />
                                     ))}
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <Button variant={'secondary'} className="rounded-3xl">
-                        <ListIcon className="h-5 w-5" />
-                        Load More Results
-                    </Button>
+                    <Link href={route('public.universities.index', { searchUniversity: query })}>
+                        <Button variant={'secondary'} className="rounded-3xl">
+                            <ListIcon className="h-5 w-5" />
+                            Load More Results
+                        </Button>
+                    </Link>
                 </div>
             ) : (
-                <div className="flex w-full flex-col gap-4 pt-8 pb-4 text-center text-sm text-muted-foreground">
-                    <p>No match your search.</p>
-                    <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
-                        <ListIcon className="h-5 w-5" />
-                        Explore All Universities
-                    </Button>
+                <div className="flex w-full flex-col gap-6 pt-8 pb-4 text-center text-sm text-muted-foreground">
+                    <p>No universities match your search.</p>
+                    <Link href={route('public.universities.index')}>
+                        <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
+                            <ListIcon className="h-5 w-5" />
+                            Explore Other Universities
+                        </Button>
+                    </Link>
                 </div>
             )}
         </div>
+    );
+}
+
+function UniversityCard({ uni }: { uni: University }) {
+    return (
+        <Link
+            key={uni.name}
+            href={route('public.universities.show', uni.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative flex h-56 2xl:h-44 w-full overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02]"
+        >
+            {/* Background Image */}
+            <img src={uni.cover} alt={uni.name} className="absolute inset-0 h-full w-full object-cover" />
+
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+
+            {/* Content */}
+            <div className="relative flex h-full w-full flex-col justify-between p-4 text-white">
+                {/* Logo bubble */}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/80 shadow-md backdrop-blur-md">
+                    <img src={uni.logo} alt={uni.name} className="h-full w-full object-cover" />
+                </div>
+
+                {/* Title */}
+                <div>
+                    <p className="line-clamp-1 text-lg font-bold drop-shadow-md">{uni.name}</p>
+                    <p className="mt-1 line-clamp-1 text-xs text-gray-200/90">
+                        <MapPinIcon className="mr-1 inline h-4 w-4" /> {uni.location}
+                    </p>
+                </div>
+
+                {/* Glass bottom details */}
+                <div className="grid 2xl:grid-cols-3 gap-2">
+                    {/* Founded */}
+                    <div className="rounded-xl bg-white/20 px-3 py-2 backdrop-blur-md">
+                        <p className="text-[10px] tracking-wider text-gray-100 uppercase">Founded</p>
+                        <p className="text-xs font-semibold">{uni.founded}</p>
+                    </div>
+
+                    {/* QS Ranking */}
+                    <div className="rounded-xl bg-white/20 px-3 py-2 backdrop-blur-md hidden 2xl:block">
+                        <p className="text-[10px] tracking-wider text-gray-100 uppercase">QS Rank</p>
+                        <p className="text-xs font-semibold">{uni.qs_ranking}</p>
+                    </div>
+
+                    {/* Scholarships */}
+                    <div className="rounded-xl bg-white/20 px-3 py-2 backdrop-blur-md">
+                        <p className="text-[10px] tracking-wider text-gray-100 uppercase">Scholarship</p>
+                        <p className="text-xs font-semibold">{uni.scholarship}</p>
+                    </div>
+                </div>
+            </div>
+        </Link>
     );
 }

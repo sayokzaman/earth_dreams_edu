@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $universities = University::inRandomOrder()->limit(18)->get();
+        $universities = University::inRandomOrder()->limit(24)->get();
 
         $blogs = Blog::where('type', 'blog')->latest()->limit(3)->with('contents')->get();
         $news = Blog::where('type', 'news')->latest()->limit(3)->with('contents')->get();

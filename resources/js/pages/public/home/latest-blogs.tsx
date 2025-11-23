@@ -11,9 +11,8 @@ const LatestBlogs = ({ blogs, news }: { blogs: Blog[]; news: Blog[] }) => {
     return (
         <div className="flex flex-col items-center">
             <div className="mb-12 flex flex-col items-center gap-4">
-                <span className="space-x-2 text-center text-3xl font-extrabold tracking-tight capitalize sm:text-4xl">
-                    {/* some copy about Courses */}
-                    <span className="text-theme-accent/90">Blogs</span> <span>&</span> <span className="text-theme-secondary/90">News</span>
+                <span className="space-x-2 text-center text-3xl font-extrabold tracking-tight capitalize sm:text-4xl drop-shadow-sm">
+                    <span className="text-theme-accent/90">Blogs</span> <span>&</span> <span className="text-theme-secondary/80">News</span>
                 </span>
 
                 <p className="max-w-3xl text-center text-theme-foreground sm:text-xl">
@@ -34,7 +33,7 @@ const LatestBlogs = ({ blogs, news }: { blogs: Blog[]; news: Blog[] }) => {
                 </div>
             </div>
 
-            <Link href={route('public.study.index')}>
+            <Link href={route('public.blogs.index')}>
                 <Button className="mt-8 h-12 min-w-80 rounded-3xl text-lg font-semibold shadow-lg hover:shadow-xl">
                     Read More Blogs & News <ExternalLinkIcon className="ml-1 size-5" />
                 </Button>

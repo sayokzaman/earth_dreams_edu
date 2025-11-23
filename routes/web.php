@@ -54,11 +54,13 @@ Route::domain($publicDomain)->name('public.')->group(function () {
         Route::get('/masters-courses', [CourseController::class, 'mastersCourses'])->name('mastersCourses');
         Route::get('/top-up-courses', [CourseController::class, 'topUpCourses'])->name('topUpCourses');
         Route::get('/phd-courses', [CourseController::class, 'phdCourses'])->name('phdCourses');
+        Route::get('/api/list', [CourseController::class, 'getCoursesList'])->name('list');
         Route::get('/{course}', [CourseController::class, 'show'])->name('show');
     });
 
     Route::prefix('/blogs')->name('blogs.')->group(function () {
         Route::get('/', [BlogsController::class, 'index'])->name('index');
+        Route::get('/api/list', [BlogsController::class, 'getBlogsList'])->name('list');
         Route::get('/{blog}', [BlogsController::class, 'show'])->name('show');
     });
 
@@ -72,7 +74,7 @@ Route::domain($publicDomain)->name('public.')->group(function () {
     });
 
     Route::prefix('/subjects')->name('subjects.')->group(function () {
-        Route::get('/api/list', [SubjectController::class, 'getSubjects'])->name('list');
+        Route::get('/api/list', [SubjectController::class, 'getSubjectsList'])->name('list');
     });
 });
 

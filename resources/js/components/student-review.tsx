@@ -123,11 +123,11 @@ function StudentReviews() {
     return (
         <section className="w-full">
             <div className="mb-4 flex flex-col items-center gap-4">
-                <h2 className="text-center text-4xl font-extrabold">
-                    <span className="text-theme-accent/80">Student</span> <span className="text-theme-secondary/80">Reviews</span>
+                <h2 className="text-center text-4xl font-extrabold drop-shadow-sm">
+                    <span className="text-theme-accent/90">Student</span> <span className="text-theme-secondary/80">Reviews</span>
                 </h2>
 
-                <p className="text-center text-theme-foreground lg:w-1/2 sm:text-lg">
+                <p className="text-center text-theme-foreground lg:w-1/2 sm:text-xl">
                     Hear from our students about their experiences studying abroad with our assistance and support.
                 </p>
             </div>

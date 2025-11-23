@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Faculty;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -225,10 +224,28 @@ class CourseController extends Controller
     }
 
     public function destroy(Course $course)
-    {
+    {   
+        // delete cover if exists
+        if ($course->cover && Storage::disk('public')->exists($course->cover)) {
+            Storage::disk('public')->delete($course->cover);
+        }
+
+        $course->contents()->delete();
         $course->delete();
 
         return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully.');
+    }
+
+    public function getCoursesList(Request $request)
+    {
+        $query = $request->input('query');
+        $courses = Course::orderBy('title', 'asc')
+            ->with('faculty')
+            ->when($query, fn ($q) => $q->where('title', 'like', "%{$query}%"))
+            ->take(12)
+            ->get();
+
+        return response()->json($courses);
     }
 
     public function foundationCourses()

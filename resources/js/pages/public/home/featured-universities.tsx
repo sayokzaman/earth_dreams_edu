@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { University } from '@/types/university';
 import { Link } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowRightIcon, MapPinIcon } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
 function FeaturedUniversities({ className, universities }: { className?: string; universities: University[] }) {
@@ -24,7 +24,7 @@ function FeaturedUniversities({ className, universities }: { className?: string;
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
     // chunk into groups of 6 so each “page” shows 6 universities
-    const pages = Array.from({ length: Math.ceil(universities.length / 6) }, (_, i) => universities.slice(i * 6, i * 6 + 6));
+    const pages = Array.from({ length: Math.ceil(universities.length / 4) }, (_, i) => universities.slice(i * 4, i * 4 + 4));
 
     return (
         <Wrapper className={cn('flex flex-col gap-4', className)}>
@@ -36,17 +36,9 @@ function FeaturedUniversities({ className, universities }: { className?: string;
                     <div className="flex">
                         {pages.map((group, i) => (
                             <div key={i} className="w-full flex-none p-2">
-                                <div className="grid h-full grid-cols-2 gap-4 md:grid-cols-6">
+                                <div className="grid h-full grid-cols-2 gap-4 md:grid-cols-4">
                                     {group.map((uni) => (
-                                        <Link
-                                            key={uni.name}
-                                            href={route('public.universities.show', uni.name)}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex h-24 items-center justify-center rounded-xl bg-white p-8 shadow transition hover:scale-105 sm:h-32"
-                                        >
-                                            <img src={uni.logo} alt={uni.name} className="h-full max-h-20 object-contain" />
-                                        </Link>
+                                        <UniversityCard key={uni.name} uni={uni} />
                                     ))}
                                 </div>
                             </div>
@@ -75,3 +67,37 @@ function FeaturedUniversities({ className, universities }: { className?: string;
 }
 
 export default FeaturedUniversities;
+
+function UniversityCard({ uni }: { uni: University }) {
+    return (
+        <Link
+            key={uni.name}
+            href={route('public.universities.show', uni.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative flex h-44 w-full overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02]"
+        >
+            {/* Background Image */}
+            <img src={uni.cover} alt={uni.name} className="absolute inset-0 h-full w-full object-cover" />
+
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/70" />
+
+            {/* Content */}
+            <div className="relative flex h-full w-full flex-col p-4 text-white items-center gap-2 justify-end">
+                {/* Logo bubble */}
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md backdrop-blur-md bg-white/10 border border-white/20">
+                    <img src={uni.logo} alt={uni.name} className="h-full w-full object-cover" />
+                </div>
+
+                {/* Title */}
+                <div className="w-full">
+                    <p className="line-clamp-1 text-lg font-bold drop-shadow-md">{uni.name}</p>
+                    <p className="mt-1 line-clamp-1 w-fit rounded-xl bg-white/20 px-3 py-1 text-xs text-gray-200/90 backdrop-blur-md">
+                        <MapPinIcon className="mr-1 inline h-4 w-4" /> {uni.location}
+                    </p>
+                </div>
+            </div>
+        </Link>
+    );
+}

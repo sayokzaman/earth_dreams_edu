@@ -238,4 +238,33 @@ class BlogsController extends Controller
             ->route('admin.blogs.index')
             ->with('success', 'Blog updated successfully!');
     }
+
+    public function destroy(Blog $blog)
+    {
+        // delete cover image if exists
+        if ($blog->cover_img && Storage::disk('public')->exists($blog->cover_img)) {
+            Storage::disk('public')->delete($blog->cover_img);
+        }
+
+        // delete blog and its contents
+        DB::transaction(function () use ($blog) {
+            $blog->contents()->delete();
+            $blog->delete();
+        });
+
+        return redirect()
+            ->route('admin.blogs.index')
+            ->with('success', 'Blog deleted successfully!');
+    }
+
+    public function getBlogsList(Request $request)
+    {
+        $query = $request->input('query');
+        $blogs = Blog::orderBy('date', 'asc')
+            ->when($query, fn ($q) => $q->where('title', 'like', "%{$query}%"))
+            ->take(12)
+            ->get();
+
+        return response()->json($blogs);
+    }
 }

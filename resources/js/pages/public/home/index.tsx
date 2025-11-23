@@ -64,9 +64,8 @@ export default function PublicHome({ universities, blogs, news }: Props) {
 
             <Wrapper className="flex flex-col items-center justify-center py-12 sm:pt-20">
                 <div className="mb-8 flex flex-col items-center gap-4">
-                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize sm:text-4xl">
-                        {/* some copy about Courses */}
-                        <span className="text-theme-accent/90">Journey</span> <span className="text-theme-secondary/90">Roadmap</span>
+                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
+                        <span className="text-theme-accent/90">Journey</span> <span className="text-theme-secondary/80">Roadmap</span>
                     </h1>
 
                     <p className="max-w-3xl text-center text-theme-foreground sm:text-xl">
@@ -97,8 +96,7 @@ export default function PublicHome({ universities, blogs, news }: Props) {
 
             <Wrapper className="py-12">
                 <div className="mb-8 flex flex-col items-center gap-4">
-                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize sm:text-4xl">
-                        {/* some copy about Courses */}
+                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
                         Book Your <span className="text-theme-accent/90">Free</span> <span className="text-theme-secondary/90">Consultation</span>{' '}
                         Today
                     </h1>

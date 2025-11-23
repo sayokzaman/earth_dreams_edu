@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Course } from '@/types/course';
-import { BookIcon, ChartNoAxesGanttIcon, GraduationCapIcon, HourglassIcon, ImageOff } from 'lucide-react';
+import { BookMarkedIcon, ChartNoAxesGanttIcon, GraduationCapIcon, HourglassIcon, ImageOff } from 'lucide-react';
 import * as React from 'react';
 
 interface CourseCardProps {
@@ -74,14 +74,14 @@ export default function CourseCard({ course, className }: CourseCardProps) {
                         <div className="col-span-2">
                             <h2 className="text-sm font-semibold">Faculty</h2>
                             <Badge className="rounded-full capitalize">
-                                <GraduationCapIcon className="mr-1 h-3.5 w-3.5" /> {course.faculty?.name}
+                                <BookMarkedIcon className="mr-1 h-3.5 w-3.5" /> {course.faculty?.name}
                             </Badge>
                         </div>
 
                         <div>
                             <h2 className="text-sm font-semibold">Degree</h2>
                             <Badge variant="outline" className="rounded-full capitalize">
-                                <BookIcon className="mr-1 h-3.5 w-3.5" /> {course.study_level}
+                                <GraduationCapIcon className="mr-1 h-3.5 w-3.5" /> {course.study_level}
                             </Badge>
                         </div>
 

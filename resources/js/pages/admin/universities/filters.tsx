@@ -1,4 +1,3 @@
-import DateRangePicker from '@/components/date-range-picker';
 import { Input } from '@/components/ui/input';
 import { UniversityFilter } from '@/hooks/filters/use-university-filters';
 
@@ -16,7 +15,8 @@ export default function UniversityFilters({ filters, setFilters }: Props) {
                 onChange={(e) => setFilters({ ...filters, search: e.target.value, page: 1 })}
             />
 
-            <DateRangePicker value={filters} onChange={setFilters} placeholder="From - To" />
+            {/* TODO: fix date range */}
+            {/* <DateRangePicker value={filters} onChange={setFilters} placeholder="From - To" /> */}
         </div>
     );
 }

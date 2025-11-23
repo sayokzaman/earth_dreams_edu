@@ -168,7 +168,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">
                                 <Input
                                     type="search"
-                                    placeholder="Search faculties"
+                                    placeholder="Search universities..."
                                     value={filters.searchUniversityNames}
                                     onChange={(e) => setFilters({ ...filters, searchUniversityNames: e.target.value })}
                                     className="h-7"

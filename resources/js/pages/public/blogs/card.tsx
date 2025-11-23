@@ -4,8 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Blog } from '@/types/blog';
-import { format } from 'date-fns'
-import { CalendarIcon, ChartNoAxesGanttIcon, ImageOff } from 'lucide-react';
+import { format } from 'date-fns';
+import { CalendarClockIcon, CalendarIcon, ChartNoAxesGanttIcon, CompassIcon, ImageOff, PenToolIcon } from 'lucide-react';
 import * as React from 'react';
 
 interface BlogCardProps {
@@ -52,7 +52,17 @@ export default function BlogCard({ blog, className }: BlogCardProps) {
                     />
                     {/* Gradient overlay */}
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-black/20 to-transparent">
-                        <Badge className="absolute top-2 left-2 text-sm font-bold capitalize" variant={'themeSecondary'}>
+                        <Badge
+                            className="absolute top-2 right-2 rounded-2xl bg-black/70 text-xs font-bold capitalize shadow-md"
+                            variant={blog.type === 'blog' ? 'blue' : blog.type === 'news' ? 'orange' : blog.type === 'event' ? 'green' : 'default'}
+                        >
+                            {blog.type === 'blog' ? (
+                                <PenToolIcon className="size-5" />
+                            ) : blog.type === 'news' ? (
+                                <CompassIcon className="size-5" />
+                            ) : blog.type === 'event' ? (
+                                <CalendarClockIcon className="size-5" />
+                            ) : null}
                             {blog.type}
                         </Badge>
                     </div>

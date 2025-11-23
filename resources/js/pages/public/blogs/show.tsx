@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge';
+import ConsultationForm from '@/components/consultation-form';
 import { Button } from '@/components/ui/button';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
@@ -50,24 +50,20 @@ const BlogShow = ({ blog }: Props) => {
                 <div className="relative z-10 flex h-80 items-end bg-gradient-to-b from-black/10 via-black/40 to-black/90 sm:h-[28rem]">
                     <Wrapper className="w-full justify-between pb-6 sm:flex sm:items-end sm:pb-10">
                         <div className="flex flex-col gap-2 pt-20 sm:gap-4">
-                            <div className="flex w-fit items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 backdrop-blur-lg">
-                                <span className="text-sm font-semibold text-muted/70"></span>
+                            <div className="flex w-fit items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 text-muted/70 backdrop-blur-lg">
+                                {blog.type === 'blog' ? (
+                                    <PenToolIcon className="size-5" />
+                                ) : blog.type === 'news' ? (
+                                    <CompassIcon className="size-5" />
+                                ) : blog.type === 'event' ? (
+                                    <CalendarClockIcon className="size-5" />
+                                ) : null}
+                                <span className="capitalize">{blog.type}</span>
                             </div>
 
                             <h1 className="text-3xl font-extrabold tracking-tight text-secondary sm:text-5xl">{blog.title}</h1>
 
                             <div className="flex flex-wrap gap-2 font-semibold">
-                                <Badge variant={'secondary'} className="rounded-full text-sm font-bold capitalize">
-                                    {blog.type === 'blog' ? (
-                                        <PenToolIcon className="size-5" />
-                                    ) : blog.type === 'news' ? (
-                                        <CompassIcon className="size-5" />
-                                    ) : blog.type === 'event' ? (
-                                        <CalendarClockIcon className="size-5" />
-                                    ) : null}
-                                    {blog.type}
-                                </Badge>
-
                                 <div className="rounded-full bg-black/30 backdrop-blur-lg">
                                     <span className="flex w-fit items-center gap-2 rounded-full border border-theme-secondary bg-theme-secondary/5 px-3 py-1 text-xs text-theme-secondary sm:text-sm">
                                         <AlbumIcon className="h-4 w-4" />
@@ -148,6 +144,22 @@ const BlogShow = ({ blog }: Props) => {
                         ) : null,
                     )}
                 </div>
+            </Wrapper>
+
+            <Wrapper className="border-t py-12">
+                <div className="mb-8 flex flex-col items-center gap-4">
+                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
+                        Book Your <span className="text-theme-accent/90">Free</span> <span className="text-theme-secondary/90">Consultation</span>{' '}
+                        Today
+                    </h1>
+
+                    <p className="max-w-3xl text-center text-theme-foreground sm:text-xl">
+                        Get personalized guidance from our expert consultants. Whether you&apos;re exploring study options or need help with
+                        applications, we&apos;re here to assist you every step of the way.
+                    </p>
+                </div>
+
+                <ConsultationForm />
             </Wrapper>
         </AppPublicLayout>
     );

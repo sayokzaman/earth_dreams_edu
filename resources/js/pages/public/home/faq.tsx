@@ -36,10 +36,9 @@ export function LandingPageFAQ() {
 
     return (
         <div>
-            <div className="mb-8 flex flex-col items-center gap-4">
-                <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize sm:text-4xl">
-                    {/* some copy about Courses */}
-                    Frequently Asked <span className="text-theme-accent/90">Questions</span> <span className="text-theme-secondary/90">(FAQs)</span>
+            <div className="mb-8 flex flex-col items-center justify-between gap-4">
+                <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
+                    Frequently Asked <span className="text-theme-accent/90">Questions</span> <span className="text-theme-secondary/80">(FAQs)</span>
                 </h1>
 
                 <p className="max-w-3xl text-center text-theme-foreground sm:text-xl">
@@ -48,21 +47,23 @@ export function LandingPageFAQ() {
                 </p>
             </div>
 
-            <div className="flex items-center justify-center gap-6">
-                <img src="" alt="" className="hidden w-1/2 md:block" />
+            <div className="flex items-center justify-between gap-6">
+                <div className="hidden w-1/2 items-center justify-center overflow-hidden lg:flex">
+                    <img src="/images/faq.jpg" alt="" className="aspect-square w-2/3 rounded-full object-cover shadow-lg" />
+                </div>
 
                 <Accordion
                     value={selected}
                     onValueChange={setSelected}
                     type="single"
                     collapsible
-                    className="w-full overflow-hidden rounded-xl bg-card shadow-md md:w-1/2"
+                    className="h-fit w-full overflow-hidden rounded-xl bg-card shadow-md lg:w-1/2"
                 >
                     {items.map((item, index) => (
                         <AccordionItem key={index} value={`item-${index + 1}`} className="border-b last:border-0">
                             <AccordionTrigger
                                 className={cn(
-                                    'cursor-pointer px-6 text-start font-semibold hover:no-underline',
+                                    'cursor-pointer px-6 py-6 text-start font-semibold text-accent-foreground drop-shadow hover:no-underline',
                                     selected === `item-${index + 1}` && 'bg-theme/80 text-white',
                                 )}
                             >

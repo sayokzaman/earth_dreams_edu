@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function getSubjects(Request $request)
+    public function getSubjectsList(Request $request)
     {
         $query = $request->input('query');
         $subjects = Subject::orderBy('subject_name', 'asc')

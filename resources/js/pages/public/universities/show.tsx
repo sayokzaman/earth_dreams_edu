@@ -1,3 +1,4 @@
+import ConsultationForm from '@/components/consultation-form'
 import { Button } from '@/components/ui/button';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
@@ -169,6 +170,22 @@ const UniversityShowPage = ({ university }: Props) => {
                         </>
                     ))}
                 </div>
+            </Wrapper>
+
+            <Wrapper className="py-12 border-t">
+                <div className="mb-8 flex flex-col items-center gap-4">
+                    <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
+                        Book Your <span className="text-theme-accent/90">Free</span> <span className="text-theme-secondary/90">Consultation</span>{' '}
+                        Today
+                    </h1>
+
+                    <p className="max-w-3xl text-center text-theme-foreground sm:text-xl">
+                        Get personalized guidance from our expert consultants. Whether you&apos;re exploring study options or need help with
+                        applications, we&apos;re here to assist you every step of the way.
+                    </p>
+                </div>
+
+                <ConsultationForm />
             </Wrapper>
         </AppPublicLayout>
     );

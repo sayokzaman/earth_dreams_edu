@@ -30,7 +30,7 @@ const badgeVariants = cva(
         accent:
           "text-primary-foreground shadow-xs bg-gradient-to-r from-amber-500 to-[#ffb24f] font-bold transition-colors duration-200 hover:from-amber-600 hover:to-amber-400",
         blue:
-          "border-blue-300 dark:border-blue-300/50 dark:text-blue-300 dark:bg-blue-800/30 bg-blue-800/5 text-blue-500",
+          "border-blue-300 dark:border-blue-300/50 dark:text-blue-300 dark:bg-blue-800/30 bg-blue-800/5 text-blue-300",
         violet:
           "border-violet-300 dark:border-violet-300/50 dark:text-violet-300 dark:bg-violet-800/30 bg-violet-800/5 text-violet-500",
         orange:
