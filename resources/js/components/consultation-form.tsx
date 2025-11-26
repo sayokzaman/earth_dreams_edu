@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { studyLevels } from '@/lib/constants';
+import { country_of_residence, studyLevels } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { Lead } from '@/types/lead';
 import { Subject } from '@/types/subject';
@@ -19,7 +19,7 @@ const initialData = {
     first_name: '',
     last_name: '',
     email: '',
-    mobile_country_code: '+44',
+    mobile_country_code: '',
     mobile: '',
     is_whatsapp: false,
     country_of_residence: '',
@@ -175,14 +175,19 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                             onValueChange={(val) => setData('mobile_country_code', val)}
                         >
                             <SelectTrigger className={cn('w-[92px]', isAdmin ? '' : 'rounded-2xl bg-white')}>
-                                <SelectValue />
+                                {data.mobile_country_code ? (
+                                    <span>{data.mobile_country_code}</span>
+                                ) : (
+                                    <span className="text-muted-foreground">Code</span>
+                                )}
                             </SelectTrigger>
                             <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
-                                <SelectItem value="+44">🇬🇧 +44</SelectItem>
-                                <SelectItem value="+1">🇺🇸 +1</SelectItem>
-                                <SelectItem value="+61">🇦🇺 +61</SelectItem>
-                                <SelectItem value="+971">🇦🇪 +971</SelectItem>
-                                <SelectItem value="+880">🇧🇩 +880</SelectItem>
+                                {country_of_residence.map((country) => (
+                                    <SelectItem key={country.code} value={country.code} className="flex items-center">
+                                        <span>{country.code}</span>
+                                        <span>({country.country_name.charAt(0).toUpperCase() + country.country_name.slice(1)})</span>
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
 
@@ -214,15 +219,11 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                             <SelectValue placeholder="Select Country" />
                         </SelectTrigger>
                         <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
-                            <SelectItem value="bangladesh">Bangladesh</SelectItem>
-                            <SelectItem value="india">India</SelectItem>
-                            <SelectItem value="pakistan">Pakistan</SelectItem>
-                            <SelectItem value="sri-lanka">Sri Lanka</SelectItem>
-                            <SelectItem value="nepal">Nepal</SelectItem>
-                            <SelectItem value="nigeria">Nigeria</SelectItem>
-                            <SelectItem value="saudi">Saudi Arabia</SelectItem>
-                            <SelectItem value="uae">United Arab Emirates</SelectItem>
-                            <SelectItem value="uk">United Kingdom</SelectItem>
+                            {country_of_residence.map((country) => (
+                                <SelectItem key={country.country_name} value={country.country_name}>
+                                    {country.country_name.charAt(0).toUpperCase() + country.country_name.slice(1)}
+                                </SelectItem>
+                            ))}
                             <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                     </Select>
@@ -324,7 +325,7 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                             <span>I certify that the information provided above is true and accurate.</span>
                         ) : (
                             <span>
-                                I hereby certify that, to the best of my knowledge, the provided information is true and accurate. 
+                                I hereby certify that, to the best of my knowledge, the provided information is true and accurate.
                                 {/* The documents
                                 provided are genuine and the applicant named above is a genuine student and intends to fulfil their student visa in
                                 its entirety.{' '}

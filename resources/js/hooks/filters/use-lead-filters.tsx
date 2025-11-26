@@ -4,12 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 
 export interface LeadFilter extends TableFilterBase {
     search: string;
-    category: string;
+    study_type: string;
+    country_of_residence: string;
+    subject_interested: string;
+    in_uk_now: string;
+    is_whatsapp: string;
 }
 
 export const defaultLeadFilters: LeadFilter = {
     search: '',
-    category: '',
+    study_type: '',
+    country_of_residence: '',
+    subject_interested: '',
+    in_uk_now: '',
+    is_whatsapp: '',
     from: '',
     to: '',
     per_page: '',

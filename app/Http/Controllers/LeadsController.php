@@ -13,20 +13,61 @@ class LeadsController extends Controller
         return inertia('public/consultation/index');
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $leads = Lead::query();
+        $leads = Lead::query()
+            ->when($request->search, function ($q) use ($request) {
+                $q->where(function ($query) use ($request) {
+                    $query->where('first_name', 'like', "%{$request->search}%")
+                        ->orWhere('last_name', 'like', "%{$request->search}%")
+                        ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$request->search}%"])
+                        ->orWhere('email', 'like', "%{$request->search}%")
+                        ->orWhere('mobile', 'like', "%{$request->search}%")
+                        ->orWhereRaw("CONCAT(mobile_country_code, ' ', mobile) LIKE ?", ["%{$request->search}%"]);
+                });
+            })
+            ->when($request->study_type, function ($q) use ($request) {
+                $q->where('study_type', $request->study_type);
+            })
+            ->when($request->country_of_residence, function ($q) use ($request) {
+                $q->where('country_of_residence', $request->country_of_residence);
+            })
+            ->when($request->subject_interested, function ($q) use ($request) {
+                $q->where('subject_interested', $request->subject_interested);
+            })
+            ->when(!is_null($request->in_uk_now), function ($q) use ($request) {
+                $q->where('in_uk_now', $request->in_uk_now);
+            })
+            ->when(!is_null($request->is_whatsapp), function ($q) use ($request) {
+                $q->where('is_whatsapp', $request->is_whatsapp);
+            });
 
-        $leads = $leads->orderBy('created_at', 'desc')->paginate(10);
+        $leads = $leads->orderBy('created_at', 'desc')->paginate($request->per_page ?? 20);
 
         return inertia('admin/leads/index', [
             'leads' => $leads,
-            'filters' => request()->all('search', 'trashed'),
+            'filters' => array_merge([
+                'search' => '',
+                'study_type' => '',
+                'country_of_residence' => '',
+                'subject_interested' => '',
+                'in_uk_now' => '',
+                'is_whatsapp' => '',
+                'per_page' => 20,
+            ], $request->only([
+                'search',
+                'study_type',
+                'country_of_residence',
+                'subject_interested',
+                'in_uk_now',
+                'is_whatsapp',
+                'per_page',
+            ])),
         ]);
     }
 
     public function store(Request $request)
-    {   
+    {
         $request->merge([
             'certify_truth' => (bool) $request->certify_truth,
             'in_uk_now' => (bool) $request['in_uk_now'],

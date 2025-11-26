@@ -7,6 +7,7 @@ import { TableData } from '@/types/table';
 import { Head } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { leadColumns } from './data/columns';
+import LeadFilters from '@/pages/admin/leads/filters'
 
 const breadcrumbs = [
     {
@@ -49,14 +50,13 @@ const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
                     filters={filters}
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultLeadFilters)}
-                    rowId={(blog) => blog.id}
+                    rowId={(lead) => lead.id}
                     // renderMobileRow={(expense) => (
                     //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
                     // )}
-                    storageKey="blogsTable"
+                    storageKey="leadsTable"
                 >
-                    {/* <BlogFilters filters={filters} setFilters={setFilters} /> */}
-                    {null}
+                    <LeadFilters filters={filters} setFilters={setFilters} />
                 </DataTable>
             </main>
         </AppLayout>
