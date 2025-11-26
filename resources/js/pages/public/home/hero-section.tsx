@@ -48,7 +48,7 @@ const HeroSection = ({ ref }: { ref?: React.RefObject<HTMLDivElement | null> }) 
                             Welcome
                         </p>
                         <div className="flex flex-col items-center">
-                            <p className="leading-tighter h-full text-4xl font-extrabold tracking-widest sm:text-7xl">
+                            <p className="leading-tighter h-full text-center text-4xl font-extrabold tracking-widest sm:text-6xl lg:text-7xl">
                                 <span className="text-theme-accent">EARTH</span> <span className="text-theme-secondary">DREAMS</span>
                             </p>
                             <span className="text-xl leading-tight font-extrabold sm:text-3xl">Education & Consultancy</span>

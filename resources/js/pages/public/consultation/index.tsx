@@ -28,11 +28,11 @@ const ConsultationIndex = () => {
                 </Wrapper>
             </div>
 
-            <div className="flex justify-center">
+            <Wrapper className="flex justify-center">
                 <div className="mt-10 mb-6 block w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-center text-3xl leading-tight font-extrabold tracking-tight text-transparent sm:text-4xl">
                     <h1>Provide Your Details Below To Get Started</h1>
                 </div>
-            </div>
+            </Wrapper>
 
             <ConsultationForm />
 

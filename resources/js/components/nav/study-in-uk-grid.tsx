@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 
 export default function StudyInUKGrid() {
     const studyInUK = [
@@ -53,22 +53,22 @@ export default function StudyInUKGrid() {
     ];
 
     return (
-        <div className="grid w-[72vw] grid-cols-2 gap-1 p-4">
+        <div className="grid w-[72vw] grid-cols-2 gap-3 px-4 lg:p-4 mt-4 lg:mt-0">
             {studyInUK.map((item) => (
                 <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-6 rounded-lg px-4 py-2 transition-transform duration-200 ease-in-out hover:bg-white"
+                    className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 shadow-sm transition-transform duration-200 ease-in-out hover:-translate-y-1 hover:shadow-sm lg:flex-row lg:justify-start lg:gap-4 lg:py-2 lg:shadow-xs"
                 >
-                    <img src={item.img} alt="" className="h-16 w-16" />
+                    <img src={item.img} alt="" className="size-10 lg:h-16 lg:w-16" />
                     <div>
-                        <div className="mb-1 h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary" />
+                        <div className="mb-1 hidden h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary lg:block" />
 
-                        <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-lg font-bold text-transparent">
+                        <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-center text-sm lg:text-start lg:text-lg lg:font-semibold lg:text-transparent">
                             {item.title}
                         </h2>
                         {/* <h3 className="mb-2 text-lg font-semibold">{item.title}</h3> */}
-                        <p className="text-sm text-gray-600">{item.description}</p>
+                        <p className="hidden text-sm text-gray-600 lg:block">{item.description}</p>
                     </div>
                 </Link>
             ))}

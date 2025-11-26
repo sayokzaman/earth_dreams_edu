@@ -15,31 +15,12 @@ import {
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 
-/**
- * shadcn/ui NavigationMenu — centered viewport version
- * ----------------------------------------------------
- * This keeps the dropdown (mega menu) centered on the SCREEN
- * regardless of which trigger opens it.
- *
- * Key idea:
- *   - Use a custom <NavigationMenuViewport> that is FIXED and centered
- *     via left-1/2 -translate-x-1/2. Radix will still mount/unmount the
- *     active <NavigationMenuContent> inside this viewport, so it stays
- *     perfectly centered relative to the viewport, not the trigger.
- */
-
 export default function UKNavbar() {
     return (
         <div className="sticky top-0 z-50 w-full text-white">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-1 px-4 py-3">
                 {/* NAVIGATION */}
-                <NavigationMenu
-                    /**
-                     * Put the viewport on a fixed layer, centered on screen.
-                     * We still render the list inline here.
-                     */
-                    className="hidden items-center md:flex"
-                >
+                <NavigationMenu className="hidden items-center md:flex">
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -88,9 +69,7 @@ export default function UKNavbar() {
                     {/* FIXED, CENTERED VIEWPORT */}
                     <NavigationMenuViewport
                         className={cn(
-                            // base shadcn styles + our centered layer
                             'origin-top-center rounded-2xl bg-[#f1f5f8] text-zinc-900 shadow-2xl',
-                            // fixed centered position — same as viewportRefClassName fallback
                             'fixed top-[66px] left-1/2 w-full max-w-[80vw] -translate-x-1/2',
                         )}
                     />

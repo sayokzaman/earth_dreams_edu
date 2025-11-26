@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Course } from '@/types/course';
 import { Faculty } from '@/types/faculty';
 import { Link, router } from '@inertiajs/react';
@@ -87,10 +88,12 @@ export default function CoursesGrid() {
         router.visit(route('public.courses.index', { faculties: [facultyName] }));
     };
 
+    const isMobile = useIsMobile();
+
     return (
         <div className="w-[72vw]">
             <div className="flex flex-col gap-2">
-                <form className="mx-4 mt-4 flex items-center gap-2" onSubmit={handleSubmit}>
+                <form className="mx-4 mt-2 flex items-center gap-2 lg:mt-4" onSubmit={handleSubmit}>
                     <div className="relative w-full">
                         <Search className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" size={18} />
                         <input
@@ -104,20 +107,22 @@ export default function CoursesGrid() {
                         Search
                     </Button>
                 </form>
-                <div className="grid grid-cols-2 gap-1 px-4 py-2">
+                <div className="grid grid-cols-2 gap-3 px-4 py-2">
                     {quickLinks.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="flex items-center gap-6 rounded-lg px-4 py-2 transition-transform duration-200 ease-in-out hover:bg-white"
+                            className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 shadow-sm transition-transform duration-200 ease-in-out hover:-translate-y-1 hover:shadow-sm lg:flex-row lg:justify-start lg:gap-4 lg:py-2 lg:shadow-xs"
                         >
-                            <img src={item.img} alt="" className="h-16 w-16" />
+                            <img src={item.img} alt="" className="size-10 lg:h-16 lg:w-16" />
                             <div>
-                                <div className="mb-1 h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary" />
-                                <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-lg font-bold text-transparent">
+                                <div className="mb-1 hidden h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary lg:block" />
+
+                                <h2 className="w-fit bg-gradient-to-r from-theme to-theme-secondary bg-clip-text text-center text-sm lg:text-start lg:text-lg lg:font-semibold lg:text-transparent">
                                     {item.title}
                                 </h2>
-                                <p className="text-sm text-gray-600">{item.description}</p>
+                                {/* <h3 className="mb-2 text-lg font-semibold">{item.title}</h3> */}
+                                <p className="hidden text-sm text-gray-600 lg:block">{item.description}</p>
                             </div>
                         </Link>
                     ))}
@@ -127,19 +132,19 @@ export default function CoursesGrid() {
             {query === '' && courses.length > 0 && faculties.length > 0 ? (
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Popular Faculties</div>
-                    <div className="flex flex-wrap justify-center gap-4 p-4">
-                        {faculties.map((faculty) => (
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 p-4">
+                        {faculties.slice(0, isMobile ? 5 : 12).map((faculty) => (
                             <Badge
                                 key={faculty.id}
                                 onClick={() => selectFaculty(faculty.name)}
-                                className="cursor-pointer rounded-3xl bg-black/70 px-4 py-1 text-sm text-white backdrop-blur-2xl transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-80"
+                                className="cursor-pointer rounded-3xl bg-black/70 px-4 py-1 text-xs text-white backdrop-blur-2xl transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-80 lg:text-sm"
                             >
                                 {faculty.name}
                             </Badge>
                         ))}
                     </div>
 
-                    <div className="flex items-center justify-center pb-4">
+                    <div className="flex items-center justify-center lg:pb-4">
                         <Link href={route('public.courses.index', { searchCourse: query })}>
                             <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
                                 <ListIcon className="h-5 w-5" />
@@ -152,7 +157,7 @@ export default function CoursesGrid() {
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Search Results</div>
 
-                    <div className="my-4 grid grid-cols-4 items-center gap-4 px-6">
+                    <div className="my-4 grid grid-cols-2 items-center gap-4 px-6 lg:grid-cols-4">
                         {courses &&
                             courses.length > 0 &&
                             courses.slice(0, 4).map((course) => (
@@ -179,24 +184,24 @@ export default function CoursesGrid() {
                                             <div>
                                                 {/* faculty */}
                                                 <div className="mt-2 flex items-center gap-2">
-                                                    <Badge className="rounded-full bg-white/10 text-white backdrop-blur-sm">
+                                                    <Badge className="rounded-full bg-white/10 text-white backdrop-blur-sm px-2 py-1 text-xs font-medium">
                                                         <BookMarkedIcon className="mr-1 h-3.5 w-3.5 opacity-90" />
-                                                        {course.faculty?.name ?? 'Unknown Faculty'}
+                                                        <span className="text-wrap">{course.faculty?.name ?? 'Unknown Faculty'}</span>
                                                     </Badge>
                                                 </div>
                                             </div>
 
                                             {/* bottom: meta */}
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <div className="rounded-xl bg-white/10 p-2 backdrop-blur-sm">
-                                                    <p className="text-[11px] font-medium tracking-wide text-white/80 uppercase">Degree</p>
+                                            <div className="grid gap-2 lg:grid-cols-2 mt-2">
+                                                <div className="rounded-xl bg-white/10 px-2 py-1 backdrop-blur-sm lg:p-2">
+                                                    <p className="text-[10px] font-medium tracking-wide text-white/80 uppercase">Degree</p>
                                                     <div className="mt-1 flex flex-wrap items-center text-sm font-semibold capitalize">
                                                         <GraduationCapIcon className="mr-1 h-4 w-4 opacity-90" />
-                                                        {course.study_level}
+                                                        <span className="text-xs">{course.study_level}</span>
                                                     </div>
                                                 </div>
 
-                                                <div className="rounded-xl bg-white/10 p-2 backdrop-blur-sm">
+                                                <div className="hidden rounded-xl bg-white/10 p-2 backdrop-blur-sm lg:block">
                                                     <p className="text-[11px] font-medium tracking-wide text-white/80 uppercase">Duration</p>
                                                     <div className="mt-1 flex flex-wrap items-center text-sm font-semibold capitalize">
                                                         <Clock3Icon className="mr-1 h-4 w-4 opacity-90" />
@@ -210,11 +215,11 @@ export default function CoursesGrid() {
                             ))}
                     </div>
 
-                    <div className="flex items-center justify-center pb-4">
+                    <div className="flex items-center justify-center lg:pb-4">
                         <Link href={route('public.courses.index', { searchCourse: query })}>
                             <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
                                 <ListIcon className="h-5 w-5" />
-                                Explore Courses
+                                Explore All Courses
                             </Button>
                         </Link>
                     </div>
@@ -222,7 +227,7 @@ export default function CoursesGrid() {
             ) : (
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Search Results</div>
-                    <div className="flex w-full flex-col gap-4 pt-8 pb-4 text-center text-sm text-muted-foreground">
+                    <div className="flex w-full flex-col gap-4 pt-8 lg:pb-4 text-center text-sm text-muted-foreground">
                         <p>No courses match your search.</p>
                         <Link href={route('public.courses.index')}>
                             <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
