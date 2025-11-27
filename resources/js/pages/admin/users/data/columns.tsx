@@ -62,7 +62,7 @@ export const userColumns: GenericColumnDef<User>[] = [
                         <Badge
                             key={user.id + role.name}
                             className="rounded-full font-semibold capitalize"
-                            variant={role.name === 'admin' ? 'destructive' : role.name === 'manager' ? 'manual' : 'default'}
+                            variant={role.name === 'super-admin' ? 'destructive' : role.name === 'admin' ? 'default' : role.name === 'manager' ? 'manual' : 'outline'}
                         >
                             {role.name}
                         </Badge>

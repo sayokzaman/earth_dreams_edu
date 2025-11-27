@@ -11,7 +11,7 @@ export function NavMain({ items = [] }: { items: NavRouteNameItem[] | NavItem[] 
         return 'routeName' in item && typeof (item as NavRouteNameItem).routeName === 'string';
     };
 
-    const { isAdmin } = useRoles();
+    const { isElevated } = useRoles();
 
     return (
         <SidebarGroup className="px-2 py-0">
@@ -43,7 +43,7 @@ export function NavMain({ items = [] }: { items: NavRouteNameItem[] | NavItem[] 
                         );
                     })}
 
-                {isAdmin &&
+                {isElevated &&
                     items
                         .filter((item) => item.title === 'Users')
                         .map((item) => {

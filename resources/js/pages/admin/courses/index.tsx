@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { CourseFilter, defaultCourseFilters, useCourseFilters } from '@/hooks/filters/use-course-filters';
 import AppLayout from '@/layouts/app-layout';
 import CourseActions from '@/pages/admin/courses/actions';
-import { courseColumns } from '@/pages/admin/courses/data/colums';
+import { courseColumns } from '@/pages/admin/courses/data/columns';
 import { DeleteCourseDialog } from '@/pages/admin/courses/delete-dialog';
 import FacultyModal from '@/pages/admin/courses/faculty-modal';
 import CourseFilters from '@/pages/admin/courses/filters'

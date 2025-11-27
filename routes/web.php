@@ -130,7 +130,7 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [SubjectController::class, 'store'])->name('store');
         });
 
-        Route::middleware('role:admin')->group(function () {
+        Route::middleware('role:super-admin|admin')->group(function () {
             Route::prefix('/users')->name('admin.users.')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('index');
                 Route::post('/', [UserController::class, 'store'])->name('store');
