@@ -202,7 +202,7 @@ function UniversityCard({ uni }: { uni: University }) {
             className="group relative flex h-48 w-full overflow-hidden rounded-2xl shadow-lg transition hover:-translate-y-1 lg:h-56 2xl:h-44"
         >
             {/* Background Image */}
-            <img src={uni.cover} alt={uni.name} className="absolute inset-0 h-full w-full object-cover" />
+            <img src={`/storage/${uni?.cover}`} alt={uni.name} className="absolute inset-0 h-full w-full object-cover" />
 
             {/* Dark gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
@@ -211,7 +211,7 @@ function UniversityCard({ uni }: { uni: University }) {
             <div className="relative flex h-full w-full flex-col justify-between p-4 text-white">
                 {/* Logo bubble */}
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/80 shadow-md backdrop-blur-md"> 
-                    <img src={uni.logo} alt={uni.name} className="h-full w-full object-cover" />
+                    <img src={`/storage/${uni?.logo}`} alt={uni.name} className="h-full w-full object-cover" />
                 </div>
 
                 {/* Title */}
