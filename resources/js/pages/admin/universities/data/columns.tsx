@@ -1,5 +1,5 @@
 import { GenericColumnDef } from '@/components/table/data-table';
-import { TextWithBreaks } from '@/components/text-with-breaks'
+import { TextWithBreaks } from '@/components/text-with-breaks';
 import { Badge } from '@/components/ui/badge';
 import { University } from '@/types/university';
 import { Link } from '@inertiajs/react';
@@ -22,7 +22,7 @@ export const universityColumns: GenericColumnDef<University>[] = [
         render: (university) => (
             <div className="flex items-center">
                 <div className="flex h-12 w-20 items-center justify-center rounded-md bg-gray-100 p-1">
-                    <img src={university.logo} alt="" className="h-full w-full object-contain" />
+                    <img src={`/storage/${university?.logo}`} alt="" className="h-full w-full object-contain" />
                 </div>
                 <Link
                     href={route('admin.universities.show', university.id)}
@@ -40,7 +40,7 @@ export const universityColumns: GenericColumnDef<University>[] = [
         align: 'start',
         render: (university) => (
             <div className="flex items-center pl-2.5 capitalize">
-                <MapPinIcon className='size-4 mr-1' /> {university.location}
+                <MapPinIcon className="mr-1 size-4" /> {university.location}
             </div>
         ),
     },

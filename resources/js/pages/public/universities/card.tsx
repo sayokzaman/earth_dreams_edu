@@ -41,14 +41,14 @@ export default function UniversityCard({ university, className }: UniversityCard
                 {/* Cover */}
                 <div className="relative h-40 w-full overflow-hidden bg-muted">
                     <SafeImg
-                        src={university.cover}
+                        src={`/storage/${university?.cover}`}
                         alt={`${university.name} cover image`}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     {/* Gradient overlay */}
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-black/20 to-transparent">
                         <div className="h-20 w-auto overflow-hidden rounded-xl border bg-white shadow-sm backdrop-blur transition-transform duration-500 group-hover:scale-110">
-                            <SafeImg src={university.logo} alt={`${university.name} logo`} className="h-full w-full object-contain p-4" />
+                            <SafeImg src={`/storage/${university?.logo}`} alt={`${university.name} logo`} className="h-full w-full object-contain p-4" />
                         </div>
                     </div>
                 </div>
