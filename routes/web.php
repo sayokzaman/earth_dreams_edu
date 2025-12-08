@@ -118,6 +118,7 @@ Route::domain($adminDomain)->group(function () {
             Route::post('/', [BlogsController::class, 'store'])->name('store');
             Route::get('/{blog}', [BlogsController::class, 'adminShow'])->name('show');
             Route::post('/{blog}/update', [BlogsController::class, 'update'])->name('update');
+            Route::delete('/{blog}', [BlogsController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('/leads')->name('admin.leads.')->group(function () {

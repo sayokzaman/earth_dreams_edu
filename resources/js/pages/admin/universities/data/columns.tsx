@@ -47,10 +47,9 @@ export const universityColumns: GenericColumnDef<University>[] = [
     {
         key: 'rankings',
         label: 'Rankings',
-        sortable: true,
-        align: 'start',
+        align: 'center',
         render: (university) => (
-            <div className="flex items-center pl-2.5 capitalize">
+            <div className="flex items-center justify-center pl-2.5 capitalize">
                 <div className="flex flex-col items-center justify-center space-y-1 text-xs">
                     <Badge variant={'green'}>QS: {university.qs_ranking || 'N/A'}</Badge>
                     <Badge variant={'rose'} className="border-b">

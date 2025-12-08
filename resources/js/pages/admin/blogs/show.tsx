@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
+import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
 import { Head, useForm } from '@inertiajs/react';
@@ -52,6 +53,8 @@ const AdminBlogShow = ({ blog }: Props) => {
     const [imagePreview, setImagePreview] = useState<string>('');
 
     const { data, setData, post, processing, errors, reset, clearErrors, setDefaults } = useForm(initialData);
+
+    const [deleteModalData, setDeleteModalData] = useState<Blog | null>(null);
 
     const isMobile = useIsMobile();
 
@@ -131,12 +134,21 @@ const AdminBlogShow = ({ blog }: Props) => {
 
                         <p className="text-base text-muted-foreground">Blog #{blog.id}</p>
                     </div>
-                    <Button type="submit" disabled={processing}>
-                        {processing ? 'Updating...' : 'Update Blog'}
-                    </Button>
+
+                    <div className="grid grid-cols-2 gap-2">
+                        <Button type="submit" disabled={processing}>
+                            {processing ? 'Updating...' : 'Update Blog'}
+                        </Button>
+
+                        <Button type="button" variant="destructive" disabled={processing} onClick={() => setDeleteModalData(blog)}>
+                            {processing ? 'Deleting...' : 'Delete Blog'}
+                        </Button>
+                    </div>
+
+                    <DeleteBlogDialog blog={deleteModalData} setBlog={setDeleteModalData} />
                 </div>
 
-                <div className="flex flex-col sm:flex-row w-full gap-6">
+                <div className="flex w-full flex-col gap-6 sm:flex-row">
                     <div className="sm:w-1/4">
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Type <span className="text-sm text-red-500">*</span>
@@ -212,7 +224,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                         Content
                     </Label>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-sm text-red-500">*</span>
@@ -254,7 +266,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                             </Button>
                         </div>
 
-                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {
