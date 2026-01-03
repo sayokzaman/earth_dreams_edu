@@ -9,13 +9,14 @@ class SubjectController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Subject::query();
+        $query = Subject::query()->orderBy('subject_name', 'asc');
 
         if ($request->filled('search')) {
-            $query->where('subject_name', 'like', '%'.$request->input('search').'%');
+            $query->where('subject_name', 'like', '%'.$request->input('search').'%')
+                ->orderBy('subject_name', 'asc');
         }
 
-        $subjects = $query->take(10)->get();
+        $subjects = $query->get();
 
         return response()->json([
             'subjects' => $subjects,
@@ -38,7 +39,8 @@ class SubjectController extends Controller
         }
 
         return redirect()->back()->with([
-            'success' => 'Subject added successfully.',
+            'success' => true,
+            'message' => 'Subject added successfully.',
         ]);
     }
 
@@ -51,6 +53,16 @@ class SubjectController extends Controller
 
         return response()->json([
             'subjects' => $subjects,
+        ]);
+    }
+
+    public function destroy(Subject $subject)
+    {
+        $subject->delete();
+
+        return redirect()->back()->with([
+            'success' => true,
+            'message' => 'Subject deleted successfully.',
         ]);
     }
 }

@@ -52,4 +52,21 @@ class FacultyController extends Controller
 
         return response()->json($faculties);
     }
+
+    public function destroy(Faculty $faculty)
+    {
+        if ($faculty->courses()->count() > 0) {
+            return redirect()->back()->with([
+                'success' => false,
+                'message' => 'Cannot delete faculty with associated courses.',
+            ]);
+        }
+
+        $faculty->delete();
+
+        return redirect()->back()->with([
+            'success' => true,
+            'message' => 'Faculty deleted successfully.',
+        ]);
+    }
 }

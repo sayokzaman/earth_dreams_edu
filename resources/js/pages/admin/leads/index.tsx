@@ -2,12 +2,13 @@ import { DataTable } from '@/components/table/data-table';
 import { defaultLeadFilters, LeadFilter, useLeadFilters } from '@/hooks/filters/use-lead-filters';
 import AppLayout from '@/layouts/app-layout';
 import { CreateLeadDialog } from '@/pages/admin/leads/create-lead-dialog';
+import LeadFilters from '@/pages/admin/leads/filters';
+import SubjectModal from '@/pages/admin/leads/subject-modal';
 import { Lead } from '@/types/lead';
 import { TableData } from '@/types/table';
 import { Head } from '@inertiajs/react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { leadColumns } from './data/columns';
-import LeadFilters from '@/pages/admin/leads/filters'
 
 const breadcrumbs = [
     {
@@ -41,7 +42,11 @@ const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
                         </p>
                     </div>
 
-                    <CreateLeadDialog />
+                    <div className="flex items-center gap-2">
+                        <SubjectModal />
+
+                        <CreateLeadDialog />
+                    </div>
                 </div>
 
                 <DataTable<Lead, LeadFilter>

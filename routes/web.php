@@ -110,6 +110,7 @@ Route::domain($adminDomain)->group(function () {
         Route::prefix('/faculties')->name('admin.faculties.')->group(function () {
             Route::get('/', [FacultyController::class, 'index'])->name('index');
             Route::post('/', [FacultyController::class, 'store'])->name('store');
+            Route::delete('/{faculty}', [FacultyController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('/blogs')->name('admin.blogs.')->group(function () {
@@ -130,6 +131,7 @@ Route::domain($adminDomain)->group(function () {
         Route::prefix('/subjects')->name('admin.subjects.')->group(function () {
             Route::get('/', [SubjectController::class, 'index'])->name('index');
             Route::post('/', [SubjectController::class, 'store'])->name('store');
+            Route::delete('/{subject}', [SubjectController::class, 'destroy'])->name('destroy');
         });
 
         Route::middleware('role:super-admin|admin')->group(function () {
