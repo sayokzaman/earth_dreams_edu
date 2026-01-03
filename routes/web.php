@@ -123,11 +123,12 @@ Route::domain($adminDomain)->group(function () {
 
         Route::prefix('/leads')->name('admin.leads.')->group(function () {
             Route::get('/', [LeadsController::class, 'adminIndex'])->name('index');
+            Route::post('/', [LeadsController::class, 'store'])->name('store');
             Route::get('/{lead}', [LeadsController::class, 'adminShow'])->name('show');
         });
 
         Route::prefix('/subjects')->name('admin.subjects.')->group(function () {
-            Route::get('/', [SubjectController::class, 'getSubjects'])->name('list');
+            Route::get('/', [SubjectController::class, 'index'])->name('index');
             Route::post('/', [SubjectController::class, 'store'])->name('store');
         });
 

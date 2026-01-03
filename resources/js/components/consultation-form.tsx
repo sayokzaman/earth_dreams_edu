@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { country_of_residence, studyLevels } from '@/lib/constants';
@@ -12,7 +13,9 @@ import { cn } from '@/lib/utils';
 import { Lead } from '@/types/lead';
 import { Subject } from '@/types/subject';
 import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 const initialData = {
@@ -41,14 +44,24 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [search, setSearch] = useState('');
 
+    const [openSubjectPopover, setOpenSubjectPopover] = useState(false);
+
+    const widthRef = useRef<HTMLButtonElement>(null);
+    const [contentWidth, setContentWidth] = useState(widthRef.current?.offsetWidth || 0);
+
+    useEffect(() => {
+        if (widthRef.current) {
+            const width = widthRef.current.offsetWidth;
+            setContentWidth(width);
+        }
+    }, [widthRef.current?.offsetWidth]);
+
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
-                const response = await fetch(
-                    isAdmin ? route('admin.subjects.list', { query: search }) : route('public.subjects.list', { query: search }),
-                );
-                const subjectsData = await response.json();
-                setSubjects(subjectsData);
+                const response = await fetch(isAdmin ? route('admin.subjects.index', { search }) : route('public.subjects.list', { query: search }));
+                const data = await response.json();
+                setSubjects(data.subjects);
             } catch (error) {
                 console.error('Error fetching subjects:', error);
             }
@@ -77,10 +90,21 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
         }
     }, [lead, setData]);
 
+    const handleAddSubject = async () => {
+        try {
+            const response = await axios.post(route('admin.subjects.store'), { subject_name: search });
+            setData('subject_interested', response.data.subject.subject_name);
+            setSearch('');
+            setOpenSubjectPopover(false);
+        } catch (error) {
+            console.error('Error adding subject:', error);
+        }
+    };
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
-        post('/consultation', {
+        post(isAdmin ? route('admin.leads.store') : route('public.consultation.store'), {
             onSuccess: () => {
                 reset();
                 setDefaults(initialData);
@@ -282,31 +306,91 @@ export default function ConsultationForm({ lead, isAdmin = false, className }: P
                     <Label>
                         Subject Interested <span className="text-destructive">*</span>
                     </Label>
-                    <Select name="subject_interested" value={data.subject_interested} onValueChange={(val) => setData('subject_interested', val)}>
-                        <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
-                            <SelectValue placeholder="Please select a subject" />
-                        </SelectTrigger>
-                        <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
-                            <Input
-                                value={search}
-                                placeholder="Search subject..."
-                                className={cn('mb-2 flex-1', isAdmin ? '' : 'rounded-2xl bg-white')}
-                                onChange={(e) => setSearch(e.target.value)}
-                                onKeyDown={(e) => e.stopPropagation()}
-                            />
-                            {subjects && subjects.length > 0 ? (
-                                subjects
-                                    .filter((subject) => subject.subject_name.toLowerCase().includes(search.toLowerCase()))
-                                    .map((subject) => (
-                                        <SelectItem key={subject.subject_name} value={subject.subject_name.toLowerCase()}>
-                                            {subject.subject_name.charAt(0).toUpperCase() + subject.subject_name.slice(1)}
-                                        </SelectItem>
-                                    ))
-                            ) : (
-                                <div className="p-4 text-center text-sm text-muted-foreground">No subjects found.</div>
-                            )}
-                        </SelectContent>
-                    </Select>
+
+                    {isAdmin ? (
+                        <Popover open={openSubjectPopover} onOpenChange={setOpenSubjectPopover}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={openSubjectPopover}
+                                    ref={widthRef}
+                                    className="h-9 w-full justify-between bg-muted/60"
+                                >
+                                    <p className="capitalize">{data.subject_interested ? data.subject_interested : 'Select Subject'}</p>
+                                    <ChevronsUpDown className="opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-full p-2" style={{ width: contentWidth }}>
+                                <Input placeholder="Search subject..." className="h-9" value={search} onChange={(e) => setSearch(e.target.value)} />
+
+                                <div
+                                    className="mt-2 flex max-h-64 flex-col items-center gap-1 overflow-auto border-t pt-2 text-sm"
+                                    onWheelCapture={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                >
+                                    {subjects.length > 0 ? (
+                                        subjects.map((subject) => {
+                                            const selected = subject.subject_name.toString() === data.subject_interested;
+
+                                            return (
+                                                <button
+                                                    key={subject.id}
+                                                    onClick={() => {
+                                                        setData('subject_interested', subject.subject_name);
+                                                        setOpenSubjectPopover(false);
+                                                    }}
+                                                    className={cn(
+                                                        'flex w-full items-center justify-between rounded-md px-3 py-2 text-left transition-colors',
+                                                        selected
+                                                            ? 'bg-accent text-accent-foreground'
+                                                            : 'hover:bg-accent/80 hover:text-accent-foreground',
+                                                    )}
+                                                >
+                                                    <span className="font-medium capitalize">{subject.subject_name}</span>
+                                                    {selected && <Check className="h-4 w-4" />}
+                                                </button>
+                                            );
+                                        })
+                                    ) : search === '' ? (
+                                        <p className="py-4 text-center text-sm text-muted-foreground">No subjects found</p>
+                                    ) : (
+                                        <Button onClick={handleAddSubject} className="my-1.5 w-fit">
+                                            Subject not found. Add this subject?
+                                        </Button>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                    ) : (
+                        <Select name="subject_interested" value={data.subject_interested} onValueChange={(val) => setData('subject_interested', val)}>
+                            <SelectTrigger className={cn(isAdmin ? '' : 'rounded-2xl bg-white')}>
+                                <SelectValue placeholder="Please select a subject" />
+                            </SelectTrigger>
+                            <SelectContent className={cn(isAdmin ? '' : 'rounded-2xl bg-white', 'max-h-64')}>
+                                <Input
+                                    value={search}
+                                    placeholder="Search subject..."
+                                    className={cn('mb-2 flex-1', isAdmin ? '' : 'rounded-2xl bg-white')}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                />
+                                {subjects && subjects.length > 0 ? (
+                                    subjects
+                                        .filter((subject) => subject.subject_name.toLowerCase().includes(search.toLowerCase()))
+                                        .map((subject) => (
+                                            <SelectItem key={subject.subject_name} value={subject.subject_name.toLowerCase()}>
+                                                {subject.subject_name.charAt(0).toUpperCase() + subject.subject_name.slice(1)}
+                                            </SelectItem>
+                                        ))
+                                ) : (
+                                    <div className="p-4 text-center text-sm text-muted-foreground">No subjects found.</div>
+                                )}
+                            </SelectContent>
+                        </Select>
+                    )}
+
                     <InputError message={errors.subject_interested} />
                 </div>
             </div>
