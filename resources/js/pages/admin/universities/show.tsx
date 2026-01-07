@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
+import { cn, extractYoutubeUrl } from '@/lib/utils';
 import { DeleteUniversityDialog } from '@/pages/admin/universities/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { University, UniversityContent } from '@/types/university';
@@ -101,11 +101,13 @@ const ShowUniversity = ({ university }: Props) => {
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
-        setData(
-            'content',
-            data.content.map((section, i) => (i === index ? { ...section, [key]: value } : section)),
-        );
-    };
+            const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
+    
+            setData(
+                'content',
+                data.content.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
+            );
+        };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

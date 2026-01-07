@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { cn, extractGoogleMapUrl } from '@/lib/utils';
+import { cn, extractGoogleMapUrl, extractYoutubeUrl } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { UniversityContent } from '@/types/university';
 import { Head, useForm } from '@inertiajs/react';
@@ -65,9 +65,11 @@ const CreateUniversity = () => {
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
+        const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
+
         setData(
             'content',
-            data.content.map((section, i) => (i === index ? { ...section, [key]: value } : section)),
+            data.content.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
         );
     };
 
@@ -91,14 +93,14 @@ const CreateUniversity = () => {
             <Head title=" Create New University" />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <h2 className="text-xl font-semibold">New University</h2>
                     <Button type="submit" disabled={processing}>
                         {processing ? 'Creating...' : 'Create New University'}
                     </Button>
                 </div>
 
-                <div className="flex flex-col sm:flex-row w-full gap-6">
+                <div className="flex w-full flex-col gap-6 sm:flex-row">
                     <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Name <span className="text-sm text-red-500">*</span>
@@ -160,7 +162,7 @@ const CreateUniversity = () => {
                     </div>
                 ) : null}
 
-                <div className="flex flex-col sm:flex-row gap-6">
+                <div className="flex flex-col gap-6 sm:flex-row">
                     <div className="sm:w-1/4">
                         <Label htmlFor="cover-image" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Logo <span className="text-sm text-red-500">*</span>
@@ -198,7 +200,7 @@ const CreateUniversity = () => {
 
                 <div>
                     <Label className="mb-1 block text-lg font-medium">Rankings</Label>
-                    <div className="grid lg:grid-cols-5 gap-4 pt-2">
+                    <div className="grid gap-4 pt-2 lg:grid-cols-5">
                         <div>
                             <Label className="mb-1 block text-sm font-medium">
                                 Founding Year <span className="text-sm text-red-500">*</span>
@@ -242,7 +244,7 @@ const CreateUniversity = () => {
                         Content
                     </Label>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-sm text-red-500">*</span>
@@ -290,7 +292,7 @@ const CreateUniversity = () => {
                             <InputError className="text-xs" message={errors.content} />
                         </div>
 
-                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {

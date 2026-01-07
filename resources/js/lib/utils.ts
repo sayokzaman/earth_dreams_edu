@@ -12,6 +12,16 @@ export function extractGoogleMapUrl(embedCode: string) {
     return match ? match[1] : embedCode.trim();
 }
 
+export function extractYoutubeUrl(input: string): string {
+    // If input contains iframe tag, extract src attribute
+    const iframeMatch = input.match(/src=["']([^"']+)["']/);
+    if (iframeMatch) {
+        return iframeMatch[1];
+    }
+    // Otherwise return the input as-is (it's already a URL)
+    return input;
+}
+
 // utilities
 const isNum = (s: unknown) => /^\d+$/.test(String(s));
 

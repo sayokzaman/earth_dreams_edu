@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
+import { cn, extractYoutubeUrl } from '@/lib/utils';
 import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
@@ -94,9 +94,11 @@ const AdminBlogShow = ({ blog }: Props) => {
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
+        const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
+
         setData(
             'content',
-            data.content.map((section, i) => (i === index ? { ...section, [key]: value } : section)),
+            data.content.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
         );
     };
 

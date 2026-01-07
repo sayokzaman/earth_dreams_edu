@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
+import { cn, extractYoutubeUrl } from '@/lib/utils';
 import { DeleteCourseDialog } from '@/pages/admin/courses/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { Course, CourseContent } from '@/types/course';
@@ -120,9 +120,11 @@ const CreateCourse = ({ course }: Props) => {
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
+        const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
+
         setData(
             'contents',
-            data.contents.map((section, i) => (i === index ? { ...section, [key]: value } : section)),
+            data.contents.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
         );
     };
 
