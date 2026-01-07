@@ -84,10 +84,10 @@ function UniversityCard({ uni }: { uni: University }) {
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/70" />
 
             {/* Content */}
-            <div className="relative flex h-full w-full flex-col p-4 text-white items-center gap-2 justify-end">
+            <div className="relative flex h-full w-full flex-col items-center justify-end gap-2 p-4 text-white">
                 {/* Logo bubble */}
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md backdrop-blur-md bg-white/10 border border-white/20">
-                    <img src={`/storage/${uni?.logo}`} alt={uni.name} className="h-full w-full object-cover" />
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md text-black transition group-hover:scale-105">
+                    <img src={`/storage/${uni?.logo}`} alt={uni.name} className="h-full w-full object-contain" />
                 </div>
 
                 {/* Title */}

@@ -4,8 +4,10 @@ use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\LeadsController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StudyInUKController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UniversityController;
@@ -75,6 +77,18 @@ Route::domain($publicDomain)->name('public.')->group(function () {
 
     Route::prefix('/subjects')->name('subjects.')->group(function () {
         Route::get('/api/list', [SubjectController::class, 'getSubjectsList'])->name('list');
+    });
+
+    Route::prefix('/information')->name('information.')->group(function () {
+        Route::get('/about-us', [InformationController::class, 'aboutUs'])->name('aboutUs');
+        Route::get('/how-we-operate', [InformationController::class, 'howWeOperate'])->name('howWeOperate');
+        Route::get('/offices', [InformationController::class, 'offices'])->name('offices');
+        Route::get('/success-stories', [InformationController::class, 'successStories'])->name('successStories');
+    });
+
+    Route::prefix('/services')->name('services.')->group(function () {
+        Route::get('/student-accommodation', [ServicesController::class, 'studentAccommodation'])->name('studentAccommodation');
+        Route::get('/travel-support', [ServicesController::class, 'travelSupport'])->name('travelSupport');
     });
 });
 

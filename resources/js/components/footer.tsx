@@ -1,6 +1,6 @@
 import Wrapper from '@/components/wrapper';
 import { Link } from '@inertiajs/react';
-import { Facebook, Globe, Instagram, Linkedin, Mail, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 
 const Footer = () => {
     return (
@@ -52,29 +52,51 @@ const Footer = () => {
                     <h4 className="mb-4 font-semibold text-white">Information</h4>
                     <ul className="space-y-2 text-sm">
                         <li>
-                            <Link className="underline-offset-2 hover:text-white">About Us</Link>
+                            <Link href={route('public.information.aboutUs')} className="underline-offset-2 hover:text-white">
+                                About Us
+                            </Link>
                         </li>
                         <li>
-                            <Link className="underline-offset-2 hover:text-white">How We Operate</Link>
+                            <Link href={route('public.information.howWeOperate')} className="underline-offset-2 hover:text-white">
+                                How We Operate
+                            </Link>
                         </li>
                         <li>
-                            <Link className="underline-offset-2 hover:text-white">Our Offices</Link>
+                            <Link href={route('public.information.offices')} className="underline-offset-2 hover:text-white">
+                                Our Offices & Contacts
+                            </Link>
                         </li>
                         <li>
-                            <Link className="underline-offset-2 hover:text-white">Careers</Link>
+                            <Link href={route('public.information.successStories')} className="underline-offset-2 hover:text-white">
+                                Success Stories
+                            </Link>
                         </li>
                     </ul>
                 </div>
 
-                {/* Contact */}
+                {/* Services */}
                 <div>
-                    <h4 className="mb-4 font-semibold text-white">Contact</h4>
-                    <ul className="space-y-3 text-sm">
-                        <li className="flex items-center gap-2">
-                            <Mail className="h-4 w-4" /> support@earthdreamsedu.com
+                    <h4 className="mb-4 font-semibold text-white">Services</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li>
+                            <Link href={route('public.consultation.index')} className="underline-offset-2 hover:text-white">
+                                Free Application Support
+                            </Link>
                         </li>
-                        <li className="flex items-center gap-2">
-                            <Globe className="h-4 w-4" /> www.earthdreamsedu.com
+                        <li>
+                            <Link href={route('public.services.studentAccommodation')} className="underline-offset-2 hover:text-white">
+                                Student Accommodation
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={route('public.study.costOfStudy')} className="underline-offset-2 hover:text-white">
+                                Student Finance Advice
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={route('public.services.travelSupport')} className="underline-offset-2 hover:text-white">
+                                Travel Support
+                            </Link>
                         </li>
                     </ul>
                 </div>

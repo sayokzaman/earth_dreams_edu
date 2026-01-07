@@ -210,9 +210,9 @@ const UCASGuidePage = () => {
 
             <Wrapper className="relative flex flex-col py-12 md:flex-row">
                 {/* Sidebar */}
-                <ul className="top-24 flex w-full flex-col gap-6 self-start border-b pb-6 text-muted-foreground md:sticky md:mr-6 md:w-3/12 md:gap-4 md:border-0 md:py-2 md:text-lg">
+                <ul className="top-24 flex w-full flex-col gap-2 self-start border-b pb-6 text-muted-foreground md:sticky md:mr-6 md:w-3/12 md:border-0 md:py-2">
                     <li>
-                        <p className="border-b pb-2 text-center font-semibold text-theme-foreground md:text-start md:text-base">Table of Content</p>
+                        <p className="border-b pb-2 text-center font-semibold text-theme-foreground md:text-start">Table of Content</p>
                     </li>
                     {sections.map((s, idx) => {
                         const id = idFrom(s.section);
@@ -220,7 +220,12 @@ const UCASGuidePage = () => {
                             <li key={idx}>
                                 <a
                                     href={`#${id}`}
-                                    className={cn(activeId === id ? 'border-l-4 border-theme pl-2 font-semibold text-theme' : 'hover:text-theme/70')}
+                                    className={cn(
+                                        'flex items-center gap-2 px-2 py-2 transition-colors',
+                                        activeId === id
+                                            ? 'border-l-4 border-theme bg-muted/40 font-semibold text-theme'
+                                            : 'hover:bg-muted/30 hover:text-theme-foreground',
+                                    )}
                                 >
                                     {s.section}
                                 </a>
