@@ -11,7 +11,6 @@ import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
 import { TableData } from '@/types/table';
 import { Head, Link } from '@inertiajs/react';
-import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -39,13 +38,7 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h2 className="text-xl font-semibold">Blogs</h2>
-                        <p className="text-base text-muted-foreground">
-                            Showing results for
-                            <span className="ml-1 font-semibold text-foreground">
-                                {format(filters.from ? filters.from : startOfMonth(new Date()), 'do MMMM')} -{' '}
-                                {format(filters.to ? filters.to : endOfMonth(new Date()), 'do MMMM, yyyy')}
-                            </span>
-                        </p>
+                        <p className="text-base text-muted-foreground">Create and manage blog posts</p>
                     </div>
                     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
                         <CategoryModal />

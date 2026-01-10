@@ -9,7 +9,6 @@ import UserFilters from '@/pages/admin/users/filters';
 import { BreadcrumbItem, User } from '@/types';
 import { TableData } from '@/types/table';
 import { Head } from '@inertiajs/react';
-import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -37,13 +36,7 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h2 className="text-xl font-semibold">Users</h2>
-                        <p className="text-base text-muted-foreground">
-                            Showing results for
-                            <span className="ml-1 font-semibold text-foreground">
-                                {format(filters.from ? filters.from : startOfMonth(new Date()), 'do MMMM')} -{' '}
-                                {format(filters.to ? filters.to : endOfMonth(new Date()), 'do MMMM, yyyy')}
-                            </span>
-                        </p>
+                        <p className="text-base text-muted-foreground">Manage all user accounts and permissions</p>
                     </div>
                     <CreateEditUserDialog user={createEditModalData} setModalData={setCreateEditModalData} />
                 </div>
