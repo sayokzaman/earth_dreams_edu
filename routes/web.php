@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
@@ -125,6 +126,12 @@ Route::domain($adminDomain)->group(function () {
             Route::get('/', [FacultyController::class, 'index'])->name('index');
             Route::post('/', [FacultyController::class, 'store'])->name('store');
             Route::delete('/{faculty}', [FacultyController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('/categories')->name('admin.categories.')->group(function () {
+            Route::get('/', [CategoryController::class, 'index'])->name('index');
+            Route::post('/', [CategoryController::class, 'store'])->name('store');
+            Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('/blogs')->name('admin.blogs.')->group(function () {

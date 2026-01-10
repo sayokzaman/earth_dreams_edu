@@ -73,7 +73,7 @@ const BlogShow = ({ blog }: Props) => {
                                 <div className="rounded-full bg-black/30 backdrop-blur-lg">
                                     <span className="flex w-fit items-center gap-2 rounded-full border border-emerald-500 bg-emerald-500/5 px-3 py-1 text-xs text-emerald-500 sm:text-sm">
                                         <LayoutListIcon className="h-4 w-4" />
-                                        <span className="capitalize">Category: {blog.category}</span>
+                                        <span className="capitalize">Category: {blog.category?.name || 'Uncategorized'}</span>
                                     </span>
                                 </div>
                             </div>

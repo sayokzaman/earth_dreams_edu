@@ -4,15 +4,18 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
 import { cn, extractYoutubeUrl } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { BlogContent } from '@/types/blog';
+import { Category } from '@/types/category';
 import { Head, useForm } from '@inertiajs/react';
-import { PlusIcon, TrashIcon } from 'lucide-react';
-import { useState } from 'react';
+import axios from 'axios';
+import { Check, ChevronsUpDown, PlusIcon, TrashIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,7 +31,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const initialData = {
     type: 'blog',
     title: '',
-    category: '',
+    category_id: '',
     cover_img: null as File | null,
     content: [] as BlogContent[],
 };
@@ -39,6 +42,53 @@ const CreateBlog = () => {
     const { data, setData, post, processing, errors, reset, clearErrors, setDefaults } = useForm(initialData);
 
     const isMobile = useIsMobile();
+
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [search, setSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [open, setOpen] = useState(false);
+
+    const widthRef = useRef<HTMLButtonElement>(null);
+    const [contentWidth, setContentWidth] = useState(widthRef.current?.offsetWidth || 0);
+
+    useEffect(() => {
+        if (widthRef.current) {
+            const width = widthRef.current.offsetWidth;
+            setContentWidth(width);
+        }
+    }, [widthRef.current?.offsetWidth]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(route('admin.categories.index'), {
+                    params: { search },
+                });
+                setCategories(response.data.categories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, [search]);
+
+    const selectCategory = (categoryId: string) => {
+        setSelectedCategory(categories.find((category) => category.id === Number(categoryId)) || null);
+        setData('category_id', categoryId);
+    };
+
+    const handleAddCategory = async () => {
+        try {
+            const response = await axios.post(route('admin.categories.store'), { name: search });
+            setData('category_id', response.data.category.id);
+            setSelectedCategory(response.data.category);
+            setSearch('');
+            setOpen(false);
+        } catch (error) {
+            console.error('Error adding category:', error);
+        }
+    };
 
     const handleAddNewSection = () => {
         setData('content', [
@@ -88,14 +138,14 @@ const CreateBlog = () => {
             <Head title="Create New Blog" />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <h2 className="text-xl font-semibold">New Blog</h2>
                     <Button type="submit" disabled={processing}>
                         {processing ? 'Creating...' : 'Create New Blog'}
                     </Button>
                 </div>
 
-                <div className="flex flex-col sm:flex-row w-full gap-6">
+                <div className="flex w-full flex-col gap-6 sm:flex-row">
                     <div className="sm:w-1/4">
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Type <span className="text-sm text-red-500">*</span>
@@ -130,18 +180,62 @@ const CreateBlog = () => {
 
                     <div className="sm:w-1/4">
                         <Label htmlFor="category" className="mb-1 flex items-start gap-1 text-lg font-medium">
-                            Category <span className="sm text-red-500">*</span>
+                            Category <span className="text-sm text-red-500">*</span>
                         </Label>
-                        <Select value={data.category} onValueChange={(value) => setData('category', value)}>
-                            <SelectTrigger id="category" className="bg-muted/60">
-                                <SelectValue placeholder="Select Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="education">Education</SelectItem>
-                                <SelectItem value="courses">Courses</SelectItem>
-                                <SelectItem value="travel">Travel</SelectItem>
-                            </SelectContent>
-                        </Select>
+
+                        <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    ref={widthRef}
+                                    className="h-9 w-full justify-between bg-muted/60"
+                                >
+                                    <p className="capitalize">{selectedCategory ? selectedCategory.name : 'Select Category'}</p>
+                                    <ChevronsUpDown className="opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-full p-2" style={{ width: contentWidth }}>
+                                <Input placeholder="Search category..." className="h-9" value={search} onChange={(e) => setSearch(e.target.value)} />
+
+                                <div className="mt-2 flex flex-col items-center gap-1 border-t pt-2 text-sm">
+                                    {categories.length > 0 ? (
+                                        categories.map((category) => {
+                                            const selected = category.id.toString() === data.category_id;
+
+                                            return (
+                                                <button
+                                                    key={category.id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        selectCategory(category.id.toString());
+                                                        setOpen(false);
+                                                    }}
+                                                    className={cn(
+                                                        'flex w-full items-center justify-between rounded-md px-3 py-2 text-left transition-colors',
+                                                        selected
+                                                            ? 'bg-accent text-accent-foreground'
+                                                            : 'hover:bg-accent/80 hover:text-accent-foreground',
+                                                    )}
+                                                >
+                                                    <span className="font-medium capitalize">{category.name}</span>
+                                                    {selected && <Check className="h-4 w-4" />}
+                                                </button>
+                                            );
+                                        })
+                                    ) : search === '' ? (
+                                        <p className="py-4 text-center text-sm text-muted-foreground">No categories found</p>
+                                    ) : (
+                                        <Button onClick={handleAddCategory} className="my-1.5 w-fit" type="button">
+                                            Category not found. Add this category?
+                                        </Button>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+
+                        <InputError message={errors.category_id} />
                     </div>
                 </div>
 
@@ -168,7 +262,7 @@ const CreateBlog = () => {
                         Content
                     </Label>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-red-500">*</span>
@@ -216,7 +310,7 @@ const CreateBlog = () => {
                             <InputError message={errors.content} />
                         </div>
 
-                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {

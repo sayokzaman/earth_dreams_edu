@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\BlogContent;
+use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class BlogsController extends Controller
 {
     public function index(Request $request)
     {
-        $blogs = Blog::query()->with('contents')
+        $blogs = Blog::query()->with('contents', 'category')
             ->when($request->filled('date'), function ($q) use ($request) {
                 $date = Carbon::parse($request->date)->toDateString();
 
@@ -29,15 +30,14 @@ class BlogsController extends Controller
                 $q->whereIn('type', $request->types);
             })
             ->when($request->categories, function ($q) use ($request) {
-                $q->whereIn('category', $request->categories);
+                $q->whereIn('category_id', $request->categories);
             })
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 
-        $categories = Blog::query()
-            ->distinct()
-            ->pluck('category')
-            ->toArray();
+        $categories = Category::select('id', 'name')
+            ->orderBy('name')
+            ->get();
 
         return inertia('public/blogs/index', [
             'blogs' => $blogs,
@@ -78,7 +78,9 @@ class BlogsController extends Controller
                 $q->where('type', $request->type);
             })
             ->when($request->category, function ($q) use ($request) {
-                $q->where('category', 'like', "%{$request->category}%");
+                $q->whereHas('category', function ($categoryQuery) use ($request) {
+                    $categoryQuery->where('name', 'like', "%{$request->category}%");
+                });
             })
             ->when(
                 $request->filled('sort_by'),
@@ -94,6 +96,7 @@ class BlogsController extends Controller
                 fn ($q) => $q->orderBy('created_at', 'desc')->orderBy('id', 'desc')
             )
             ->with('author')
+            ->with('category')
             ->with('contents');
 
         $blogs = $blogs->paginate($request->per_page ?? 20);
@@ -124,24 +127,23 @@ class BlogsController extends Controller
     public function show(Blog $blog)
     {
         return inertia('public/blogs/show', [
-            'blog' => $blog->load('contents'),
+            'blog' => $blog->load('contents', 'category'),
         ]);
     }
 
     public function adminShow(Blog $blog)
     {
         return inertia('admin/blogs/show', [
-            'blog' => $blog->load('author')->load('contents'),
+            'blog' => $blog->load('author', 'category', 'contents'),
         ]);
     }
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'type' => 'required|in:blog,news,event',
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'cover_img' => 'nullable|image|max:2048', // optional image
             'content' => 'required|array|min:1',
             'content.*.type' => 'required|in:text,video',
@@ -164,7 +166,7 @@ class BlogsController extends Controller
                 'type' => $validated['type'],
                 'title' => $validated['title'],
                 'cover_img' => $coverPath,
-                'category' => $validated['category'],
+                'category_id' => $validated['category_id'],
                 'date' => now(),
             ]);
 
@@ -189,7 +191,7 @@ class BlogsController extends Controller
         $validated = $request->validate([
             'type' => 'required|in:blog,news,event',
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'cover_img' => 'nullable|image|max:2048', // optional new image
             'content' => 'required|array|min:1',
             'content.*.type' => 'required|in:text,video',
@@ -216,7 +218,7 @@ class BlogsController extends Controller
                 'type' => $validated['type'],
                 'title' => $validated['title'],
                 'cover_img' => $coverPath,
-                'category' => $validated['category'],
+                'category_id' => $validated['category_id'],
                 'date' => now(), // you can keep old $blog->date if preferred
             ]);
 

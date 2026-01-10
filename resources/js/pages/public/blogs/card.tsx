@@ -84,7 +84,7 @@ export default function BlogCard({ blog, className }: BlogCardProps) {
                     <div>
                         <h2 className="text-sm font-semibold">Category</h2>
                         <Badge className="rounded-full capitalize">
-                            <CalendarIcon className="mr-1 h-3.5 w-3.5" /> {blog.category}
+                            <CalendarIcon className="mr-1 h-3.5 w-3.5" /> {blog.category?.name || 'Uncategorized'}
                         </Badge>
                     </div>
 

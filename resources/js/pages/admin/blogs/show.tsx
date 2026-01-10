@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from '@/layouts/app-layout';
@@ -12,10 +13,12 @@ import { cn, extractYoutubeUrl } from '@/lib/utils';
 import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
+import { Category } from '@/types/category';
 import { Head, useForm } from '@inertiajs/react';
+import axios from 'axios';
 import { format } from 'date-fns';
-import { PlusIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Check, ChevronsUpDown, PlusIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     blog: Blog;
@@ -33,7 +36,7 @@ type ContentForm = {
 const initialData = {
     type: 'blog',
     title: '',
-    category: '',
+    category_id: '',
     cover_img: null as File | null,
     content: [] as ContentForm[],
 };
@@ -58,10 +61,18 @@ const AdminBlogShow = ({ blog }: Props) => {
 
     const isMobile = useIsMobile();
 
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [search, setSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(blog.category || null);
+    const [open, setOpen] = useState(false);
+
+    const widthRef = useRef<HTMLButtonElement>(null);
+    const [contentWidth, setContentWidth] = useState(widthRef.current?.offsetWidth || 0);
+
     useEffect(() => {
         if (blog) {
             setData('title', blog.title);
-            setData('category', blog.category);
+            setData('category_id', blog.category?.id.toString() || '');
             setData('cover_img', null);
             setData('content', [
                 ...blog.contents.map((content) => ({
@@ -79,6 +90,45 @@ const AdminBlogShow = ({ blog }: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (widthRef.current) {
+            const width = widthRef.current.offsetWidth;
+            setContentWidth(width);
+        }
+    }, [widthRef.current?.offsetWidth]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(route('admin.categories.index'), {
+                    params: { search },
+                });
+                setCategories(response.data.categories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, [search]);
+
+    const selectCategory = (categoryId: string) => {
+        setSelectedCategory(categories.find((category) => category.id === Number(categoryId)) || null);
+        setData('category_id', categoryId);
+    };
+
+    const handleAddCategory = async () => {
+        try {
+            const response = await axios.post(route('admin.categories.store'), { name: search });
+            setData('category_id', response.data.category.id);
+            setSelectedCategory(response.data.category);
+            setSearch('');
+            setOpen(false);
+        } catch (error) {
+            console.error('Error adding category:', error);
+        }
+    };
 
     const handleAddNewSection = () => {
         setData('content', [
@@ -129,7 +179,7 @@ const AdminBlogShow = ({ blog }: Props) => {
 
                             <div className="flex flex-wrap gap-1">
                                 <Badge className="capitalize">{'Type: ' + blog.type}</Badge>
-                                <Badge className="capitalize">{blog.category}</Badge>
+                                <Badge className="capitalize">{blog.category?.name}</Badge>
                                 <Badge className="capitalize">{format(new Date(blog.date), 'dd MMM yyyy')}</Badge>
                             </div>
                         </div>
@@ -188,17 +238,60 @@ const AdminBlogShow = ({ blog }: Props) => {
                         <Label htmlFor="type" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Category <span className="text-sm text-red-500">*</span>
                         </Label>
-                        <Select value={data.category} onValueChange={(value) => setData('category', value)}>
-                            <SelectTrigger className="bg-muted/60">
-                                <SelectValue placeholder="Select Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="education">Education</SelectItem>
-                                <SelectItem value="courses">Courses</SelectItem>
-                                <SelectItem value="travel">Travel</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <InputError message={errors.category} />
+
+                        <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    ref={widthRef}
+                                    className="h-9 w-full justify-between bg-muted/60"
+                                >
+                                    <p className="capitalize">{selectedCategory ? selectedCategory.name : 'Select Category'}</p>
+                                    <ChevronsUpDown className="opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-full p-2" style={{ width: contentWidth }}>
+                                <Input placeholder="Search category..." className="h-9" value={search} onChange={(e) => setSearch(e.target.value)} />
+
+                                <div className="mt-2 flex flex-col items-center gap-1 border-t pt-2 text-sm">
+                                    {categories.length > 0 ? (
+                                        categories.map((category) => {
+                                            const selected = category.id.toString() === data.category_id;
+
+                                            return (
+                                                <button
+                                                    key={category.id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        selectCategory(category.id.toString());
+                                                        setOpen(false);
+                                                    }}
+                                                    className={cn(
+                                                        'flex w-full items-center justify-between rounded-md px-3 py-2 text-left transition-colors',
+                                                        selected
+                                                            ? 'bg-accent text-accent-foreground'
+                                                            : 'hover:bg-accent/80 hover:text-accent-foreground',
+                                                    )}
+                                                >
+                                                    <span className="font-medium capitalize">{category.name}</span>
+                                                    {selected && <Check className="h-4 w-4" />}
+                                                </button>
+                                            );
+                                        })
+                                    ) : search === '' ? (
+                                        <p className="py-4 text-center text-sm text-muted-foreground">No categories found</p>
+                                    ) : (
+                                        <Button onClick={handleAddCategory} className="my-1.5 w-fit" type="button">
+                                            Category not found. Add this category?
+                                        </Button>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+
+                        <InputError message={errors.category_id} />
                     </div>
                 </div>
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,7 @@ class BlogFactory extends Factory
             'type' => $this->faker->randomElement(['blog', 'event', 'news']),
             'title' => $this->faker->sentence,
             'cover_img' => '',
-            'category' => $this->faker->randomElement(['Tech', 'Travel', 'Education', 'Lifestyle']),
+            'category_id' => Category::factory(),
             'date' => $this->faker->date(),
         ];
     }

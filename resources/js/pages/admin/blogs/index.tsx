@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { BlogFilter, defaultBlogFilters, useBlogFilters } from '@/hooks/filters/use-blog-filters';
 import AppLayout from '@/layouts/app-layout';
 import BlogActions from '@/pages/admin/blogs/actions';
+import CategoryModal from '@/pages/admin/blogs/category-modal';
 import { blogColumns } from '@/pages/admin/blogs/data/columns';
 import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
 import BlogFilters from '@/pages/admin/blogs/filters';
@@ -47,16 +48,10 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                         </p>
                     </div>
                     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
+                        <CategoryModal />
+
                         <Link href={route('admin.blogs.create')}>
-                            <Button
-                                // onClick={() => {
-                                //     setBlogModal(null);
-                                //     setOpenBlogModal(true);
-                                // }}
-                                className="w-full sm:w-auto"
-                            >
-                                Add New Blog
-                            </Button>
+                            <Button className="w-full sm:w-auto">Add New Blog</Button>
                         </Link>
                     </div>
                 </div>

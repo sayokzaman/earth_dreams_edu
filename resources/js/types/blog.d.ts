@@ -6,6 +6,8 @@ type BlogContent = {
     video_url: string;
 };
 
+import { Category } from './category';
+
 export interface Blog {
     id: number;
     author_id: number;
@@ -13,7 +15,8 @@ export interface Blog {
     title: string;
     date: string;
     cover_img: string;
-    category: string;
+    category_id: number;
+    category?: Category;
     contents: BlogContent[];
     author?: User;
 }

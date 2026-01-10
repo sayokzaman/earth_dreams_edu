@@ -10,6 +10,7 @@ import AppPublicLayout from '@/layouts/app/app-public-layout';
 import { cn } from '@/lib/utils';
 import BlogCard from '@/pages/public/blogs/card';
 import { Blog } from '@/types/blog';
+import { Category } from '@/types/category';
 import { TableData } from '@/types/table';
 import { Head, Link, router } from '@inertiajs/react';
 import { format } from 'date-fns';
@@ -18,12 +19,12 @@ import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     blogs: TableData<Blog>;
-    categories: string[];
+    categories: Category[];
     filters: {
         date: Date | undefined;
         searchBlog: string;
         types: string[];
-        categories: string[];
+        categories: number[];
     };
 };
 
@@ -193,23 +194,23 @@ const BlogIndex = ({ blogs, categories, filters: incomingFilters }: Props) => {
                                     </div>
 
                                     {categories.map((category) => (
-                                        <div key={category} className="flex items-center">
+                                        <div key={category.id} className="flex items-center">
                                             <input
-                                                id={category}
+                                                id={category.name}
                                                 type="checkbox"
                                                 className="aspect-square h-4 w-4 rounded border-muted focus:ring-theme"
-                                                checked={filters.categories && filters.categories.includes(category)}
+                                                checked={filters.categories && filters.categories.includes(category.id)}
                                                 onChange={(e) =>
                                                     setFilters((prev) => ({
                                                         ...prev,
                                                         categories: e.target.checked
-                                                            ? [...(prev.categories || []), category]
-                                                            : prev.categories.filter((c) => c !== category),
+                                                            ? [...(prev.categories || []), category.id]
+                                                            : prev.categories.filter((c) => c !== category.id),
                                                     }))
                                                 }
                                             />
-                                            <label htmlFor={category} className="ml-2 cursor-pointer text-sm font-medium capitalize select-none">
-                                                {category}
+                                            <label htmlFor={category.name} className="ml-2 cursor-pointer text-sm font-medium capitalize select-none">
+                                                {category.name}
                                             </label>
                                         </div>
                                     ))}
@@ -283,7 +284,6 @@ const BlogIndex = ({ blogs, categories, filters: incomingFilters }: Props) => {
                                         key={blog.id}
                                         className="transition-transform duration-500 hover:scale-102"
                                     >
-                                        {/* <CourseCard course={course} className="h-full" /> */}
                                         <BlogCard blog={blog} />
                                     </Link>
                                 ))}

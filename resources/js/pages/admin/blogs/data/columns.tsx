@@ -61,7 +61,7 @@ export const blogColumns: GenericColumnDef<Blog>[] = [
         render: (blog) => {
             return (
                 <Badge variant={'secondary'} className="font-bold capitalize">
-                    {blog.category}
+                    {blog.category?.name || 'Uncategorized'}
                 </Badge>
             );
         },
