@@ -1,5 +1,5 @@
 import Editor from '@/components/editor';
-import CoverImageInput from '@/components/image-input';
+import ImageInput from '@/components/image-input';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -325,7 +325,7 @@ const CreateCourse = ({ course }: Props) => {
                     <Label htmlFor="cover-image" className="mb-1 flex items-start gap-1 text-lg font-medium">
                         Cover Image <span className="text-sm text-red-500">*</span>
                     </Label>
-                    <CoverImageInput
+                    <ImageInput
                         initialImage={coverPreview} // show existing product image when editing
                         onChange={(file, previewUrl) => {
                             // file + preview from the component

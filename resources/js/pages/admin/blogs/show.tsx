@@ -1,5 +1,5 @@
 import Editor from '@/components/editor';
-import CoverImageInput from '@/components/image-input';
+import ImageInput from '@/components/image-input';
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -299,7 +299,7 @@ const AdminBlogShow = ({ blog }: Props) => {
                     <Label htmlFor="cover-image" className="mb-1 block text-lg font-medium">
                         Cover Image
                     </Label>
-                    <CoverImageInput
+                    <ImageInput
                         initialImage={imagePreview} // show existing product image when editing
                         onChange={(file, previewUrl) => {
                             // file + preview from the component

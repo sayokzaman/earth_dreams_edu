@@ -12,7 +12,7 @@ type Props = {
     recommendation?: string;
 };
 
-export default function CoverImageInput({
+export default function ImageInput({
     initialImage = null,
     onChange,
     aspectClass = 'aspect-[3/1]',
@@ -134,20 +134,3 @@ export default function CoverImageInput({
         </div>
     );
 }
-
-/*
-Usage example:
-
-<CoverImageInput
-  initialImage={existingUrl}
-  onChange={(file, previewUrl) => {
-    // upload file or set local state
-  }}
-  aspectClass="aspect-[5/2]" // optional
-/>
-
-Notes:
-- This component uses shadcn's Button and lucide-react icons. Replace imports if your project paths differ.
-- It uses object URLs for previews and cleans them up on unmount.
-- The entire control is full-width and keeps an aspect ratio; adjust `aspectClass` for different shapes.
-*/

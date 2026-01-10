@@ -1,5 +1,5 @@
 import Editor from '@/components/editor';
-import CoverImageInput from '@/components/image-input';
+import ImageInput from '@/components/image-input';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -101,13 +101,13 @@ const ShowUniversity = ({ university }: Props) => {
     };
 
     const handleSectionChange = (index: number, key: string, value: string) => {
-            const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
-    
-            setData(
-                'content',
-                data.content.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
-            );
-        };
+        const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
+
+        setData(
+            'content',
+            data.content.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
+        );
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -131,7 +131,7 @@ const ShowUniversity = ({ university }: Props) => {
             <Head title={university.name} />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h2 className="text-xl font-semibold">{university.name}</h2>
                         <p className="text-muted-foreground">{university.location}</p>
@@ -150,7 +150,7 @@ const ShowUniversity = ({ university }: Props) => {
                     </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row w-full gap-6">
+                <div className="flex w-full flex-col gap-6 sm:flex-row">
                     <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 block text-lg font-medium">
                             Name
@@ -212,12 +212,12 @@ const ShowUniversity = ({ university }: Props) => {
                     </div>
                 ) : null}
 
-                <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex flex-col gap-6 lg:flex-row">
                     <div className="lg:w-1/4">
                         <Label htmlFor="cover-image" className="mb-1 block text-lg font-medium">
                             Logo
                         </Label>
-                        <CoverImageInput
+                        <ImageInput
                             initialImage={logoPreview} // show existing product image when editing
                             onChange={(file, previewUrl) => {
                                 // file + preview from the component
@@ -235,7 +235,7 @@ const ShowUniversity = ({ university }: Props) => {
                         <Label htmlFor="cover-image" className="mb-1 block text-lg font-medium">
                             Cover Image
                         </Label>
-                        <CoverImageInput
+                        <ImageInput
                             initialImage={coverPreview} // show existing product image when editing
                             onChange={(file, previewUrl) => {
                                 // file + preview from the component
@@ -250,7 +250,7 @@ const ShowUniversity = ({ university }: Props) => {
 
                 <div>
                     <Label className="mb-1 block text-lg font-medium">Rankings</Label>
-                    <div className="grid lg:grid-cols-5 gap-4 pt-2">
+                    <div className="grid gap-4 pt-2 lg:grid-cols-5">
                         <div>
                             <Label className="mb-1 block text-sm font-medium">Founding Year</Label>
                             <Input value={data.founded} onChange={(e) => setData('founded', e.target.value)} className="bg-muted/60" />
@@ -287,7 +287,7 @@ const ShowUniversity = ({ university }: Props) => {
                         Content
                     </Label>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">Sections</Label>
                             <div className={cn('flex flex-col gap-4', data.content.length > 0 && 'mb-6')}>
@@ -335,7 +335,7 @@ const ShowUniversity = ({ university }: Props) => {
                             </Button>
                         </div>
 
-                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.content.length > 0 ? (
                                 data.content.map((content, index) => {
                                     if (content.type === 'video') {
