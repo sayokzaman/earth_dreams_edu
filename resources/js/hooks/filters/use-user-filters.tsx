@@ -4,16 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 
 export interface UserFilter extends TableFilterBase {
     search: string;
-    type: string;
-    category: string;
-    date: string;
+    roles: string[];
+    joined_date: string;
 }
 
 export const defaultUserFilters: UserFilter = {
     search: '',
-    type: '',
-    category: '',
-    date: '',
+    roles: [],
+    joined_date: '',
     from: '',
     to: '',
     per_page: '',

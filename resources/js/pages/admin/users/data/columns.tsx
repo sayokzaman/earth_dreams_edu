@@ -1,4 +1,5 @@
 import { GenericColumnDef } from '@/components/table/data-table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { User } from '@/types';
@@ -16,10 +17,28 @@ export const userColumns: GenericColumnDef<User>[] = [
 
     {
         key: 'name',
-        label: 'Name',
+        label: 'Username',
         sortable: true,
         align: 'start',
-        render: (user) => <span className="pl-3">{user.name}</span>,
+        render: (user) => {
+            const getInitials = () => {
+                const names = user.name.split(' ');
+                const initials = names.map((n) => n.charAt(0).toUpperCase());
+                return initials.slice(0, 2).join('');
+            };
+
+            return (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 overflow-hidden rounded-full">
+                        <AvatarImage src={user.avatar ? `/storage/${user.avatar}` : undefined} alt={user.name} />
+                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                            {getInitials()}
+                        </AvatarFallback>
+                    </Avatar>
+                    <span className="h-full">{user.name}</span>
+                </div>
+            );
+        },
     },
 
     {
@@ -62,7 +81,15 @@ export const userColumns: GenericColumnDef<User>[] = [
                         <Badge
                             key={user.id + role.name}
                             className="rounded-full font-semibold capitalize"
-                            variant={role.name === 'super-admin' ? 'destructive' : role.name === 'admin' ? 'default' : role.name === 'manager' ? 'manual' : 'outline'}
+                            variant={
+                                role.name === 'super-admin'
+                                    ? 'destructive'
+                                    : role.name === 'admin'
+                                      ? 'default'
+                                      : role.name === 'manager'
+                                        ? 'manual'
+                                        : 'outline'
+                            }
                         >
                             {role.name}
                         </Badge>

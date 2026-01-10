@@ -5,18 +5,70 @@ namespace App\Http\Controllers;
 use App\Mail\UserInviteMail;
 use App\Models\Invitation;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('roles')->paginate(20);
+        $sortableColumns = ['id', 'name', 'email', 'phone', 'created_at'];
+
+        $users = User::query()
+            ->when($request->search, function ($q) use ($request) {
+                $q->where(function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search}%")
+                        ->orWhere('email', 'like', "%{$request->search}%")
+                        ->orWhere('phone', 'like', "%{$request->search}%");
+                });
+            })
+            ->when($request->roles, function ($q) use ($request) {
+                $roles = is_array($request->roles) ? $request->roles : [$request->roles];
+                $q->whereHas('roles', function ($roleQuery) use ($roles) {
+                    $roleQuery->whereIn('name', $roles);
+                });
+            })
+            ->when($request->filled('joined_date'), function ($q) use ($request) {
+                try {
+                    $date = Carbon::parse($request->joined_date)->startOfDay();
+                    $q->whereDate('created_at', $date);
+                } catch (\Exception $e) {
+                    // If the date format is invalid, skip applying the joined_date filter.
+                }
+            })
+            ->when(
+                $request->filled('sort_by'),
+                function ($q) use ($request, $sortableColumns) {
+                    $direction = $request->sort_to === 'desc' ? 'DESC' : 'ASC';
+
+                    if (in_array($request->sort_by, $sortableColumns)) {
+                        $q->orderBy($request->sort_by, $direction);
+                    } else {
+                        $q->orderBy('created_at', 'desc')->orderBy('id', 'desc');
+                    }
+                },
+                fn ($q) => $q->orderBy('created_at', 'desc')->orderBy('id', 'desc')
+            )
+            ->with('roles');
+
+        $users = $users->paginate($request->per_page ?? 20);
 
         return inertia('admin/users/index', [
             'users' => $users,
+            'filters' => array_merge([
+                'search' => '',
+                'roles' => [],
+                'joined_date' => '',
+                'per_page' => 20,
+            ], $request->only([
+                'search',
+                'roles',
+                'joined_date',
+                'per_page',
+            ])),
         ]);
     }
 

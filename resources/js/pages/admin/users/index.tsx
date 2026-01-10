@@ -5,6 +5,7 @@ import UserActions from '@/pages/admin/users/actions';
 import CreateEditUserDialog from '@/pages/admin/users/create-edit-dialog';
 import { userColumns } from '@/pages/admin/users/data/columns';
 import { DeleteUserDialog } from '@/pages/admin/users/delete-dialog';
+import UserFilters from '@/pages/admin/users/filters';
 import { BreadcrumbItem, User } from '@/types';
 import { TableData } from '@/types/table';
 import { Head } from '@inertiajs/react';
@@ -54,9 +55,6 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultUserFilters)}
                     rowId={(user) => user.id}
-                    // renderMobileRow={(expense) => (
-                    //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
-                    // )}
                     renderActions={(user) => (
                         <UserActions
                             user={user}
@@ -66,7 +64,7 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                     )}
                     storageKey="usersTable"
                 >
-                    {/* <UserFilters filters={filters} setFilters={setFilters} /> */}
+                    <UserFilters filters={filters} setFilters={setFilters} />
                 </DataTable>
             </main>
 
