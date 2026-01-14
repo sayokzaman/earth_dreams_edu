@@ -103,6 +103,8 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
         );
     };
 
+    const defaultAccordion = filters.faculties.length ? ['faculties'] : [];
+
     return (
         <AppPublicLayout>
             <Head title="Courses" />
@@ -171,7 +173,7 @@ const CourseIndex = ({ courses, faculties, filters: incomingFilters }: Props) =>
                             </div>
                         )}
                     </div>
-                    <Accordion type="multiple" className="w-full">
+                    <Accordion type="multiple" defaultValue={defaultAccordion} className="w-full">
                         <AccordionItem value="faculties">
                             <AccordionTrigger className="cursor-pointer font-semibold hover:no-underline">Faculties</AccordionTrigger>
                             <AccordionContent className="mb-2 flex max-h-72 flex-col gap-4 overflow-y-auto rounded-2xl border border-b-0 bg-white/70 p-4 shadow-xs">

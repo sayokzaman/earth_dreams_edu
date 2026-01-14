@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { useUniversities } from '@/contexts/UniversityContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { University } from '@/types/university';
@@ -9,24 +10,44 @@ import { ListIcon, MapPinIcon, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function UniversitiesGrid() {
-    const [universities, setUniversities] = useState<University[]>([]);
+    const { featuredUniversities, loading: contextLoading, fetchUniversities } = useUniversities();
+    const [searchResults, setSearchResults] = useState<University[]>([]);
     const [query, setQuery] = useState('');
+    const [searchLoading, setSearchLoading] = useState(false);
 
-    // fetch once
+    // Fetch featured universities on mount
     useEffect(() => {
+        fetchUniversities();
+    }, [fetchUniversities]);
+
+    // Search universities when query changes
+    useEffect(() => {
+        if (query === '') {
+            setSearchResults([]);
+            return;
+        }
+
         let mounted = true;
+        setSearchLoading(true);
         (async () => {
             try {
                 const res = await axios.get(route('public.universities.list'), { params: { query } });
-                if (mounted) setUniversities(res.data ?? []);
+                if (mounted) {
+                    setSearchResults(res.data ?? []);
+                    setSearchLoading(false);
+                }
             } catch (e) {
                 console.error(e);
+                if (mounted) setSearchLoading(false);
             }
         })();
         return () => {
             mounted = false;
         };
     }, [query]);
+
+    const universities = query === '' ? featuredUniversities : searchResults;
+    const loading = query === '' ? contextLoading : searchLoading;
 
     // match StudyInUKGrid look: two-column floating nav rows
     const quickLinks = [
@@ -124,7 +145,17 @@ export default function UniversitiesGrid() {
             <div className="mb-2 w-full border-b pb-2 text-center font-semibold text-muted-foreground">
                 {query ? 'Search Results' : 'Featured Universities'}
             </div>
-            {universities.length > 0 && query === '' ? (
+            {loading ? (
+                <div className="relative flex flex-col items-center gap-4 px-4 lg:pb-4">
+                    <div className="w-full p-2">
+                        <div className="grid grid-cols-2 justify-center gap-4 lg:grid-cols-4">
+                            {Array.from({ length: isMobile ? 2 : 4 }).map((_, i) => (
+                                <UniversityCardSkeleton key={i} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ) : universities.length > 0 && query === '' ? (
                 <div className="relative flex flex-col items-center gap-4 px-4 lg:pb-4">
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex">
@@ -142,6 +173,7 @@ export default function UniversitiesGrid() {
                                     </div>
                                 </div>
                             ))}
+                            !loading &&{' '}
                         </div>
                     </div>
 
@@ -177,7 +209,7 @@ export default function UniversitiesGrid() {
                         </Button>
                     </Link>
                 </div>
-            ) : (
+            ) : !loading ? (
                 <div className="flex w-full flex-col gap-6 pt-8 text-center text-sm text-muted-foreground lg:pb-4">
                     <p>No universities match your search.</p>
                     <Link href={route('public.universities.index')}>
@@ -187,7 +219,32 @@ export default function UniversitiesGrid() {
                         </Button>
                     </Link>
                 </div>
-            )}
+            ) : null}
+        </div>
+    );
+}
+
+function UniversityCardSkeleton() {
+    return (
+        <div className="relative flex h-48 w-full overflow-hidden rounded-2xl shadow-lg lg:h-56 2xl:h-44">
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 to-gray-300" />
+            <div className="relative flex h-full w-full flex-col justify-between p-4">
+                {/* Logo placeholder */}
+                <div className="h-10 w-10 shrink-0 animate-pulse rounded-full bg-gray-300" />
+
+                {/* Title placeholder */}
+                <div className="space-y-2">
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-gray-300" />
+                    <div className="h-3 w-1/2 animate-pulse rounded bg-gray-300" />
+                </div>
+
+                {/* Bottom details placeholder */}
+                <div className="grid gap-2 2xl:grid-cols-3">
+                    <div className="hidden h-12 animate-pulse rounded-xl bg-gray-300 lg:block" />
+                    <div className="hidden h-12 animate-pulse rounded-xl bg-gray-300 2xl:block" />
+                    <div className="h-12 animate-pulse rounded-xl bg-gray-300" />
+                </div>
+            </div>
         </div>
     );
 }

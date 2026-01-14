@@ -39,7 +39,7 @@ const StatCards = () => {
                             <p className="text-4xl font-extrabold tracking-wider text-white">100+</p>
                         </CardContent>
                         <CardFooter className="pt-4">
-                            <Link href="/" className="w-full">
+                            <Link href={route('public.universities.index')} className="w-full">
                                 <Button variant="secondary" className="w-full rounded-full">
                                     Explore <ChevronRight className="ml-2 h-4 w-4" />
                                 </Button>
@@ -61,9 +61,9 @@ const StatCards = () => {
                             <p className="text-4xl font-extrabold tracking-wider text-white">10,000+</p>
                         </CardContent>
                         <CardFooter className="pt-4">
-                            <Link href="/" className="w-full">
+                            <Link href={route('public.study.index')} className="w-full">
                                 <Button variant="secondary" className="w-full rounded-full">
-                                    Reviews <ChevronRight className="ml-2 h-4 w-4" />
+                                    Read More <ChevronRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
                         </CardFooter>
@@ -83,7 +83,7 @@ const StatCards = () => {
                             <p className="text-4xl font-extrabold tracking-wider text-white">20+</p>
                         </CardContent>
                         <CardFooter className="pt-4">
-                            <Link href="/" className="w-full">
+                            <Link href={route('public.information.aboutUs')} className="w-full">
                                 <Button variant="secondary" className="w-full rounded-full">
                                     About Us <ChevronRight className="ml-2 h-4 w-4" />
                                 </Button>
@@ -105,9 +105,9 @@ const StatCards = () => {
                             <p className="text-4xl font-extrabold tracking-wider text-white">50+</p>
                         </CardContent>
                         <CardFooter className="pt-4">
-                            <Link href="/" className="w-full">
+                            <Link href={route('public.consultation.index')} className="w-full">
                                 <Button variant="secondary" className="w-full rounded-full">
-                                    Read More <ChevronRight className="ml-2 h-4 w-4" />
+                                    Get in Touch <ChevronRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
                         </CardFooter>

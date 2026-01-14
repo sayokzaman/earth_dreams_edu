@@ -27,15 +27,15 @@ const data = [
     },
     {
         name: 'Medicine & Health',
-        image: '/images/popular_faculties/computing.svg',
+        image: '/images/popular_faculties/medicine.svg',
+    },
+    {
+        name: 'Allied Health',
+        image: '/images/popular_faculties/allied-health.svg',
     },
     {
         name: 'Psychology',
-        image: '/images/popular_faculties/engineering.svg',
-    },
-    {
-        name: 'Law',
-        image: '/images/popular_faculties/law.svg',
+        image: '/images/popular_faculties/psychology.svg',
     },
 ];
 
@@ -57,18 +57,23 @@ const PopularFaculties = () => {
 
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 lg:grid-cols-4">
                     {data.map((faculty) => (
-                        <Card
+                        <Link
                             key={faculty.name}
-                            className="group flex cursor-pointer flex-col items-center justify-center gap-3 border-none bg-black/30 shadow-md transition-transform hover:scale-105"
+                            href={route('public.courses.index', {
+                                faculties: [faculty.name],
+                            })}
+                            className="group block"
                         >
-                            <CardContent className="flex items-center justify-center transition-transform group-hover:scale-110">
-                                <img src={faculty.image} alt={faculty.name} className="h-32" />
-                            </CardContent>
+                            <Card className="flex cursor-pointer flex-col items-center justify-center gap-3 border-none bg-black/30 shadow-md transition-transform hover:scale-105">
+                                <CardContent className="flex items-center justify-center transition-transform group-hover:scale-110">
+                                    <img src={faculty.image} alt={faculty.name} className="h-32" />
+                                </CardContent>
 
-                            <CardFooter>
-                                <p className="text-center text-lg font-semibold tracking-wide text-white">{faculty.name}</p>
-                            </CardFooter>
-                        </Card>
+                                <CardFooter>
+                                    <p className="text-center text-lg font-semibold tracking-wide text-white">{faculty.name}</p>
+                                </CardFooter>
+                            </Card>
+                        </Link>
                     ))}
                 </div>
 

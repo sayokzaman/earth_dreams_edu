@@ -1,38 +1,37 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useFaculties } from '@/contexts/FacultyContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Course } from '@/types/course';
-import { Faculty } from '@/types/faculty';
 import { Link, router } from '@inertiajs/react';
 import axios from 'axios';
 import { BookMarkedIcon, Clock3Icon, GraduationCapIcon, ListIcon, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function CoursesGrid() {
-    const [faculties, setFaculties] = useState<Faculty[]>([]);
+    const { featuredFaculties, loading: facultiesLoading, fetchFaculties } = useFaculties();
     const [courses, setCourses] = useState<Course[]>([]);
     const [query, setQuery] = useState('');
+    const [courseLoading, setCourseLoading] = useState(true);
 
     useEffect(() => {
-        (async () => {
-            try {
-                const res = await axios.get(route('public.faculties.list'));
-                setFaculties(res.data ?? []);
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, []);
+        fetchFaculties();
+    }, [fetchFaculties]);
 
     useEffect(() => {
         let mounted = true;
+        setCourseLoading(true);
         (async () => {
             try {
                 const res = await axios.get(route('public.courses.list'), { params: { query } });
-                if (mounted) setCourses(res.data ?? []);
+                if (mounted) {
+                    setCourses(res.data ?? []);
+                    setCourseLoading(false);
+                }
             } catch (e) {
                 console.error(e);
+                if (mounted) setCourseLoading(false);
             }
         })();
         return () => {
@@ -69,13 +68,13 @@ export default function CoursesGrid() {
             img: '/images/courses/top-up.svg',
             title: 'Top Up Courses',
             href: route('public.courses.topUpCourses'),
-            description: "Complete your degree with our top-up courses designed for diploma holders.",
+            description: 'Complete your degree with our top-up courses designed for diploma holders.',
         },
         {
             img: '/images/courses/phd.svg',
             title: 'PhD Courses',
             href: route('public.courses.phdCourses'),
-            description: "Pursue advanced research and contribute to your field with our PhD programs.",
+            description: 'Pursue advanced research and contribute to your field with our PhD programs.',
         },
     ];
 
@@ -129,19 +128,34 @@ export default function CoursesGrid() {
                 </div>
             </div>
 
-            {query === '' && courses.length > 0 && faculties.length > 0 ? (
+            {courseLoading ? (
+                <>
+                    <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Loading Courses</div>
+                    <div className="my-4 grid grid-cols-2 items-center gap-4 px-6 lg:grid-cols-4">
+                        {Array.from({ length: isMobile ? 4 : 8 }).map((_, i) => (
+                            <CourseCardSkeleton key={i} />
+                        ))}
+                    </div>
+                </>
+            ) : query === '' && courses.length > 0 ? (
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Popular Faculties</div>
-                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 p-4">
-                        {faculties.slice(0, isMobile ? 5 : 12).map((faculty) => (
-                            <Badge
-                                key={faculty.id}
-                                onClick={() => selectFaculty(faculty.name)}
-                                className="cursor-pointer rounded-3xl bg-black/70 px-4 py-1 text-xs text-white backdrop-blur-2xl transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-80 lg:text-sm"
-                            >
-                                {faculty.name}
-                            </Badge>
-                        ))}
+                    <div className="my-4 grid grid-cols-2 gap-4 px-6 lg:grid-cols-4">
+                        {facultiesLoading
+                            ? Array.from({ length: isMobile ? 4 : 8 }).map((_, i) => <FacultyCardSkeleton key={i} />)
+                            : featuredFaculties.slice(0, isMobile ? 4 : 8).map((faculty) => (
+                                  <div
+                                      key={faculty.id}
+                                      onClick={() => selectFaculty(faculty.name)}
+                                      className="group relative flex cursor-pointer flex-col justify-end overflow-hidden rounded-2xl border bg-gradient-to-br from-white to-gray-50 p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                                  >
+                                      <div className="absolute top-3 right-3 text-4xl opacity-10 transition-opacity group-hover:opacity-40">
+                                          <BookMarkedIcon className="h-6 w-6" />
+                                      </div>
+                                      <h3 className="relative z-10 text-sm leading-tight font-semibold text-gray-800 lg:text-base">{faculty.name}</h3>
+                                      <div className="mt-1 h-1 w-10 rounded-full bg-gradient-to-r from-theme to-theme-secondary transition-all duration-200 group-hover:w-full" />
+                                  </div>
+                              ))}
                     </div>
 
                     <div className="flex items-center justify-center lg:pb-4">
@@ -224,7 +238,7 @@ export default function CoursesGrid() {
                         </Link>
                     </div>
                 </>
-            ) : (
+            ) : !courseLoading ? (
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Search Results</div>
                     <div className="flex w-full flex-col gap-4 pt-8 text-center text-sm text-muted-foreground lg:pb-4">
@@ -237,7 +251,34 @@ export default function CoursesGrid() {
                         </Link>
                     </div>
                 </>
-            )}
+            ) : null}
+        </div>
+    );
+}
+
+function FacultyCardSkeleton() {
+    return (
+        <div className="group relative flex h-32 flex-col justify-end overflow-hidden rounded-2xl border bg-gradient-to-br from-white to-gray-50 p-4 shadow-sm">
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 to-gray-300" />
+            <div className="absolute top-3 right-3 text-4xl opacity-20">
+                <div className="h-6 w-6 animate-pulse rounded-full bg-gray-300" />
+            </div>
+            <div className="relative z-10 space-y-2">
+                <div className="h-4 w-3/4 animate-pulse rounded bg-gray-300" />
+                <div className="h-1 w-10 rounded-full bg-gray-300" />
+            </div>
+        </div>
+    );
+}
+
+function CourseCardSkeleton() {
+    return (
+        <div className="relative h-20 overflow-hidden rounded-2xl border bg-card py-0 shadow-sm">
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 to-gray-300" />
+            <div className="relative flex h-full flex-col justify-end p-4">
+                {/* Title placeholder */}
+                <div className="h-4 w-full animate-pulse rounded bg-gray-300" />
+            </div>
         </div>
     );
 }

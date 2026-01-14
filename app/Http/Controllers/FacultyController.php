@@ -15,7 +15,7 @@ class FacultyController extends Controller
             $query->where('name', 'like', '%'.$request->input('search').'%');
         }
 
-        $faculties = $query->take(10)->get();
+        $faculties = $query->orderBy('name', 'asc')->get();
 
         return response()->json([
             'faculties' => $faculties,
