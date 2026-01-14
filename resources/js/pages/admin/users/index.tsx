@@ -7,6 +7,7 @@ import CreateEditUserDialog from '@/pages/admin/users/create-edit-dialog';
 import { userColumns } from '@/pages/admin/users/data/columns';
 import { DeleteUserDialog } from '@/pages/admin/users/delete-dialog';
 import UserFilters from '@/pages/admin/users/filters';
+import UserMobileRow from '@/pages/admin/users/mobile-row';
 import { BreadcrumbItem, User } from '@/types';
 import { TableData } from '@/types/table';
 import { Head, router } from '@inertiajs/react';
@@ -84,6 +85,13 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultUserFilters)}
                     rowId={(user) => user.id}
+                    renderMobileRow={(user) => (
+                        <UserMobileRow
+                            user={user}
+                            setEditModalData={(user) => setCreateEditModalData(user)}
+                            setDeleteModalData={(user) => setDeleteModalData(user)}
+                        />
+                    )}
                     renderActions={(user) => (
                         <UserActions
                             user={user}

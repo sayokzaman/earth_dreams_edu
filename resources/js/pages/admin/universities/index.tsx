@@ -74,7 +74,9 @@ const AdminUniversitiesIndex = ({ universities, filters: incomingFilters }: Prop
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultUniversityFilters)}
                     rowId={(university) => university.id}
-                    renderMobileRow={(university) => <UniversityMobileRow university={university} />}
+                    renderMobileRow={(university) => (
+                        <UniversityMobileRow university={university} setUniversityModal={(university) => setDeleteModalData(university)} />
+                    )}
                     renderActions={(university) => (
                         <UniversityActions university={university} setUniversityModal={(university) => setDeleteModalData(university)} />
                     )}

@@ -8,6 +8,7 @@ import { courseColumns } from '@/pages/admin/courses/data/columns';
 import { DeleteCourseDialog } from '@/pages/admin/courses/delete-dialog';
 import FacultyModal from '@/pages/admin/courses/faculty-modal';
 import CourseFilters from '@/pages/admin/courses/filters';
+import CourseMobileRow from '@/pages/admin/courses/mobile-row';
 import { BreadcrumbItem } from '@/types';
 import { Course } from '@/types/course';
 import { TableData } from '@/types/table';
@@ -60,7 +61,7 @@ const CourseIndex = ({ courses, filters: incomingFilters }: Props) => {
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2">
                             <FacultyModal />
                             <Link href={route('admin.courses.create')}>
-                                <Button size='lg' className="gap-2 whitespace-nowrap">
+                                <Button size="lg" className="gap-2 whitespace-nowrap">
                                     <Plus className="h-4 w-4" />
                                     Add Course
                                 </Button>
@@ -76,6 +77,7 @@ const CourseIndex = ({ courses, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultCourseFilters)}
                     rowId={(course) => course.id}
+                    renderMobileRow={(course) => <CourseMobileRow course={course} setCourseModal={(course) => setDeleteModalData(course)} />}
                     renderActions={(course) => <CourseActions course={course} setCourseModal={(course) => setDeleteModalData(course)} />}
                     storageKey="courseTable"
                 >

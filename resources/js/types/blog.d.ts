@@ -19,4 +19,6 @@ export interface Blog {
     category?: Category;
     contents: BlogContent[];
     author?: User;
+    created_at: string;
+    updated_at: string;
 }

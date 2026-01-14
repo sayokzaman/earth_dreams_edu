@@ -8,6 +8,7 @@ import CategoryModal from '@/pages/admin/blogs/category-modal';
 import { blogColumns } from '@/pages/admin/blogs/data/columns';
 import { DeleteBlogDialog } from '@/pages/admin/blogs/delete-dialog';
 import BlogFilters from '@/pages/admin/blogs/filters';
+import BlogMobileRow from '@/pages/admin/blogs/mobile-row';
 import { BreadcrumbItem } from '@/types';
 import { Blog } from '@/types/blog';
 import { TableData } from '@/types/table';
@@ -61,7 +62,7 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2">
                             <CategoryModal />
                             <Link href={route('admin.blogs.create')}>
-                                <Button size='lg' className="gap-2 whitespace-nowrap">
+                                <Button size="lg" className="gap-2 whitespace-nowrap">
                                     <Plus className="h-4 w-4" />
                                     Add Blog
                                 </Button>
@@ -77,9 +78,7 @@ const AdminBlogsIndex = ({ blogs, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultBlogFilters)}
                     rowId={(blog) => blog.id}
-                    // renderMobileRow={(expense) => (
-                    //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
-                    // )}
+                    renderMobileRow={(blog) => <BlogMobileRow blog={blog} setBlogModal={(blog) => setDeleteModalData(blog)} />}
                     renderActions={(blog) => <BlogActions blog={blog} setBlogModal={(blog) => setDeleteModalData(blog)} />}
                     storageKey="blogsTable"
                 >

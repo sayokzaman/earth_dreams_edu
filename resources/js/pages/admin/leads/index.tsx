@@ -4,6 +4,7 @@ import { defaultLeadFilters, LeadFilter, useLeadFilters } from '@/hooks/filters/
 import AppLayout from '@/layouts/app-layout';
 import { CreateLeadDialog } from '@/pages/admin/leads/create-lead-dialog';
 import LeadFilters from '@/pages/admin/leads/filters';
+import LeadMobileRow from '@/pages/admin/leads/mobile-row';
 import SubjectModal from '@/pages/admin/leads/subject-modal';
 import { Lead } from '@/types/lead';
 import { TableData } from '@/types/table';
@@ -78,9 +79,7 @@ const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
                     setFilters={setFilters}
                     onReset={() => setFilters(defaultLeadFilters)}
                     rowId={(lead) => lead.id}
-                    // renderMobileRow={(expense) => (
-                    //     <ExpenseMobileRow expense={expense} setExpenseModal={setExpenseModal} setDeleteModal={setDeleteModal} />
-                    // )}
+                    renderMobileRow={(lead) => <LeadMobileRow lead={lead} />}
                     storageKey="leadsTable"
                 >
                     <LeadFilters filters={filters} setFilters={setFilters} />
