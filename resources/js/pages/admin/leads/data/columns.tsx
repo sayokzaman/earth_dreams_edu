@@ -2,6 +2,7 @@ import { GenericColumnDef } from '@/components/table/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Lead } from '@/types/lead';
 import { Link } from '@inertiajs/react';
+import { format } from 'date-fns';
 import { FaWhatsapp } from 'react-icons/fa';
 
 export const leadColumns: GenericColumnDef<Lead>[] = [
@@ -88,6 +89,18 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
                 {lead.mobile_country_code + ' ' + lead.mobile}
                 {lead.is_whatsapp && <FaWhatsapp className="inline text-green-500" />}
             </span>
+        ),
+    },
+    {
+        key: 'created_at',
+        label: 'Created At',
+        sortable: true,
+        align: 'center',
+        render: (lead) => (
+            <div className="grid items-center">
+                <span className='font-bold text-base'>{format(new Date(lead.created_at), 'hh:mm a')}</span>
+                <span className='text-xs text-muted-foreground'>{format(new Date(lead.created_at), 'MMM dd, yyyy')}</span>
+            </div>
         ),
     },
 ];

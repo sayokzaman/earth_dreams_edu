@@ -6,7 +6,8 @@ import LeadFilters from '@/pages/admin/leads/filters';
 import SubjectModal from '@/pages/admin/leads/subject-modal';
 import { Lead } from '@/types/lead';
 import { TableData } from '@/types/table';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import { leadColumns } from './data/columns';
 
 const breadcrumbs = [
@@ -23,6 +24,16 @@ interface Props {
 
 const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
     const { filters, setFilters } = useLeadFilters(incomingFilters);
+    const [openCreateDialog, setOpenCreateDialog] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('create') === 'true') {
+            setOpenCreateDialog(true);
+            // Remove the create param from URL
+            router.visit(window.location.pathname, { preserveState: true, replace: true });
+        }
+    }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -38,7 +49,7 @@ const LeadsIndex = ({ leads, filters: incomingFilters }: Props) => {
                     <div className="flex items-center gap-2">
                         <SubjectModal />
 
-                        <CreateLeadDialog />
+                        <CreateLeadDialog open={openCreateDialog} onOpenChange={setOpenCreateDialog} />
                     </div>
                 </div>
 

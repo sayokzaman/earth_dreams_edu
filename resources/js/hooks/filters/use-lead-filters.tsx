@@ -9,6 +9,7 @@ export interface LeadFilter extends TableFilterBase {
     subject_interested: string;
     in_uk_now: string;
     is_whatsapp: string;
+    date: string;
 }
 
 export const defaultLeadFilters: LeadFilter = {
@@ -18,6 +19,7 @@ export const defaultLeadFilters: LeadFilter = {
     subject_interested: '',
     in_uk_now: '',
     is_whatsapp: '',
+    date: '',
     from: '',
     to: '',
     per_page: '',

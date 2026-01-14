@@ -35,11 +35,14 @@ class LeadsController extends Controller
             ->when($request->subject_interested, function ($q) use ($request) {
                 $q->where('subject_interested', $request->subject_interested);
             })
-            ->when(!is_null($request->in_uk_now), function ($q) use ($request) {
+            ->when(! is_null($request->in_uk_now), function ($q) use ($request) {
                 $q->where('in_uk_now', $request->in_uk_now);
             })
-            ->when(!is_null($request->is_whatsapp), function ($q) use ($request) {
+            ->when(! is_null($request->is_whatsapp), function ($q) use ($request) {
                 $q->where('is_whatsapp', $request->is_whatsapp);
+            })
+            ->when($request->date, function ($q) use ($request) {
+                $q->whereDate('created_at', $request->date);
             });
 
         $leads = $leads->orderBy('created_at', 'desc')->paginate($request->per_page ?? 20);
@@ -53,6 +56,7 @@ class LeadsController extends Controller
                 'subject_interested' => '',
                 'in_uk_now' => '',
                 'is_whatsapp' => '',
+                'date' => '',
                 'per_page' => 20,
             ], $request->only([
                 'search',
@@ -61,6 +65,7 @@ class LeadsController extends Controller
                 'subject_interested',
                 'in_uk_now',
                 'is_whatsapp',
+                'date',
                 'per_page',
             ])),
         ]);

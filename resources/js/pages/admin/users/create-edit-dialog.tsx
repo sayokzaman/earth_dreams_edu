@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 type Props = {
     user: User | null;
     setModalData: (user: User | null) => void;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 };
 
 const initialData = {
@@ -20,10 +22,13 @@ const initialData = {
     roles: [] as string[],
 };
 
-const CreateEditUserDialog = ({ user, setModalData }: Props) => {
+const CreateEditUserDialog = ({ user, setModalData, open: externalOpen, onOpenChange: externalOnOpenChange }: Props) => {
     const { data, setData, post, patch, processing, reset, setDefaults, clearErrors, errors } = useForm(initialData);
 
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
+
+    const open = externalOpen !== undefined ? externalOpen : internalOpen;
+    const setOpen = externalOnOpenChange !== undefined ? externalOnOpenChange : setInternalOpen;
 
     useEffect(() => {
         if (user) {

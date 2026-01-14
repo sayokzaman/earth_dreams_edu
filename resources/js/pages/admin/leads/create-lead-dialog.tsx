@@ -2,9 +2,14 @@ import ConsultationForm from '@/components/consultation-form';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-export const CreateLeadDialog = () => {
+interface Props {
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+}
+
+export const CreateLeadDialog = ({ open, onOpenChange }: Props) => {
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
                 <Button className="w-full sm:w-auto">Add New Lead</Button>
             </DialogTrigger>

@@ -1,8 +1,13 @@
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LeadFilter } from '@/hooks/filters/use-lead-filters';
 import { country_of_residence, studyLevels, subjects } from '@/lib/constants';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
 
 interface Props {
     filters: LeadFilter;
@@ -19,6 +24,30 @@ export default function LeadFilters({ filters, setFilters }: Props) {
                     value={filters.search}
                     onChange={(e) => setFilters({ ...filters, search: e.target.value, page: 1 })}
                 />
+            </div>
+
+            <div className="grid">
+                <Label className="mt-1.5 mb-1">Date</Label>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            data-empty={!filters.date}
+                            className="h-9 justify-start text-left font-normal data-[empty=true]:text-muted-foreground"
+                        >
+                            <CalendarIcon />
+                            {filters.date ? format(filters.date, 'PPP') : <span>Pick a date</span>}
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0">
+                        <Calendar
+                            mode="single"
+                            selected={filters.date ? new Date(filters.date) : undefined}
+                            onSelect={(date) => setFilters({ ...filters, date: date ? format(new Date(date), 'yyyy-MM-dd') : '', page: 1 })}
+                            className="w-full"
+                        />
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div>

@@ -8,8 +8,8 @@ import { DeleteUserDialog } from '@/pages/admin/users/delete-dialog';
 import UserFilters from '@/pages/admin/users/filters';
 import { BreadcrumbItem, User } from '@/types';
 import { TableData } from '@/types/table';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,6 +28,16 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
 
     const [createEditModalData, setCreateEditModalData] = useState<User | null>(null);
     const [deleteModalData, setDeleteModalData] = useState<User | null>(null);
+    const [openCreateDialog, setOpenCreateDialog] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('create') === 'true') {
+            setOpenCreateDialog(true);
+            // Remove the create param from URL
+            router.visit(window.location.pathname, { preserveState: true, replace: true });
+        }
+    }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -38,7 +48,12 @@ const AdminUsersIndex = ({ users, filters: incomingFilters }: Props) => {
                         <h2 className="text-xl font-semibold">Users</h2>
                         <p className="text-base text-muted-foreground">Manage all user accounts and permissions</p>
                     </div>
-                    <CreateEditUserDialog user={createEditModalData} setModalData={setCreateEditModalData} />
+                    <CreateEditUserDialog
+                        user={createEditModalData}
+                        setModalData={setCreateEditModalData}
+                        open={openCreateDialog}
+                        onOpenChange={setOpenCreateDialog}
+                    />
                 </div>
 
                 <DataTable<User, UserFilter>
