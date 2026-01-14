@@ -20,18 +20,18 @@ export interface TableData<T> extends PaginationData {
 }
 
 export interface BaseFilter {
-    from?: string
-    to?: string
-    trashed?: string
-    per_page?: number | string
-    page?: number | string
-    current_page?: number | string
-    last_page?: number | string
+    from?: string;
+    to?: string;
+    trashed?: string;
+    per_page?: number | string;
+    page?: number | string;
+    current_page?: number | string;
+    last_page?: number | string;
 }
 
 type SortableFilter = {
-    sort_by?: string
-    sort_to?: '' | 'asc' | 'desc'
-}
+    sort_by?: string;
+    sort_to?: '' | 'asc' | 'desc';
+};
 
-export type TableFilterBase = BaseFilter & SortableFilter
+export type TableFilterBase = BaseFilter & SortableFilter;

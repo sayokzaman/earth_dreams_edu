@@ -40,7 +40,7 @@ export const universityColumns: GenericColumnDef<University>[] = [
         align: 'start',
         render: (university) => (
             <div className="flex items-center gap-2 pl-2.5">
-                <span className="rounded-lg p-1.5 bg-foreground/10">
+                <span className="rounded-lg bg-foreground/10 p-1.5">
                     <MapPin className="h-4 w-4 text-foreground" />
                 </span>
                 <span className="font-medium capitalize">{university.location}</span>

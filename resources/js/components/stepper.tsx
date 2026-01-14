@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export type Step = {
     number: number;
@@ -17,7 +17,7 @@ export function TimelineStepper({ steps }: TimelineStepperProps) {
         <div className="relative flex flex-col items-center">
             {steps.map((step, i) => (
                 // wrapper: does NOT scale
-                <div key={i} className={cn("relative w-full max-w-3xl", i !== steps.length - 1 && "mb-12")}>
+                <div key={i} className={cn('relative w-full max-w-3xl', i !== steps.length - 1 && 'mb-12')}>
                     {/* connector UNDER this step (except last) — NOT inside the scaling element */}
                     {i < steps.length - 1 && (
                         <div

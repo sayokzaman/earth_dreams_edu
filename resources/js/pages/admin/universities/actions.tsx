@@ -1,4 +1,4 @@
-import { TextWithBreaks } from '@/components/text-with-breaks'
+import { TextWithBreaks } from '@/components/text-with-breaks';
 import { ContextMenuItem, ContextMenuLabel, ContextMenuSeparator } from '@/components/ui/context-menu';
 import { University } from '@/types/university';
 import { Link } from '@inertiajs/react';

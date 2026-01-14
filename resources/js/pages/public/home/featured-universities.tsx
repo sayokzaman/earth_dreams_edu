@@ -86,7 +86,7 @@ function UniversityCard({ uni }: { uni: University }) {
             {/* Content */}
             <div className="relative flex h-full w-full flex-col items-center justify-end gap-2 p-4 text-white">
                 {/* Logo bubble */}
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md text-black transition group-hover:scale-105">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-black shadow-md transition group-hover:scale-105">
                     <img src={`/storage/${uni?.logo}`} alt={uni.name} className="h-full w-full object-contain" />
                 </div>
 

@@ -329,5 +329,4 @@ const UndergraduatePage = () => {
     );
 };
 
-export default UndergraduatePage
-;
+export default UndergraduatePage;

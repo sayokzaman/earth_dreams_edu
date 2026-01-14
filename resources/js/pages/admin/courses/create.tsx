@@ -96,7 +96,7 @@ const CreateCourse = () => {
 
     const handleSectionChange = (index: number, key: string, value: string) => {
         const processedValue = key === 'video_url' ? extractYoutubeUrl(value) : value;
-        
+
         setData(
             'contents',
             data.contents.map((section, i) => (i === index ? { ...section, [key]: processedValue } : section)),
@@ -130,14 +130,14 @@ const CreateCourse = () => {
             <Head title=" Create New Course" />
 
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4">
-                <div className="flex flex-col sm:items-center justify-between gap-4 sm:flex-row">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <h2 className="text-xl font-semibold">New Course</h2>
                     <Button type="submit" disabled={processing}>
                         {processing ? 'Creating...' : 'Create New Course'}
                     </Button>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row">
                     <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Course Title <span className="text-sm text-red-500">*</span>
@@ -214,7 +214,7 @@ const CreateCourse = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row">
                     <div className="sm:w-1/2">
                         <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                             Study Level <span className="text-sm text-red-500">*</span>
@@ -237,7 +237,7 @@ const CreateCourse = () => {
                         <InputError className="text-xs" message={errors.study_level} />
                     </div>
 
-                    <div className="flex sm:w-1/2 gap-4">
+                    <div className="flex gap-4 sm:w-1/2">
                         <div className="w-1/2">
                             <Label htmlFor="name" className="mb-1 flex items-start gap-1 text-lg font-medium">
                                 Duration <span className="text-sm text-red-500">*</span>
@@ -295,7 +295,7 @@ const CreateCourse = () => {
                         Content
                     </Label>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         <div className="lg:w-4/12">
                             <Label className="mb-2 block font-medium">
                                 Sections <span className="text-sm text-red-500">*</span>
@@ -343,7 +343,7 @@ const CreateCourse = () => {
                             <InputError className="text-xs" message={errors.contents} />
                         </div>
 
-                        <div className="flex lg:w-8/12 flex-col items-start justify-center gap-6">
+                        <div className="flex flex-col items-start justify-center gap-6 lg:w-8/12">
                             {data.contents.length > 0 ? (
                                 data.contents.map((content, index) => {
                                     if (content.type === 'video') {

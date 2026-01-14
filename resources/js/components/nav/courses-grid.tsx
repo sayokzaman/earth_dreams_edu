@@ -184,7 +184,7 @@ export default function CoursesGrid() {
                                             <div>
                                                 {/* faculty */}
                                                 <div className="mt-2 flex items-center gap-2">
-                                                    <Badge className="rounded-full bg-white/10 text-white backdrop-blur-sm px-2 py-1 text-xs font-medium">
+                                                    <Badge className="rounded-full bg-white/10 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
                                                         <BookMarkedIcon className="mr-1 h-3.5 w-3.5 opacity-90" />
                                                         <span className="text-wrap">{course.faculty?.name ?? 'Unknown Faculty'}</span>
                                                     </Badge>
@@ -192,7 +192,7 @@ export default function CoursesGrid() {
                                             </div>
 
                                             {/* bottom: meta */}
-                                            <div className="grid gap-2 lg:grid-cols-2 mt-2">
+                                            <div className="mt-2 grid gap-2 lg:grid-cols-2">
                                                 <div className="rounded-xl bg-white/10 px-2 py-1 backdrop-blur-sm lg:p-2">
                                                     <p className="text-[10px] font-medium tracking-wide text-white/80 uppercase">Degree</p>
                                                     <div className="mt-1 flex flex-wrap items-center text-sm font-semibold capitalize">
@@ -227,7 +227,7 @@ export default function CoursesGrid() {
             ) : (
                 <>
                     <div className="w-full border-b pb-2 text-center font-semibold text-muted-foreground">Search Results</div>
-                    <div className="flex w-full flex-col gap-4 pt-8 lg:pb-4 text-center text-sm text-muted-foreground">
+                    <div className="flex w-full flex-col gap-4 pt-8 text-center text-sm text-muted-foreground lg:pb-4">
                         <p>No courses match your search.</p>
                         <Link href={route('public.courses.index')}>
                             <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">

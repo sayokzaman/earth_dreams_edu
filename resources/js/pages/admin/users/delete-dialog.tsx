@@ -52,7 +52,7 @@ export function DeleteUserDialog({ user, setUser }: Props) {
                             User: <span className="font-semibold">{user?.name}</span>
                         </span>
 
-                        <span className="flex items-center gap-1 text-muted-foreground mt-1">
+                        <span className="mt-1 flex items-center gap-1 text-muted-foreground">
                             <MailIcon className="size-4" />
                             <p className="text-xs">Email: {user?.email}</p>
                         </span>

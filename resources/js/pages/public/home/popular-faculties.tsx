@@ -46,10 +46,10 @@ const PopularFaculties = () => {
 
             <Wrapper className="flex flex-col items-center justify-center gap-16 bg-accent-foreground/50 py-12 backdrop-blur-xs sm:py-20">
                 <div className="flex w-full flex-col items-center gap-2 sm:gap-4">
-                    <h1 className="text-center text-3xl font-extrabold tracking-tight text-secondary capitalize sm:text-4xl xl:text-5xl drop-shadow">
+                    <h1 className="text-center text-3xl font-extrabold tracking-tight text-secondary capitalize drop-shadow sm:text-4xl xl:text-5xl">
                         Popular <span className="text-theme-accent">Faculties</span> in the <span className="text-theme-secondary">UK</span>
                     </h1>
-                    <p className="max-w-3xl text-center text-muted/80 sm:text-xl drop-shadow">
+                    <p className="max-w-3xl text-center text-muted/80 drop-shadow sm:text-xl">
                         Study globally recognized programs in business, engineering, arts, and health. Build skills that stand out anywhere in the
                         world.
                     </p>

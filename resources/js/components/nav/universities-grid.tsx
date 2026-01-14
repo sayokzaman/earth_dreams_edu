@@ -178,7 +178,7 @@ export default function UniversitiesGrid() {
                     </Link>
                 </div>
             ) : (
-                <div className="flex w-full flex-col gap-6 pt-8 lg:pb-4 text-center text-sm text-muted-foreground">
+                <div className="flex w-full flex-col gap-6 pt-8 text-center text-sm text-muted-foreground lg:pb-4">
                     <p>No universities match your search.</p>
                     <Link href={route('public.universities.index')}>
                         <Button variant={'secondary'} className="mx-auto w-fit rounded-3xl">
@@ -210,7 +210,7 @@ function UniversityCard({ uni }: { uni: University }) {
             {/* Content */}
             <div className="relative flex h-full w-full flex-col justify-between p-4 text-white">
                 {/* Logo bubble */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/80 shadow-md backdrop-blur-md"> 
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/80 shadow-md backdrop-blur-md">
                     <img src={`/storage/${uni?.logo}`} alt={uni.name} className="h-full w-full object-cover" />
                 </div>
 

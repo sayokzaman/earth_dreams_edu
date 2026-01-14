@@ -62,9 +62,9 @@
 @theme {
     /* CSS HEX */
     --color-theme: oklch(0.3667 0.0851 244.46);
-    --color-theme-secondary: #03BCF1;
+    --color-theme-secondary: #03bcf1;
     --color-theme-muted: #fefae0;
-    --color-theme-accent: #F89E3E;
+    --color-theme-accent: #f89e3e;
     --color-theme-foreground: #364857;
 }
 

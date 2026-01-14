@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -6,29 +6,29 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { MixerHorizontalIcon } from '@radix-ui/react-icons'
-import { EyeIcon } from 'lucide-react'
-import { useState } from 'react'
+} from '@/components/ui/dropdown-menu';
+import { MixerHorizontalIcon } from '@radix-ui/react-icons';
+import { EyeIcon } from 'lucide-react';
+import { useState } from 'react';
 
 interface ColumnToggle {
-    key: string
-    label: string
+    key: string;
+    label: string;
 }
 
 interface ViewOptionsProps {
-    columns: ColumnToggle[]
-    visible: Record<string, boolean>
-    onToggle: (key: string, show: boolean) => void
+    columns: ColumnToggle[];
+    visible: Record<string, boolean>;
+    onToggle: (key: string, show: boolean) => void;
 }
 
 export default function ViewOptions({ columns, visible, onToggle }: ViewOptionsProps) {
-    const hiddenCount = columns.filter((col) => !visible[col.key]).length
+    const hiddenCount = columns.filter((col) => !visible[col.key]).length;
     const resetColumns = (value: boolean) => {
-        columns.forEach((col) => onToggle(col.key, value))
-    }
+        columns.forEach((col) => onToggle(col.key, value));
+    };
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -63,8 +63,8 @@ export default function ViewOptions({ columns, visible, onToggle }: ViewOptionsP
                         size="sm"
                         className="w-full justify-start"
                         onClick={() => {
-                            resetColumns(true)
-                            setOpen(false)
+                            resetColumns(true);
+                            setOpen(false);
                         }}
                     >
                         <EyeIcon className="h-4 w-4" />
@@ -73,5 +73,5 @@ export default function ViewOptions({ columns, visible, onToggle }: ViewOptionsP
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

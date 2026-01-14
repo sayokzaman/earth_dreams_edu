@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'; // shadcn button (optional)
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 import { Image, Trash, Upload } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -75,7 +75,12 @@ export default function ImageInput({
                 <div className={`w-full ${aspectClass} relative`}>
                     {/* Image preview or placeholder */}
                     {preview ? (
-                        <img src={preview} alt="Cover preview" className={cn("h-full w-full object-cover", imageType === 'logo' ? 'bg-white p-4' : '')} draggable={false} />
+                        <img
+                            src={preview}
+                            alt="Cover preview"
+                            className={cn('h-full w-full object-cover', imageType === 'logo' ? 'bg-white p-4' : '')}
+                            draggable={false}
+                        />
                     ) : (
                         <div className="flex h-full w-full items-center justify-center gap-4 p-6 text-center">
                             <div className="flex flex-col items-center">

@@ -1,4 +1,4 @@
-import ConsultationForm from '@/components/consultation-form'
+import ConsultationForm from '@/components/consultation-form';
 import { Button } from '@/components/ui/button';
 import Wrapper from '@/components/wrapper';
 import AppPublicLayout from '@/layouts/app/app-public-layout';
@@ -172,7 +172,7 @@ const UniversityShowPage = ({ university }: Props) => {
                 </div>
             </Wrapper>
 
-            <Wrapper className="py-12 border-t">
+            <Wrapper className="border-t py-12">
                 <div className="mb-8 flex flex-col items-center gap-4">
                     <h1 className="text-center text-3xl font-extrabold tracking-tight capitalize drop-shadow-sm sm:text-4xl">
                         Book Your <span className="text-theme-accent/90">Free</span> <span className="text-theme-secondary/90">Consultation</span>{' '}

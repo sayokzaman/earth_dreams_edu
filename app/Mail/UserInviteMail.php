@@ -21,7 +21,7 @@ class UserInviteMail extends Mailable
         return $this
             ->subject('You’ve been invited to our platform')
             ->markdown('emails.user_invite', [
-                'user'      => $this->user,
+                'user' => $this->user,
                 'inviteUrl' => $this->inviteUrl,
             ]);
     }

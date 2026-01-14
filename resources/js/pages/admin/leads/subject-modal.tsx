@@ -100,7 +100,7 @@ const SubjectModal = () => {
                                 <h3 className="text-sm font-medium">All subjects</h3>
                                 <p className="text-xs text-muted-foreground">{subjects.length} total</p>
                             </div>
-                            <ul className="flex sm:max-h-[400px] flex-col gap-2 overflow-y-auto pr-1">
+                            <ul className="flex flex-col gap-2 overflow-y-auto pr-1 sm:max-h-[400px]">
                                 {subjects && subjects.length > 0 ? (
                                     subjects.map((subject) => (
                                         <li

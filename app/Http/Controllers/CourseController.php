@@ -224,7 +224,7 @@ class CourseController extends Controller
     }
 
     public function destroy(Course $course)
-    {   
+    {
         // delete cover if exists
         if ($course->cover && Storage::disk('public')->exists($course->cover)) {
             Storage::disk('public')->delete($course->cover);

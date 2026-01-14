@@ -53,7 +53,7 @@ export default function StudyInUKGrid() {
     ];
 
     return (
-        <div className="grid w-[72vw] grid-cols-2 gap-3 px-4 lg:p-4 mt-4 lg:mt-0">
+        <div className="mt-4 grid w-[72vw] grid-cols-2 gap-3 px-4 lg:mt-0 lg:p-4">
             {studyInUK.map((item) => (
                 <Link
                     key={item.href}

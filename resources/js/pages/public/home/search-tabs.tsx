@@ -94,7 +94,7 @@ export function SearchTabs({ className }: { className?: string }) {
                         />
 
                         <Link href={route('public.universities.index', { searchUniversity: query })}>
-                            <Button type='submit' variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
+                            <Button type="submit" variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
                                 <Search className="mr-1 h-4 w-4" />
                                 Search
                             </Button>
@@ -155,7 +155,7 @@ export function SearchTabs({ className }: { className?: string }) {
                         />
 
                         <Link href={route('public.courses.index', { searchCourse: query })}>
-                            <Button type='submit' variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
+                            <Button type="submit" variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
                                 <Search className="mr-1 h-4 w-4" />
                                 Search
                             </Button>
@@ -214,7 +214,7 @@ export function SearchTabs({ className }: { className?: string }) {
                         />
 
                         <Link href={route('public.blogs.index', { searchBlog: query })}>
-                            <Button type='submit' variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
+                            <Button type="submit" variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
                                 <Search className="mr-1 h-4 w-4" />
                                 Search
                             </Button>
@@ -290,7 +290,7 @@ export function SearchTabs({ className }: { className?: string }) {
                         />
 
                         <Link href={route('public.universities.index', { searchLocation: query })}>
-                            <Button type='submit' variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
+                            <Button type="submit" variant="secondary" className="text-md w-full rounded-3xl sm:w-40">
                                 <Search className="mr-1 h-4 w-4" />
                                 Search
                             </Button>

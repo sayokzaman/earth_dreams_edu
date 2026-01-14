@@ -45,7 +45,7 @@ const NavMenuMobile = () => {
                                     <span className="text-theme-accent">Earth</span> <span className="text-theme-secondary">Dreams</span>
                                 </p>
 
-                                <p className="text-[11px] text-white font-semibold tracking-wide">Education & Consultancy</p>
+                                <p className="text-[11px] font-semibold tracking-wide text-white">Education & Consultancy</p>
                             </div>
                         </div>
                     </SheetHeader>

@@ -127,7 +127,7 @@ function StudentReviews() {
                     <span className="text-theme-accent/90">Student</span> <span className="text-theme-secondary/80">Reviews</span>
                 </h2>
 
-                <p className="text-center text-theme-foreground lg:w-1/2 sm:text-xl">
+                <p className="text-center text-theme-foreground sm:text-xl lg:w-1/2">
                     Hear from our students about their experiences studying abroad with our assistance and support.
                 </p>
             </div>

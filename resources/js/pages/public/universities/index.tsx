@@ -204,7 +204,7 @@ const UniversityIndex = ({ universities, universityNames, filters: incomingFilte
                                     value={filters.searchLocation}
                                     onChange={(e) => setFilters((prev) => ({ ...prev, searchLocation: e.target.value }))}
                                     placeholder="Search Locations"
-                                    className="w-full h-7"
+                                    className="h-7 w-full"
                                 />
                             </AccordionContent>
                         </AccordionItem>

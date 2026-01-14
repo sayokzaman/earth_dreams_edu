@@ -25,7 +25,7 @@ const StatCards = () => {
             </div>
 
             {/* Card Grid */}
-            <div className="grid gap-6 md:w-1/2 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2 md:w-1/2 md:grid-cols-1 lg:grid-cols-2">
                 <Card className="relative flex justify-end overflow-hidden rounded-2xl border-none bg-transparent p-0 shadow-lg transition-transform duration-300">
                     <img
                         src="/images/stat_card_1.jpg"

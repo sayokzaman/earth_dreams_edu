@@ -25,7 +25,7 @@ const UserActions = ({ user, setDeleteModalData, setCreateEditModalData }: Props
         <>
             <ContextMenuLabel>
                 <div className="flex flex-col gap-1">
-                    <div className="flex gap-1 items-center font-medium">
+                    <div className="flex items-center gap-1 font-medium">
                         <TextWithBreaks text={user.name} />
                         {user.id === auth.user?.id ? <span className="text-xs text-muted-foreground">(You)</span> : null}
                     </div>

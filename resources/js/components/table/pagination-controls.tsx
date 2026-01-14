@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { TableData } from '@/types/table'
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons'
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { TableData } from '@/types/table';
+import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 
 interface Props<T> {
-    data: TableData<T>
-    perPage?: string | number
-    setPerPage: (value: string | number) => void
-    setPage: (page: number) => void
+    data: TableData<T>;
+    perPage?: string | number;
+    setPerPage: (value: string | number) => void;
+    setPage: (page: number) => void;
 }
 
 export default function PaginationControls<T>({ data, perPage, setPerPage, setPage }: Props<T>) {
@@ -53,5 +53,5 @@ export default function PaginationControls<T>({ data, perPage, setPerPage, setPa
                 </Button>
             </div>
         </div>
-    )
+    );
 }
