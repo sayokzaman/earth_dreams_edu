@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Subject } from '@/types/subject';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { ListIcon, Trash2Icon } from 'lucide-react';
+import { ListIcon, Plus, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const SubjectModal = () => {
@@ -58,53 +59,105 @@ const SubjectModal = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={'outline'}>
+                <Button variant={'outline'} size="lg" className="gap-2">
                     <ListIcon className="h-4 w-4" />
-                    List Subjects
+                    Manage Subjects
                 </Button>
             </DialogTrigger>
-            <DialogContent className="h-screen min-w-screen overflow-auto rounded-none sm:h-auto sm:min-w-auto sm:rounded-lg">
-                <DialogHeader>
-                    <DialogTitle>Add New Subject</DialogTitle>
-                    <DialogDescription />
+            <DialogContent className="h-screen min-w-screen overflow-auto rounded-none sm:h-auto sm:max-w-2xl sm:min-w-auto sm:rounded-lg">
+                <DialogHeader className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className="rounded-lg border bg-muted p-2">
+                            <ListIcon className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <DialogTitle className="text-xl font-semibold">Subject Management</DialogTitle>
+                            <p className="text-sm text-muted-foreground">Add and organize subjects for courses and leads.</p>
+                        </div>
+                    </div>
+                    <DialogDescription className="sr-only">Manage course subjects</DialogDescription>
 
-                    <form className="flex gap-2" onSubmit={handleSubmit}>
-                        <Input
-                            name="subject_name"
-                            value={data.subject_name}
-                            onChange={(e) => setData('subject_name', e.target.value)}
-                            placeholder="Search or add subject"
-                            className="h-10"
-                        />
+                    <div className="space-y-6">
+                        <div className="rounded-lg border bg-muted/30 p-4">
+                            <h3 className="mb-3 text-sm font-medium">Add new subject</h3>
+                            <form className="flex gap-2" onSubmit={handleSubmit}>
+                                <Input
+                                    name="subject_name"
+                                    value={data.subject_name}
+                                    onChange={(e) => setData('subject_name', e.target.value)}
+                                    placeholder="e.g. Computer Science, Engineering..."
+                                    className="h-10 bg-background"
+                                />
+                                <Button type="submit" className="h-10 px-6">
+                                    <Plus className="h-4 w-4" />
+                                    Add
+                                </Button>
+                            </form>
+                        </div>
 
-                        <Button>Add</Button>
-                    </form>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-medium">All subjects</h3>
+                                <p className="text-xs text-muted-foreground">{subjects.length} total</p>
+                            </div>
+                            <ul className="flex sm:max-h-[400px] flex-col gap-2 overflow-y-auto pr-1">
+                                {subjects && subjects.length > 0 ? (
+                                    subjects.map((subject) => (
+                                        <li
+                                            key={subject.id}
+                                            className="group flex items-center justify-between rounded-lg border bg-background p-3 transition-colors hover:bg-muted/50"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                                                    <ListIcon className="h-3.5 w-3.5" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm leading-none font-medium capitalize">{subject.subject_name}</p>
+                                                    <p className="mt-1 text-xs text-muted-foreground">ID: {subject.id}</p>
+                                                </div>
+                                            </div>
 
-                    <div className="mt-2">
-                        <h1>Available Subjects ({subjects.length})</h1>
-                        <ul className="mt-2 flex flex-col gap-2 overflow-y-auto sm:max-h-140">
-                            {subjects && subjects.length > 0 ? (
-                                subjects.map((subject) => (
-                                    <li key={subject.id} className="mr-2 flex items-center justify-between rounded-md border px-4 py-2">
-                                        <div>
-                                            <p className="text-xs font-bold text-muted-foreground">Subject Name</p>
-                                            <p className="font-bold capitalize">{subject.subject_name}</p>
-
-                                            {/* <div className="mt-2 flex items-center gap-1 text-sm">
-                                                <p className="text-xs font-bold text-muted-foreground">Number of Courses: </p>
-                                                <p className="text-sm font-bold">{subject.course_count || 0}</p>
-                                            </div> */}
-                                        </div>
-
-                                        <Button onClick={() => handleDelete(subject.id)} size={'icon'} variant={'destructive'}>
-                                            <Trash2Icon className="h-4 w-4" />
-                                        </Button>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        size={'icon'}
+                                                        variant={'ghost'}
+                                                        className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+                                                    >
+                                                        <Trash2Icon className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-64" align="end">
+                                                    <div className="space-y-3">
+                                                        <div>
+                                                            <h4 className="font-semibold">Delete subject?</h4>
+                                                            <p className="mt-1 text-sm text-muted-foreground">
+                                                                This will permanently remove "{subject.subject_name}".
+                                                            </p>
+                                                        </div>
+                                                        <div className="flex gap-2">
+                                                            <Button
+                                                                onClick={() => handleDelete(subject.id)}
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                className="flex-1"
+                                                            >
+                                                                Delete
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li className="rounded-lg border border-dashed bg-muted/20 py-8 text-center">
+                                        <p className="text-sm text-muted-foreground">No subjects found</p>
+                                        <p className="mt-1 text-xs text-muted-foreground">Add your first subject above</p>
                                     </li>
-                                ))
-                            ) : (
-                                <li className="mt-4 text-center text-sm text-muted-foreground">No subjects found</li>
-                            )}
-                        </ul>
+                                )}
+                            </ul>
+                        </div>
                     </div>
                 </DialogHeader>
             </DialogContent>

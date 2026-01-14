@@ -1,36 +1,36 @@
-import { DataTableColumnHeader } from '@/components/table/column-header'
-import DataTableToolbar from '@/components/table/data-toolbar'
-import PaginationControls from '@/components/table/pagination-controls'
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useIsMobile } from '@/hooks/use-mobile'
-import { useTableSort } from '@/hooks/use-table-sort'
-import { cn } from '@/lib/utils'
-import { TableData, TableFilterBase } from '@/types/table'
+import { DataTableColumnHeader } from '@/components/table/column-header';
+import DataTableToolbar from '@/components/table/data-toolbar';
+import PaginationControls from '@/components/table/pagination-controls';
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useTableSort } from '@/hooks/use-table-sort';
+import { cn } from '@/lib/utils';
+import { TableData, TableFilterBase } from '@/types/table';
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export type GenericColumnDef<T> = {
-    key: string
-    label: string
-    render: (row: T) => React.ReactNode
-    sortable?: boolean
-    align?: 'center' | 'start' | 'end'
-    visible?: boolean
-}
+    key: string;
+    label: string;
+    render: (row: T) => React.ReactNode;
+    sortable?: boolean;
+    align?: 'center' | 'start' | 'end';
+    visible?: boolean;
+};
 
 interface Props<T, F extends TableFilterBase> {
-    data: TableData<T>
-    columns: GenericColumnDef<T>[]
-    filters: F
-    setFilters: React.Dispatch<React.SetStateAction<F>>
-    onReset: () => void
-    children?: React.ReactNode
-    renderActions?: (row: T) => React.ReactNode
-    renderApproval?: (row: T) => React.ReactNode
-    renderMobileRow?: (row: T) => React.ReactNode
-    rowId?: (row: T) => React.Key
-    storageKey?: string
+    data: TableData<T>;
+    columns: GenericColumnDef<T>[];
+    filters: F;
+    setFilters: React.Dispatch<React.SetStateAction<F>>;
+    onReset: () => void;
+    children?: React.ReactNode;
+    renderActions?: (row: T) => React.ReactNode;
+    renderApproval?: (row: T) => React.ReactNode;
+    renderMobileRow?: (row: T) => React.ReactNode;
+    rowId?: (row: T) => React.Key;
+    storageKey?: string;
 }
 
 function getStorageKeys(base: string = 'genericTable') {
@@ -38,8 +38,7 @@ function getStorageKeys(base: string = 'genericTable') {
         columns: `${base}.visibleColumns`,
         sortKey: `${base}.sortKey`,
         sortOrder: `${base}.sortOrder`,
-        showFilters: `${base}.showFilters`,
-    }
+    };
 }
 
 export function DataTable<T, F extends TableFilterBase>({
@@ -55,46 +54,37 @@ export function DataTable<T, F extends TableFilterBase>({
     rowId,
     storageKey = 'genericTable',
 }: Props<T, F>) {
-    const STORAGE_KEYS = getStorageKeys(storageKey)
-    const isMobile = useIsMobile()
+    const STORAGE_KEYS = getStorageKeys(storageKey);
+    const isMobile = useIsMobile();
 
-    const defaultVisible = Object.fromEntries(columns.map((col) => [col.key, col.visible !== false]))
+    const defaultVisible = Object.fromEntries(columns.map((col) => [col.key, col.visible !== false]));
     const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
         () => JSON.parse(localStorage.getItem(STORAGE_KEYS.columns) || 'null') || defaultVisible,
-    )
-    const [showFilters, setShowFilters] = useState<boolean>(() => {
-        const stored = localStorage.getItem(STORAGE_KEYS.showFilters)
-        return stored ? stored === 'true' : false
-    })
+    );
 
-    const { sortKey, sortOrder, getSortProps, clearSort } = useTableSort(filters, setFilters)
+    const { sortKey, sortOrder, getSortProps, clearSort } = useTableSort(filters, setFilters);
 
     useEffect(() => {
-        localStorage.setItem(STORAGE_KEYS.columns, JSON.stringify(visibleColumns))
-    }, [visibleColumns, STORAGE_KEYS.columns])
+        localStorage.setItem(STORAGE_KEYS.columns, JSON.stringify(visibleColumns));
+    }, [visibleColumns, STORAGE_KEYS.columns]);
 
     useEffect(() => {
-        if (sortKey) localStorage.setItem(STORAGE_KEYS.sortKey, sortKey)
-        else localStorage.removeItem(STORAGE_KEYS.sortKey)
+        if (sortKey) localStorage.setItem(STORAGE_KEYS.sortKey, sortKey);
+        else localStorage.removeItem(STORAGE_KEYS.sortKey);
 
-        if (sortOrder) localStorage.setItem(STORAGE_KEYS.sortOrder, sortOrder)
-        else localStorage.removeItem(STORAGE_KEYS.sortOrder)
-    }, [sortKey, sortOrder, STORAGE_KEYS.sortKey, STORAGE_KEYS.sortOrder])
+        if (sortOrder) localStorage.setItem(STORAGE_KEYS.sortOrder, sortOrder);
+        else localStorage.removeItem(STORAGE_KEYS.sortOrder);
+    }, [sortKey, sortOrder, STORAGE_KEYS.sortKey, STORAGE_KEYS.sortOrder]);
 
     return (
         <div className="space-y-4">
             <DataTableToolbar
-                showFilters={showFilters}
-                setShowFilters={(val) => {
-                    setShowFilters(val)
-                    localStorage.setItem(STORAGE_KEYS.showFilters, JSON.stringify(val))
-                }}
                 onReset={() => {
-                    clearSort()
-                    localStorage.removeItem(STORAGE_KEYS.columns)
-                    localStorage.removeItem(STORAGE_KEYS.sortKey)
-                    localStorage.removeItem(STORAGE_KEYS.sortOrder)
-                    onReset()
+                    clearSort();
+                    localStorage.removeItem(STORAGE_KEYS.columns);
+                    localStorage.removeItem(STORAGE_KEYS.sortKey);
+                    localStorage.removeItem(STORAGE_KEYS.sortOrder);
+                    onReset();
                 }}
                 viewOptions={columns.map(({ key, label }) => ({ key, label }))}
                 visible={visibleColumns}
@@ -105,7 +95,7 @@ export function DataTable<T, F extends TableFilterBase>({
 
             {/* Desktop/Table view */}
             {!isMobile && (
-                <div className="overflow-hidden overflow-x-auto rounded border">
+                <div className="overflow-hidden overflow-x-auto rounded-xl border">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -134,19 +124,19 @@ export function DataTable<T, F extends TableFilterBase>({
                                                 className={cn('select-text md:select-text', isMobile ? 'select-none' : '')}
                                                 style={{ WebkitTouchCallout: 'none' }}
                                                 onContextMenuCapture={(e) => {
-                                                    const target = e.target as HTMLElement | null
-                                                    const selection = window.getSelection?.()
-                                                    const hasSelection = !!selection && selection.toString().trim().length > 0
+                                                    const target = e.target as HTMLElement | null;
+                                                    const selection = window.getSelection?.();
+                                                    const hasSelection = !!selection && selection.toString().trim().length > 0;
 
                                                     const isInteractiveTarget =
                                                         target instanceof Element &&
                                                         !!target.closest(
                                                             'a[href], button, input, textarea, select, [contenteditable="true"], img, video, audio, svg, pre, code',
-                                                        )
+                                                        );
 
                                                     // Allow native browser context menu on interactive elements or when text is selected
                                                     if (hasSelection || isInteractiveTarget) {
-                                                        e.stopPropagation()
+                                                        e.stopPropagation();
                                                     }
                                                 }}
                                             >
@@ -189,19 +179,19 @@ export function DataTable<T, F extends TableFilterBase>({
                                 {renderMobileRow ? (
                                     <div data-row-container>{renderMobileRow(row)}</div>
                                 ) : (
-                                    <div className="bg-background divide-border divide-y rounded border p-3 shadow-xs">
+                                    <div className="divide-y divide-border rounded border bg-background p-3 shadow-xs">
                                         {columns.map(
                                             (col) =>
                                                 visibleColumns[col.key] && (
                                                     <div key={col.key} className="py-2 first:pt-0 last:pb-0">
-                                                        <div className="text-muted-foreground text-[10px] tracking-wide uppercase">{col.label}</div>
-                                                        <div className="text-foreground mt-1 text-sm">{col.render(row)}</div>
+                                                        <div className="text-[10px] tracking-wide text-muted-foreground uppercase">{col.label}</div>
+                                                        <div className="mt-1 text-sm text-foreground">{col.render(row)}</div>
                                                     </div>
                                                 ),
                                         )}
                                         {renderApproval && (
                                             <div className="py-2 first:pt-0 last:pb-0">
-                                                <div className="text-muted-foreground text-[10px] tracking-wide uppercase">Approval</div>
+                                                <div className="text-[10px] tracking-wide text-muted-foreground uppercase">Approval</div>
                                                 <div className="mt-1">{renderApproval(row)}</div>
                                             </div>
                                         )}
@@ -210,7 +200,7 @@ export function DataTable<T, F extends TableFilterBase>({
                             </div>
                         ))
                     ) : (
-                        <div className="text-muted-foreground rounded border p-6 text-center text-sm">No data found.</div>
+                        <div className="rounded border p-6 text-center text-sm text-muted-foreground">No data found.</div>
                     )}
                 </div>
             )}
@@ -222,5 +212,5 @@ export function DataTable<T, F extends TableFilterBase>({
                 setPage={(page) => setFilters((prev) => ({ ...prev, page }))}
             />
         </div>
-    )
+    );
 }

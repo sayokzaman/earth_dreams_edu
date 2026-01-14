@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Faculty } from '@/types/faculty';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
@@ -58,53 +59,106 @@ const FacultyModal = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={'outline'}>
+                <Button variant={'outline'} size="lg" className="gap-2">
                     <ListIcon className="h-4 w-4" />
-                    List Faculties
+                    Manage Faculties
                 </Button>
             </DialogTrigger>
-            <DialogContent className="h-screen min-w-screen overflow-auto rounded-none sm:h-auto sm:min-w-auto sm:rounded-lg">
-                <DialogHeader>
-                    <DialogTitle>Add New Faculty</DialogTitle>
-                    <DialogDescription />
+            <DialogContent className="h-screen min-w-screen overflow-auto rounded-none sm:h-auto sm:max-w-2xl sm:min-w-auto sm:rounded-lg">
+                <DialogHeader className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className="rounded-lg border bg-muted p-2">
+                            <ListIcon className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <DialogTitle className="text-xl font-semibold">Faculty Management</DialogTitle>
+                            <p className="text-sm text-muted-foreground">Add and organize faculties for courses.</p>
+                        </div>
+                    </div>
+                    <DialogDescription className="sr-only">Manage course faculties</DialogDescription>
 
-                    <form className="flex gap-2" onSubmit={handleSubmit}>
-                        <Input
-                            name="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            placeholder="Search or add faculty"
-                            className="h-10"
-                        />
+                    <div className="space-y-6">
+                        <div className="rounded-lg border bg-muted/30 p-4">
+                            <h3 className="mb-3 text-sm font-medium">Add new faculty</h3>
+                            <form className="flex gap-2" onSubmit={handleSubmit}>
+                                <Input
+                                    name="name"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    placeholder="e.g. Engineering, Business..."
+                                    className="h-10 bg-background"
+                                />
+                                <Button type="submit" className="h-10 px-6">
+                                    Add
+                                </Button>
+                            </form>
+                        </div>
 
-                        <Button>Add</Button>
-                    </form>
-
-                    <div className="mt-2">
-                        <h1>Available Faculties ({faculties.length})</h1>
-                        <ul className="mt-2 flex flex-col gap-2 overflow-y-auto sm:max-h-140">
-                            {faculties && faculties.length > 0 ? (
-                                faculties.map((faculty) => (
-                                    <li key={faculty.id} className="mr-2 flex items-center justify-between rounded-md border px-4 py-2">
-                                        <div>
-                                            <p className="text-xs font-bold text-muted-foreground">Faculty Name</p>
-                                            <p className="font-bold">{faculty.name}</p>
-
-                                            <div className="mt-2 flex items-center gap-1 text-sm">
-                                                <p className="text-xs font-bold text-muted-foreground">Number of Courses: </p>
-                                                <p className="text-sm font-bold">{faculty.course_count || 0}</p>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-medium">All faculties</h3>
+                                <p className="text-xs text-muted-foreground">{faculties.length} total</p>
+                            </div>
+                            <ul className="flex max-h-[400px] flex-col gap-2 overflow-y-auto pr-1">
+                                {faculties && faculties.length > 0 ? (
+                                    faculties.map((faculty) => (
+                                        <li
+                                            key={faculty.id}
+                                            className="group flex items-center justify-between rounded-lg border bg-background p-3 transition-colors hover:bg-muted/50"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                                                    <ListIcon className="h-3.5 w-3.5" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm leading-none font-medium">{faculty.name}</p>
+                                                    <p className="mt-1 text-xs text-muted-foreground">
+                                                        {faculty.course_count || 0} course{faculty.course_count !== 1 ? 's' : ''}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <Button onClick={() => handleDelete(faculty.id)} size={'icon'} variant={'destructive'}>
-                                            <Trash2Icon className="h-4 w-4" />
-                                        </Button>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        size={'icon'}
+                                                        variant={'ghost'}
+                                                        className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+                                                    >
+                                                        <Trash2Icon className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-64" align="end">
+                                                    <div className="space-y-3">
+                                                        <div>
+                                                            <h4 className="font-semibold">Delete faculty?</h4>
+                                                            <p className="mt-1 text-sm text-muted-foreground">
+                                                                This will permanently remove "{faculty.name}".
+                                                            </p>
+                                                        </div>
+                                                        <div className="flex gap-2">
+                                                            <Button
+                                                                onClick={() => handleDelete(faculty.id)}
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                className="flex-1"
+                                                            >
+                                                                Delete
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li className="rounded-lg border border-dashed bg-muted/20 py-8 text-center">
+                                        <p className="text-sm text-muted-foreground">No faculties found</p>
+                                        <p className="mt-1 text-xs text-muted-foreground">Add your first faculty above</p>
                                     </li>
-                                ))
-                            ) : (
-                                <li className="mt-4 text-center text-sm text-muted-foreground">No faculties found</li>
-                            )}
-                        </ul>
+                                )}
+                            </ul>
+                        </div>
                     </div>
                 </DialogHeader>
             </DialogContent>

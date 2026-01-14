@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { User } from '@/types';
 import { format } from 'date-fns';
-import { BadgeAlertIcon } from 'lucide-react';
+import { BadgeAlertIcon, Mail, Phone } from 'lucide-react';
 
 export const userColumns: GenericColumnDef<User>[] = [
     {
@@ -12,7 +12,7 @@ export const userColumns: GenericColumnDef<User>[] = [
         label: '#',
         sortable: true,
         align: 'start',
-        render: (user) => <span className="pl-4">{user.id}</span>,
+        render: (user) => <span className="pl-3 font-semibold text-muted-foreground">#{user.id}</span>,
     },
 
     {
@@ -28,14 +28,17 @@ export const userColumns: GenericColumnDef<User>[] = [
             };
 
             return (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 overflow-hidden rounded-full">
+                <div className="flex items-center gap-3">
+                    <Avatar className="h-9 w-9 overflow-hidden rounded-full ring-2 ring-rose-100 dark:ring-rose-900/60">
                         <AvatarImage src={user.avatar ? `/storage/${user.avatar}` : undefined} alt={user.name} />
-                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                        <AvatarFallback className="rounded-full bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-100">
                             {getInitials()}
                         </AvatarFallback>
                     </Avatar>
-                    <span className="h-full">{user.name}</span>
+                    <div className="flex flex-col leading-tight">
+                        <span className="font-semibold text-foreground">{user.name}</span>
+                        <span className="text-xs text-muted-foreground">ID: {user.id}</span>
+                    </div>
                 </div>
             );
         },
@@ -47,8 +50,9 @@ export const userColumns: GenericColumnDef<User>[] = [
         sortable: true,
         align: 'start',
         render: (user) => (
-            <span className="flex items-center gap-2 pl-3">
-                {user.email}{' '}
+            <span className="flex items-center gap-2 pl-2">
+                <Mail className="h-4 w-4 text-rose-600" />
+                <span>{user.email}</span>
                 {!user.email_verified_at && (
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -67,7 +71,12 @@ export const userColumns: GenericColumnDef<User>[] = [
         key: 'phone',
         label: 'Phone',
         align: 'center',
-        render: (user) => <span className="pl-4">{user.phone}</span>,
+        render: (user) => (
+            <span className="flex items-center justify-center gap-2">
+                <Phone className="h-4 w-4 text-rose-600" />
+                {user.phone || '—'}
+            </span>
+        ),
     },
 
     {
@@ -80,7 +89,7 @@ export const userColumns: GenericColumnDef<User>[] = [
                     user.roles.map((role) => (
                         <Badge
                             key={user.id + role.name}
-                            className="rounded-full font-semibold capitalize"
+                            className="rounded-full px-3 py-1 font-semibold capitalize"
                             variant={
                                 role.name === 'super-admin'
                                     ? 'destructive'
@@ -95,7 +104,7 @@ export const userColumns: GenericColumnDef<User>[] = [
                         </Badge>
                     ))
                 ) : (
-                    <Badge className="rounded-full font-semibold capitalize" variant="pending">
+                    <Badge className="rounded-full px-3 py-1 font-semibold capitalize" variant="pending">
                         Unassigned
                     </Badge>
                 )}
@@ -107,7 +116,12 @@ export const userColumns: GenericColumnDef<User>[] = [
         key: 'created_at',
         label: 'Joined',
         sortable: true,
-        align: 'start',
-        render: (user) => <span className="pl-3">{format(new Date(user.created_at), 'dd MMM, yyyy')}</span>,
+        align: 'center',
+        render: (user) => (
+            <div className="flex flex-col items-center gap-0.5">
+                <span className="text-sm font-semibold">{format(new Date(user.created_at), 'dd MMM yyyy')}</span>
+                <span className="text-xs text-muted-foreground">{format(new Date(user.created_at), 'h:mm a')}</span>
+            </div>
+        ),
     },
 ];

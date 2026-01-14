@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Lead } from '@/types/lead';
 import { Link } from '@inertiajs/react';
 import { format } from 'date-fns';
+import { Mail, Phone, User as UserIcon } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 
 export const leadColumns: GenericColumnDef<Lead>[] = [
@@ -12,7 +13,10 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         sortable: true,
         align: 'start',
         render: (lead) => (
-            <Link href={route('admin.leads.show', lead.id)} className="pl-4 text-blue-300 underline-offset-2 hover:underline">
+            <Link
+                href={route('admin.leads.show', lead.id)}
+                className="pl-3 font-semibold text-blue-600 underline-offset-4 hover:underline dark:text-blue-300"
+            >
                 Lead #{lead.id}
             </Link>
         ),
@@ -22,14 +26,24 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         label: 'Name',
         sortable: true,
         align: 'start',
-        render: (lead) => <span className="pl-2 capitalize">{lead.first_name + ' ' + lead.last_name}</span>,
+        render: (lead) => (
+            <div className="flex items-center gap-2 pl-2">
+                <UserIcon className="h-4 w-4 text-orange-600" />
+                <span className="font-medium capitalize">{lead.first_name + ' ' + lead.last_name}</span>
+            </div>
+        ),
     },
     {
         key: 'email',
         label: 'Email',
         sortable: true,
         align: 'start',
-        render: (lead) => <span className="pl-2">{lead.email}</span>,
+        render: (lead) => (
+            <div className="flex items-center gap-2 pl-2">
+                <Mail className="h-4 w-4 text-orange-600" />
+                <span className="truncate">{lead.email}</span>
+            </div>
+        ),
     },
     {
         key: 'study_type',
@@ -37,24 +51,22 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         sortable: false,
         align: 'center',
         render: (lead) => (
-            <div className="flex items-center justify-center">
-                <Badge
-                    variant={
-                        lead.study_type === 'undergraduate'
-                            ? 'rose'
-                            : lead.study_type === 'masters'
-                              ? 'orange'
-                              : lead.study_type === 'foundation'
-                                ? 'violet'
-                                : lead.study_type === 'doctorate'
-                                  ? 'blue'
-                                  : 'green'
-                    }
-                    className="capitalize"
-                >
-                    {lead.study_type}
-                </Badge>
-            </div>
+            <Badge
+                className="rounded-full px-3 py-1 font-semibold capitalize shadow"
+                variant={
+                    lead.study_type === 'undergraduate'
+                        ? 'rose'
+                        : lead.study_type === 'masters'
+                          ? 'orange'
+                          : lead.study_type === 'foundation'
+                            ? 'violet'
+                            : lead.study_type === 'doctorate'
+                              ? 'blue'
+                              : 'green'
+                }
+            >
+                {lead.study_type}
+            </Badge>
         ),
     },
     {
@@ -62,7 +74,7 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         label: 'Interested Subject',
         sortable: false,
         align: 'center',
-        render: (lead) => <span className="pl-2 capitalize">{lead.subject_interested}</span>,
+        render: (lead) => <span className="font-medium capitalize">{lead.subject_interested}</span>,
     },
     {
         key: 'country_of_residence',
@@ -70,14 +82,14 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         sortable: true,
         align: 'start',
         render: (lead) => (
-            <span className="pl-2 capitalize">
-                {lead.country_of_residence}
+            <>
+                <span className="font-medium capitalize">{lead.country_of_residence}</span>
                 {lead.in_uk_now && (
-                    <Badge variant="manual" className="ml-2 rounded-full font-semibold">
+                    <Badge variant="manual" className="ml-1 rounded-full font-semibold">
                         In UK
                     </Badge>
                 )}
-            </span>
+            </>
         ),
     },
     {
@@ -85,7 +97,8 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         label: 'Mobile',
         align: 'center',
         render: (lead) => (
-            <span className="flex items-center justify-center gap-2 pl-4 capitalize">
+            <span className="flex items-center justify-center gap-2 pl-2">
+                <Phone className="h-4 w-4 text-orange-600" />
                 {lead.mobile_country_code + ' ' + lead.mobile}
                 {lead.is_whatsapp && <FaWhatsapp className="inline text-green-500" />}
             </span>
@@ -97,9 +110,9 @@ export const leadColumns: GenericColumnDef<Lead>[] = [
         sortable: true,
         align: 'center',
         render: (lead) => (
-            <div className="grid items-center">
-                <span className='font-bold text-base'>{format(new Date(lead.created_at), 'hh:mm a')}</span>
-                <span className='text-xs text-muted-foreground'>{format(new Date(lead.created_at), 'MMM dd, yyyy')}</span>
+            <div className="flex flex-col items-center gap-0.5">
+                <span className="text-sm font-semibold">{format(new Date(lead.created_at), 'dd MMM yyyy')}</span>
+                <span className="text-xs text-muted-foreground">{format(new Date(lead.created_at), 'h:mm a')}</span>
             </div>
         ),
     },

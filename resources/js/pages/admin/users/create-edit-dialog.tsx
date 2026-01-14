@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -71,7 +72,10 @@ const CreateEditUserDialog = ({ user, setModalData, open: externalOpen, onOpenCh
             }}
         >
             <DialogTrigger asChild>
-                <Button className="w-full sm:w-auto">Add New User</Button>
+                <Button size={'lg'} className="w-full sm:w-auto">
+                    <Plus className="h-4 w-4" />
+                    Add New User
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
