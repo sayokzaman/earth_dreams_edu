@@ -42,40 +42,40 @@ export default function CoursesGrid() {
 
     const quickLinks = [
         {
-            img: '/images/universities/all-universities.svg',
+            img: '/images/courses/all-courses.svg',
             title: 'Explore All Courses',
             href: route('public.courses.index'),
-            description: 'Browse the full list by country, course, or rank.',
+            description: 'Browse our extensive list of courses available in the UK.',
         },
         {
-            img: '/images/universities/all-universities.svg',
+            img: '/images/courses/foundation.svg',
             title: 'Foundation Courses',
             href: route('public.courses.foundationCourses'),
-            description: 'Browse the full list by country, course, or rank.',
+            description: 'Get started with our foundation courses to prepare for higher education.',
         },
         {
-            img: '/images/universities/russell-group.svg',
+            img: '/images/courses/undergraduate.svg',
             title: 'Undergraduate Courses',
             href: route('public.courses.undergraduateCourses'),
-            description: 'Explore the prestigious Russell Group of UK universities.',
+            description: "Pursue your bachelor's degree with our comprehensive undergraduate courses.",
         },
         {
-            img: '/images/universities/rankings.svg',
+            img: '/images/courses/masters.svg',
             title: 'Masters Courses',
             href: route('public.courses.mastersCourses'),
-            description: '',
+            description: "Advance your expertise with our specialized master's degree programs.",
         },
         {
-            img: '/images/universities/top-universities.svg',
+            img: '/images/courses/top-up.svg',
             title: 'Top Up Courses',
             href: route('public.courses.topUpCourses'),
-            description: '',
+            description: "Complete your degree with our top-up courses designed for diploma holders.",
         },
         {
-            img: '/images/universities/top-universities.svg',
+            img: '/images/courses/phd.svg',
             title: 'PhD Courses',
             href: route('public.courses.phdCourses'),
-            description: '',
+            description: "Pursue advanced research and contribute to your field with our PhD programs.",
         },
     ];
 
