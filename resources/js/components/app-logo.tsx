@@ -12,7 +12,7 @@ export default function AppLogo() {
 
     return (
         <div className="flex w-full justify-center">
-            <img src={source} className="h-12" alt="" />
+            <img src={source} className="h-12 object-contain" alt="" />
         </div>
     );
 }
